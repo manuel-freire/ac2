@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>es.ucm.fdi</groupId>
+        <artifactId>ac</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>clover</artifactId>
+    
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <testFailureIgnore>true</testFailureIgnore>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencies>
+        <!-- logging -->
+		<dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>	    	
+        </dependency>     
+		
+        <!-- persistence -->
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+		</dependency>                
+
+        <!-- network graph manipulation & drawing -->
+        <dependency>
+			<groupId>net.sf.jgrapht</groupId>
+			<artifactId>jgrapht</artifactId>
+			<version>0.8.3</version>
+		</dependency>
+		<dependency>
+			<groupId>jgraph</groupId>
+			<artifactId>jgraph</artifactId>
+			<version>5.13.0.0</version>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
+

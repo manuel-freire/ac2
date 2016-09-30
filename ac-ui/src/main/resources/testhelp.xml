@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Help pairs for AC tests 
+
+@author mhernandez
+Creation date: 28-feb-2009
+-->
+
+<helppairs>
+    <testhelp>
+        <testname>Zip NCD</testname>
+        <helpcontent>
+			This is the help contents for the test
+            <strong>Zip NCD</strong>.
+			Visit
+            <a href="http://tangow.ii.uam.es/ac">tangow/ac</a> for more details.
+        </helpcontent>
+    </testhelp>
+</helppairs>

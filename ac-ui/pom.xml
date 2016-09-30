@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>es.ucm.fdi</groupId>
+        <artifactId>ac</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>ac-ui</artifactId>
+
+    <dependencies>
+        	
+        <!-- pretty network graphs -->
+        <dependency>
+            <groupId>es.ucm.fdi</groupId>
+            <artifactId>clover</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <!-- base functionality -->
+        <dependency>
+            <groupId>es.ucm.fdi</groupId>
+            <artifactId>ac-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <!-- lexers using antlr4 grammars -->
+        <dependency>
+            <groupId>es.ucm.fdi</groupId>
+            <artifactId>ac-lexers</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>rsyntaxtextarea</artifactId>
+            <version>2.0.6</version>
+        </dependency>   
+        
+        <!-- math for stats -->         
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math</artifactId>
+            <version>2.2</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>es.ucm.fdi.ac.extract.Extractor</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
