@@ -8,12 +8,78 @@ Creation date: 28-feb-2009
 
 <helppairs>
     <testhelp>
-        <testname>Zip NCD</testname>
+        <testname>Zip NCD Test</testname>
         <helpcontent>
-			This is the help contents for the test
-            <strong>Zip NCD</strong>.
-			Visit
-            <a href="http://tangow.ii.uam.es/ac">tangow/ac</a> for more details.
+            <p>Submissions that are very similar will compress together much more than submissions that are very
+                different.
+            </p>
+            <p>This test uses tokenized sources, and therefore ignores whitespace, comments, and identifier names
+                when comparing source-code. It is very robust to a wide range of other manipulations,
+                and is therefore used as a default test.
+            </p>
+            <p>This test compares the size of compressing the sources of each submission separately vs.
+                compressing both together,
+                using
+                <a href="https://en.wikipedia.org/wiki/Zip_(file_format)">Zip</a>
+                as a compressor. See the wikipedia
+                <a href="https://en.wikipedia.org/wiki/Normalized_compression_distance">article on NCD</a>
+                for more details.
+            </p>
+        </helpcontent>
+    </testhelp>
+    <testhelp>
+        <testname>Gzip NCD Test</testname>
+        <helpcontent>
+            <p>Submissions that are very similar will compress together much more than submissions that are very
+                different.
+            </p>
+            <p>This test uses tokenized sources, and therefore ignores whitespace, comments, and identifier names
+                when comparing source-code. It is very robust to a wide range of other manipulations.
+            </p>
+            <p>This test compares the size of compressing the sources of each submission separately vs.
+                compressing both together,
+                using
+                <a href="https://en.wikipedia.org/wiki/GZip">GZip</a>
+                as a compressor. See the wikipedia
+                <a href="https://en.wikipedia.org/wiki/Normalized_compression_distance">article on NCD</a>
+                for more details.
+            </p>
+        </helpcontent>
+    </testhelp>
+    <testhelp>
+        <testname>Bzip2 NCD Test</testname>
+        <helpcontent>
+            <p>Submissions that are very similar will compress together much more than submissions that are very
+                different.
+            </p>
+            <p>This test uses tokenized sources, and therefore ignores whitespace, comments, and identifier names
+                when comparing source-code. It is very robust to a wide range of other manipulations.
+            </p>
+            <p>This test compares the size of compressing the sources of each submission separately vs.
+                compressing both together,
+                using
+                <a href="https://en.wikipedia.org/wiki/Bzip2">BZip2</a>
+                as a compressor. See the wikipedia
+                <a href="https://en.wikipedia.org/wiki/Normalized_compression_distance">article on NCD</a>
+                for more details.
+            </p>
+        </helpcontent>
+    </testhelp>
+    <testhelp>
+        <testname>Token counting test</testname>
+        <helpcontent>
+            <p>Submissions that have the same distribution of tokens are more similar than those that do not.
+            </p>
+            <p>This test uses tokenized sources, and therefore ignores whitespace, comments, and identifier names
+                when comparing source-code. It is also immune to code refactoring that does not change the total amounts
+                of each type of token.
+            </p>
+            <p>This test calculates the scalar product of the normalized token-vectors for two submissions.
+                It is based on the cosine similarity test used in information retrieval.
+                See the wikipedia
+                <a href="https://en.wikipedia.org/wiki/Cosine_similarity">article on cosine-similarity</a>
+                for more details.
+            </p>
         </helpcontent>
     </testhelp>
 </helppairs>
