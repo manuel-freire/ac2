@@ -16,8 +16,16 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>    
-    
+    </properties>
+
+    <scm>
+
+        <connection>scm:git:git://github.com/manuel-freire/ac2</connection>
+        <developerConnection>scm:git:git://github.com/manuel-freire/ac2</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://github.com/manuel-freire/ac2</url>
+    </scm>
+
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
@@ -93,10 +101,27 @@
                 </configuration>
             </plugin>
 
+            <!-- packaging -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <shortRevisionLength>5</shortRevisionLength>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
    
-    <!-- common depenedncies -->
+    <!-- common dependencies -->
     <dependencyManagement>
         <dependencies>
             <!-- testing -->
