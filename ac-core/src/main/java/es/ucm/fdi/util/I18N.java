@@ -114,6 +114,9 @@ public class I18N {
 			lang = "";
 		}
 
+		// refresh list of available languages
+		getAvailable();
+
 		I18N.lang = lang;
 		// loads properties, using nested defaults
 		I18N.messages = new Properties();

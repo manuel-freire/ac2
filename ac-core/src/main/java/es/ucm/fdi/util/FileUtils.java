@@ -61,7 +61,7 @@ import org.apache.log4j.Logger;
 import static es.ucm.fdi.util.I18N.m;
 
 /**
- * Miscelaneous utilities that are used throughout the project.
+ * Miscellaneous utilities that are used throughout the project.
  * All utilities here should be in the form of 'public static' methods.
  *
  * @author mfreire
