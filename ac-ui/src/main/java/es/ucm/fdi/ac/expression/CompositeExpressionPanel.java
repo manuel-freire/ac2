@@ -1,22 +1,22 @@
 /**
  * AC - A source-code copy detector
- *
- *     For more information please visit:  http://github.com/manuel-freire/ac
- *
+ * <p>
+ * For more information please visit:  http://github.com/manuel-freire/ac
+ * <p>
  * ****************************************************************************
- *
+ * <p>
  * This file is part of AC, version 2.0
- *
+ * <p>
  * AC is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
- *
+ * <p>
  * AC is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License
  * along with AC.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,21 +29,18 @@
 
 package es.ucm.fdi.ac.expression;
 
-import es.ucm.fdi.ac.expression.Expression;
-import es.ucm.fdi.ac.expression.CompositeExpression;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  * Composite expressions combine multiple smaller expressions under a single 
  * moniker. They can be dragged and dropped around too. And they accept dragees
  * into their area.
  *
- * @author  mfreire
+ * @author mfreire
  */
 public class CompositeExpressionPanel extends ExpressionPanel {
 
@@ -72,25 +69,25 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 
 	public void setExpression(Expression e) {
 
-		this.e = (CompositeExpression) e;
+        this.e = (CompositeExpression)e;
 
-		ComboBoxModel model;
-		model = new DefaultComboBoxModel(e.getHeaders().toArray());
-		jcbExpType.setModel(model);
-		jcbExpType.setSelectedItem(e.getHeader());
+        ArrayList<String> headers = e.getHeaders();
+        ComboBoxModel<String> model = new DefaultComboBoxModel<>(headers.toArray(new String[headers.size()]));
+        jcbExpType.setModel(model);
+        jcbExpType.setSelectedItem(e.getHeader());
 
-		for (ExpressionPanel p : getSubs(false)) {
-			jpMain.remove(p);
-		}
+        for (ExpressionPanel p : getSubs(false)) {
+            jpMain.remove(p);
+        }
 
-		for (Expression c : this.e.getChildren()) {
-			addChildSub(c);
-		}
+        for (Expression c : this.e.getChildren()) {
+            addChildSub(c);
+        }
 
-		jpMain.validate();
+        jpMain.validate();
 
-		repaint();
-	}
+        repaint();
+    }
 
 	public CompositeExpression getExpression() {
 		return e;
@@ -194,9 +191,8 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 
 		jpButtons.setLayout(new java.awt.GridBagLayout());
 
-		jbDelete.setText("Eliminar");
-		jbDelete
-				.setToolTipText("Elimina esta condicion, y si las hay, sus subcondiciones");
+		jbDelete.setText(m("Filter.ExpressionRemove"));
+		jbDelete.setToolTipText(m("Filter.CompositeRemoveTooltip"));
 		jbDelete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbDeleteActionPerformed(evt);
@@ -217,9 +213,8 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
 		jpButtons.add(jbDelete, gridBagConstraints);
 
-		jbTest.setText("Probar");
-		jbTest
-				.setToolTipText("Selecciona, partiendo de la raiz, el primer fichero o directorio que cumple la condicion");
+		jbTest.setText(m("Filter.ExpressionTest"));
+		jbTest.setToolTipText(m("Filter.ExpressionTestTooltip"));
 		jbTest.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbTestActionPerformed(evt);
@@ -240,8 +235,7 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
 		jpButtons.add(jbTest, gridBagConstraints);
 
-		jcbExpType.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
-				"Item 1", "Item 2", "Item 3", "Item 4" }));
+		jcbExpType.setModel(new DefaultComboBoxModel<String>());
 		jcbExpType.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jcbExpTypeActionPerformed(evt);
@@ -253,8 +247,7 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 		jpButtons.add(jcbExpType, gridBagConstraints);
 
 		jbAddSimple.setText("+");
-		jbAddSimple
-				.setToolTipText("Incorpora una nueva condicion sencilla (es decir, no compuesta)");
+		jbAddSimple.setToolTipText(m("Filter.InsertCondition.SimpleTooltip"));
 		jbAddSimple.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbAddSimpleActionPerformed(evt);
@@ -268,7 +261,7 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 
 		jbAddComposite.setText("+...");
 		jbAddComposite
-				.setToolTipText("Incorpora una nueva condicion compuesta (es decir, que contiene varias subcondiciones)");
+				.setToolTipText(m("Filter.InsertCondition.CompositeTooltip"));
 		jbAddComposite.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbAddCompositeActionPerformed(evt);
@@ -286,16 +279,15 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 		gridBagConstraints.weightx = 1.0;
 		jpButtons.add(jpFillTop, gridBagConstraints);
 
-		jLabel1.setText("Insertar: ");
+		jLabel1.setText(m("Filter.InsertCondition"));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = 0;
 		gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
 		jpButtons.add(jLabel1, gridBagConstraints);
 
-		jbConfirm.setText("Confirmar");
-		jbConfirm
-				.setToolTipText("Confirma la condicion: aplica el filtro, dejando pasar solamente aquellos archivos o directorios que lo satisfagan");
+		jbConfirm.setText(m("Filter.ConfirmCondition"));
+		jbConfirm.setToolTipText(m("Filter.ConfirmConditionTooltip"));
 		jbConfirm.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbConfirmActionPerformed(evt);
@@ -411,7 +403,7 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 	private javax.swing.JButton jbConfirm;
 	private javax.swing.JButton jbDelete;
 	private javax.swing.JButton jbTest;
-	private javax.swing.JComboBox jcbExpType;
+	private javax.swing.JComboBox<String> jcbExpType;
 	private javax.swing.JPanel jpAddSub;
 	private javax.swing.JPanel jpAlmostMain;
 	private javax.swing.JPanel jpButtons;

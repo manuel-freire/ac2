@@ -29,11 +29,9 @@
 
 package es.ucm.fdi.ac.expression;
 
-import es.ucm.fdi.ac.expression.Expression;
-import java.awt.Color;
-import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  *
@@ -95,8 +93,7 @@ public class AtomicExpressionPanel extends ExpressionPanel {
 		add(jcbType, gridBagConstraints);
 
 		jtfPattern.setText("jTextField1");
-		jtfPattern
-				.setToolTipText("<html>Generalmente, esto es una expresion regular Java:<br>\n<table><tr><td>EXPRESION</td><td>SIGNIFICADO</td></tr>\n<tr><td>.*\\.c</td><td>ficheros que acaban en '.c' (. = cualquier caracter, \\. = un punto, * = 0 o mas veces) </tr><tr><td>[pP]0?2.*</td><td>ficheros que empiezan por P mayuscula o minuscula, <br> y luego contienen un 0 opcional (? = opcional) y un dos, y luego lo que sea\n</tr><tr><td>public *static *void *main</td><td>el fichero Java contiene un 'main'<br>\n(en una hipotética busqueda \"por contenidos\")</td></th></table>\n</html>");
+		jtfPattern.setToolTipText(m("Filter.ExpressionToolTip"));
 		jtfPattern.addFocusListener(new java.awt.event.FocusAdapter() {
 			public void focusLost(java.awt.event.FocusEvent evt) {
 				jtfPatternFocusLost(evt);
@@ -113,7 +110,7 @@ public class AtomicExpressionPanel extends ExpressionPanel {
 		gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 2);
 		add(jtfPattern, gridBagConstraints);
 
-		jbDelete.setText("Eliminar");
+		jbDelete.setText(m("Filter.ExpressionRemove"));
 		jbDelete.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbDeleteActionPerformed(evt);
@@ -134,7 +131,7 @@ public class AtomicExpressionPanel extends ExpressionPanel {
 		gridBagConstraints.insets = new java.awt.Insets(3, 4, 3, 4);
 		add(jbDelete, gridBagConstraints);
 
-		jbTest.setText("Probar");
+		jbTest.setText(m("Filter.ExpressionTest"));
 		jbTest.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbTestActionPerformed(evt);

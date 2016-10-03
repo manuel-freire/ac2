@@ -33,10 +33,11 @@ package es.ucm.fdi.ac.expression;
 import es.ucm.fdi.ac.extract.FileTreeFilter;
 
 /**
+ * An expression that can be used to filter a FileTree
  *
  * @author mfreire
  */
 public interface FilterExpression extends Expression {
 
-	public FileTreeFilter getFilter();
+	FileTreeFilter getFilter();
 }

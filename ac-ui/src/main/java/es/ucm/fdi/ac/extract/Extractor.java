@@ -29,6 +29,8 @@
 
 package es.ucm.fdi.ac.extract;
 
+import es.ucm.fdi.ac.gui.ACVersion;
+import es.ucm.fdi.ac.gui.MainGui;
 import es.ucm.fdi.util.I18N;
 import static es.ucm.fdi.util.I18N.m;
 
@@ -52,7 +54,7 @@ public class Extractor extends javax.swing.JFrame {
 		getContentPane().add(zsp);
 		setSize(1000, 600);
 		setLocation(100, 100);
-		setTitle(m("Extract.Title"));
+		setTitle(m("Extract.Title", ACVersion.getVersion()));
 		repaint();
 	}
 

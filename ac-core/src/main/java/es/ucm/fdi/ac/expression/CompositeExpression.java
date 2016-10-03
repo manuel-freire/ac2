@@ -35,6 +35,7 @@ package es.ucm.fdi.ac.expression;
 import java.util.ArrayList;
 
 /**
+ * An expression that contains zero or more sub-expressions
  *
  * @author mfreire
  */
@@ -43,15 +44,15 @@ public interface CompositeExpression extends Expression {
 	/**
 	 * Returns the list of current subexpressions; null if none
 	 */
-	public ArrayList<Expression> getChildren();
+	ArrayList<Expression> getChildren();
 
 	/**
 	 * Adds a subexpression
 	 */
-	public Expression addChild(boolean composite);
+	Expression addChild(boolean composite);
 
 	/**
 	 * Removes a subexpression
 	 */
-	public void removeChild(Expression e);
+	void removeChild(Expression e);
 }

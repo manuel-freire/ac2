@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import static es.ucm.fdi.util.I18N.m;
 
 /**
+ * A composite expression that evaluates to true or false depending on its
+ * contents
  *
  * @author mfreire
  */

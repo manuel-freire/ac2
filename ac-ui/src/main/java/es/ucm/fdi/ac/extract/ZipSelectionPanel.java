@@ -438,8 +438,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 		jpLeftTreeButtons.setLayout(new java.awt.GridBagLayout());
 
 		jbAddTree.setText("+ ...");
-		jbAddTree
-				.setToolTipText("Incorpora los contenidos de un directorio a este panel. Nunca se modifican realmente los originales; todas las operaciones son \"virtuales\".");
+		jbAddTree.setToolTipText(m("Extract.AssignmentSelection.AddTooltip"));
 		jbAddTree.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbAddTreeActionPerformed(evt);
@@ -448,7 +447,8 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 		jpLeftTreeButtons.add(jbAddTree, new java.awt.GridBagConstraints());
 
 		jbRemoveTree.setText("-");
-		jbRemoveTree.setToolTipText(m("Extract.RemoveSelected.Tooltip"));
+		jbRemoveTree
+				.setToolTipText(m("Extract.AssignmentSelection.RemoveTooltip"));
 		jbRemoveTree.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbRemoveTreeActionPerformed(evt);
@@ -460,7 +460,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 
 		jbDirect.setText(">>");
 		jbDirect
-				.setToolTipText("Pasa todos los archivos seleccionados \"al otro lado\". Ojo: si se \"confirma\" el filtro de seleccion de entregas, se perderan los cambios.");
+				.setToolTipText(m("Extract.AssignmentSelection.MoveToOtherPaneTooltip"));
 		jbDirect.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbDirectActionPerformed(evt);

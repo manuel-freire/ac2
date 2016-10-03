@@ -45,5 +45,5 @@ public interface ExpressionListener {
 	/**
 	 * Graphically display the effects of this expression
 	 */
-	public void expressionChanged(Expression e, boolean test);
+	void expressionChanged(Expression e, boolean test);
 }

@@ -46,33 +46,33 @@ public interface Expression {
 	/**
 	 * Returns a list of headers (to be used in a combobox)
 	 */
-	public ArrayList<String> getHeaders();
+	ArrayList<String> getHeaders();
 
 	/**
 	 * Set the header of the expression; this should change the expression
-	 * to a different type, acording to the header
+	 * to a different type, according to the header
 	 */
-	public void setHeader(String header);
+	void setHeader(String header);
 
 	/**
 	 * Returns the current header
 	 */
-	public String getHeader();
+	String getHeader();
 
 	/**
 	 * Set the body of the expression
 	 */
-	public void setBody(String string);
+	void setBody(String string);
 
 	/**
 	 * Returns the 'meat' of the expression, excluding the header. Typically,
 	 * headers will be chosen from a combobox, and contents inserted in a textfield
 	 */
-	public String getBody();
+	String getBody();
 
 	/**
 	 * Sets the parent expression (when this changes, the parent will probably
 	 * need to be notified as well).
 	 */
-	public void setParentExpression(CompositeExpression e);
+	void setParentExpression(CompositeExpression e);
 }

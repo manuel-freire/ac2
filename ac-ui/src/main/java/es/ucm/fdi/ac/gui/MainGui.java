@@ -43,6 +43,7 @@ import es.ucm.fdi.ac.test.Test;
 import es.ucm.fdi.ac.test.TokenCountTest;
 import es.ucm.fdi.ac.test.TokenizingTest;
 import es.ucm.fdi.ac.test.VarianceSubtest;
+import es.ucm.fdi.util.I18N;
 import es.ucm.fdi.util.archive.ArchiveFormat;
 import es.ucm.fdi.util.archive.Bzip2Format;
 import es.ucm.fdi.util.FileUtils;
@@ -55,15 +56,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Vector;
+import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -79,7 +76,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import static es.ucm.fdi.util.I18N.m;
-import java.util.LinkedHashMap;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -94,7 +91,6 @@ public class MainGui extends javax.swing.JFrame {
 
 	private Analysis ac;
 	private GraphicalAnalysis analysis;
-	private static String version;
 
 	private File saveFile;
 	private File sourcesDir;
@@ -113,14 +109,7 @@ public class MainGui extends javax.swing.JFrame {
 	/** Creates new form MainGui */
 	public MainGui() {
 		initComponents();
-
-		try {
-			version = new String(FileUtils.readStreamToBytes(FileUtils
-					.resourceStream("version"), 0), FileUtils.UTF_8);
-		} catch (IOException ioe) {
-			log.error("Cannot read version", ioe);
-		}
-		setTitle("AntiCopias r " + version);
+		setTitle(m("Test.WindowTitle", ACVersion.getVersion()));
 		pack();
 
 		testResults = new HashMap<String, TestResultsDialog>();
@@ -279,7 +268,7 @@ public class MainGui extends javax.swing.JFrame {
 		}
 
 		// Update panel appearance
-		String helpContent = m("Test.DefaultHelpMessage");
+		String helpContent = m("Test.DefaultHelpMessage", jcbTests.getSelectedItem());
 		if (testHelpMap != null) {
 			if (testHelpMap.containsKey(jcbTests.getSelectedItem())) {
 				helpContent = testHelpMap.get(jcbTests.getSelectedItem());
@@ -890,8 +879,8 @@ public class MainGui extends javax.swing.JFrame {
 
 	private void jmiAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAboutActionPerformed
 		if (aboutBrowser == null) {
-			aboutBrowser = new HelpBrowser(this, m("Test.Menu.About")
-					+ " (version " + version + ")", "about-ac.html", false);
+			aboutBrowser = new HelpBrowser(this, m("Test.Menu.About") + " (v "
+					+ ACVersion.getVersion() + ")", "about-ac.html", false);
 		}
 		aboutBrowser.setVisible(true);
 	}//GEN-LAST:event_jmiAboutActionPerformed
@@ -905,47 +894,49 @@ public class MainGui extends javax.swing.JFrame {
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		String ayuda = "AntiCopias v" + version + "\n"
+
+		I18N.setLang(Locale.getDefault().getLanguage());
+
+		String help = "AC: Analysis - v" + ACVersion.getVersion() + "\n"
 				+ m("Test.CommandLineHelp").replaceAll("[$]", "\n");
 
 		System.err.println("Running under locale " + Locale.getDefault());
 
-		MainGui gui;
-		File f, d;
+		List<String> allArguments = Arrays.asList(args);
+		if (args.length > 0
+				&& (allArguments.contains("-h") || allArguments.contains("--h")
+						|| allArguments.contains("--help") || allArguments
+						.contains("\\?"))) {
+			System.err.println(help);
+			return;
+		}
+
+		MainGui gui = new MainGui();
+		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gui.setVisible(true);
+
 		switch (args.length) {
-		case 0:
-			gui = new MainGui();
-			gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			gui.setVisible(true);
+		case 0: {
 			break;
-		case 1:
-			if (args[0].equals("-h") || args[0].equals("--h")
-					|| args[0].equals("--help") || args[0].equals("/?")) {
-				System.err.println(ayuda);
-				return;
-			}
-			gui = new MainGui();
-			gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			gui.setVisible(true);
-			d = new File(args[0]);
+		}
+		case 1: {
+			File d = new File(args[0]);
 			if (d.isDirectory()) {
 				gui.loadSources(d);
-				gui.launchTest(new NCDTest(new ZipFormat()), false);
 			} else {
 				// choose a sane default analysis
 				gui.loadAnalysis(d);
-				gui.launchTest(new NCDTest(new ZipFormat()), false);
 			}
+			gui.launchTest(new NCDTest(new ZipFormat()), false);
 			break;
-		case 2:
-			gui = new MainGui();
-			gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			gui.setVisible(true);
+		}
+		case 2: {
 			gui.loadSources(new File(args[0]));
 			gui.loadAnalysis(new File(args[1]));
 			break;
+		}
 		default:
-			System.err.println(ayuda);
+			System.err.println(help);
 		}
 	}
 

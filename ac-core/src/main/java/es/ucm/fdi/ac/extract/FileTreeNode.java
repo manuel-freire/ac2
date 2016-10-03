@@ -32,9 +32,7 @@ package es.ucm.fdi.ac.extract;
 
 import es.ucm.fdi.util.FileUtils;
 import es.ucm.fdi.util.SourceFileCache;
-import es.ucm.fdi.util.XMLSerializable;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,9 +72,9 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 	/**
 	 * Creates a new FileTreeNode to wrap a single file. Adds a single level (or, in
 	 * the case of an archive, adds the archives' content list -- at the very most).
-	 * @param source
-	 * @param parent
-	 * @param isCompressed
+	 * @param source file to wrap
+	 * @param parent of the new node
+	 * @param isCompressed true if must uncompress to access
 	 */
 	public FileTreeNode(File source, FileTreeNode parent, boolean isCompressed) {
 		this.f = source;
@@ -84,7 +82,7 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 		children = null;
 
 		if (f == null) {
-			children = new ArrayList<FileTreeNode>();
+			children = new ArrayList<>();
 		}
 
 		if (isCompressed) {
@@ -120,12 +118,12 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 	}
 
 	private void initFromList(ArrayList<String> paths) {
-		children = new ArrayList<FileTreeNode>();
+		children = new ArrayList<>();
 		Collections.sort(paths, new FileNameComparator());
 		for (String s : paths) {
 			//System.err.println("Trying to add '"+s+"'");
 			FileTreeNode n = new FileTreeNode(new File(f, s), this);
-			n.children = new ArrayList();
+			n.children = new ArrayList<>();
 			children.add(n);
 			//System.err.println("Created inzipfile: "+n.getFile());            
 		}
@@ -144,7 +142,7 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 
 	public void refresh() {
 		if (children == null) {
-			children = new ArrayList<FileTreeNode>();
+			children = new ArrayList<>();
 
 			// unix device files may yield "null" for f.listFiles() ...
 			File[] files;

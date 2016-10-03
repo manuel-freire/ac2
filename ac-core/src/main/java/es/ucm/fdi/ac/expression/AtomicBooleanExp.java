@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import static es.ucm.fdi.util.I18N.m;
 
 /**
+ * An expression that evaluates to true or false.
  *
  * @author mfreire
  */
