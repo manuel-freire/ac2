@@ -48,6 +48,7 @@ public class FileNameFilter extends PatternFilter {
 	public boolean accept(FileTreeNode ftn) {
 		return ftn.getLabel().matches(pattern);
 	}
+
 	public boolean accept(File f) {
 		return f.getName().matches(pattern);
 	}

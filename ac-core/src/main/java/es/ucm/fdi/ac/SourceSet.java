@@ -73,12 +73,12 @@ public class SourceSet implements XMLSerializable {
 		export(dn, d);
 		log.info("Exported sources to " + d.getAbsolutePath());
 
-        FileTreeModel roots = new FileTreeModel();
-        for (FileTreeNode root : sourceRoots) {
-            roots.addSource(root);
-        }
-        filteredTree = (FileTreeNode) roots.getRoot();
-    }
+		FileTreeModel roots = new FileTreeModel();
+		for (FileTreeNode root : sourceRoots) {
+			roots.addSource(root);
+		}
+		filteredTree = (FileTreeNode) roots.getRoot();
+	}
 
 	public Element saveToXML() throws IOException {
 		Element sourcesElement = new Element("sources");
@@ -90,8 +90,8 @@ public class SourceSet implements XMLSerializable {
 			// Create node
 			Element rootElement = new Element("root");
 			rootElement.setAttribute("path", sourceRoot.toString());
-			rootElement.setAttribute("sha1", h.showBytes(h.hash(sourceRoot.getFile())
-					.getSha1()));
+			rootElement.setAttribute("sha1", h.showBytes(h.hash(
+					sourceRoot.getFile()).getSha1()));
 
 			// Add node
 			rootsElement.addContent(rootElement);
@@ -200,14 +200,15 @@ public class SourceSet implements XMLSerializable {
 			// each of these first-level nodes will be a source root
 			File dir = new File(targetDirectory, dn.getLabel());
 			dir.mkdir();
-            FileTreeNode newRoot = new FileTreeNode(dir, null);
-            sourceRoots.add(newRoot);
+			FileTreeNode newRoot = new FileTreeNode(dir, null);
+			sourceRoots.add(newRoot);
 			for (FileTreeNode fn : dn.getLeafChildren()) {
-				log.info("child for root " + dn.getLabel() + ": " + fn.getLabel());
-                File target = new File(dir, fn.getLabel());
+				log.info("child for root " + dn.getLabel() + ": "
+						+ fn.getLabel());
+				File target = new File(dir, fn.getLabel());
 				FileUtils.copy(fn.getFile(), target);
-                FileTreeNode newNode = new FileTreeNode(target, newRoot);
-                newRoot.insert(newNode, newRoot.getChildCount());
+				FileTreeNode newNode = new FileTreeNode(target, newRoot);
+				newRoot.insert(newNode, newRoot.getChildCount());
 			}
 		}
 	}

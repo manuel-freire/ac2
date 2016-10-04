@@ -76,27 +76,26 @@ public class FileTreeModel extends DefaultTreeModel {
 			log.info("Resulting path: " + p);
 			return p;
 		} catch (Exception e) {
-			log.warn("Error reading '" + f.getAbsolutePath() + "': "
-					+ e);
-            e.printStackTrace();
+			log.warn("Error reading '" + f.getAbsolutePath() + "': " + e);
+			e.printStackTrace();
 		}
 		return null;
 	}
 
-    /**
-     * Add a copy of a fileTreeNode from another tree into this one
-     * @param fn
-     * @return
-     */
+	/**
+	 * Add a copy of a fileTreeNode from another tree into this one
+	 * @param fn
+	 * @return
+	 */
 	public TreePath addSource(FileTreeNode fn) {
-        FileTreeNode n = new FileTreeNode(fn);
-        insertNodeInto(n, root, findIndexFor(n, root));
+		FileTreeNode n = new FileTreeNode(fn);
+		insertNodeInto(n, root, findIndexFor(n, root));
 		n.setParent(root);
-        TreePath p = new TreePath(new Object[] { root, n });
-        return p;
-    }
+		TreePath p = new TreePath(new Object[] { root, n });
+		return p;
+	}
 
-    /**
+	/**
 	 * Returns correct index for ordered insertion of child in parent
 	 * @param n node to insert
 	 * @param parent to insert into
@@ -105,7 +104,8 @@ public class FileTreeModel extends DefaultTreeModel {
 	private static int findIndexFor(FileTreeNode n, FileTreeNode parent) {
 		String key = n.getFile().getAbsolutePath();
 		for (int i = 0; i < parent.getChildCount(); i++) {
-			String other = ((FileTreeNode) parent.getChildAt(i)).getFile().getAbsolutePath();
+			String other = ((FileTreeNode) parent.getChildAt(i)).getFile()
+					.getAbsolutePath();
 			if (key.compareToIgnoreCase(other) < 0) {
 				return i;
 			}
@@ -153,7 +153,7 @@ public class FileTreeModel extends DefaultTreeModel {
 		if (!onlyFiles || !n.getAllowsChildren()) {
 			if (ff.accept(n)) {
 				found.add(new TreePath(s.toArray()));
-                log.debug("found " + n.getFile() + " to match!");
+				log.debug("found " + n.getFile() + " to match!");
 				if (!recurseIfFound) {
 					s.pop();
 					return;

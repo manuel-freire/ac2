@@ -57,16 +57,16 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 
 	private static final Logger log = Logger.getLogger(FileTreeNode.class);
 
-    /** backing file */
+	/** backing file */
 	private File f;
-    /** original file, if any; only used when compressed, where f points to uncompressed version */
-    private File original;
-    /** hashcode for integrity verification purposes */
+	/** original file, if any; only used when compressed, where f points to uncompressed version */
+	private File original;
+	/** hashcode for integrity verification purposes */
 	private byte[] sha1;
-    /** parent */
+	/** parent */
 	private FileTreeNode p;
 
-    /** null used to indicate "not fully initialized" */
+	/** null used to indicate "not fully initialized" */
 	private ArrayList<FileTreeNode> children;
 
 	/**
@@ -74,7 +74,7 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 	 */
 	public FileTreeNode(FileTreeNode original) {
 		this(original.getFile(), null);
-        this.original = original.original;
+		this.original = original.original;
 		if (original.getChildCount() != 0) {
 			for (FileTreeNode c : original.getChildren()) {
 				FileTreeNode cc = new FileTreeNode(c);
@@ -122,12 +122,12 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 	}
 
 	public String getLabel() {
-        if (original == null) {
-            return f == null ? "invisible-root" : f.getName();
-        } else {
-            return original.getName();
-        }
-    }
+		if (original == null) {
+			return f == null ? "invisible-root" : f.getName();
+		} else {
+			return original.getName();
+		}
+	}
 
 	public byte[] getSha1() {
 		return sha1;
@@ -137,26 +137,26 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 		this.sha1 = sha1;
 	}
 
-    public ArrayList<FileTreeNode> getLeafChildren() {
+	public ArrayList<FileTreeNode> getLeafChildren() {
         ArrayList<FileTreeNode> al = new ArrayList<>();
         getLeafChildren(al);
         return al;
     }
 
-    private void getLeafChildren(ArrayList<FileTreeNode> al) {
+	private void getLeafChildren(ArrayList<FileTreeNode> al) {
 		refresh();
-        if (getFile().isDirectory()) {
-            for (FileTreeNode cn : getChildren()) {
-                cn.getLeafChildren(al);
-            }
-        } else {
-            if (getFile().exists()) {
-                al.add(this);
-            }
-        }
-    }
+		if (getFile().isDirectory()) {
+			for (FileTreeNode cn : getChildren()) {
+				cn.getLeafChildren(al);
+			}
+		} else {
+			if (getFile().exists()) {
+				al.add(this);
+			}
+		}
+	}
 
-    private static class FileNameComparator implements Comparator<String> {
+	private static class FileNameComparator implements Comparator<String> {
 		public int compare(String s1, String s2) {
 			String name1 = s1.substring(s1.lastIndexOf("/") + 1);
 			String name2 = s2.substring(s2.lastIndexOf("/") + 1);
@@ -170,23 +170,22 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 		}
 	}
 
-    /**
-     * Returns a label-based path, instead of a real path.
-     * @return a label-based path which gives the impression of opening archives as folders, when they are
-     * actually uncompressed in temp folders that get stitched into the tree.
-     */
+	/**
+	 * Returns a label-based path, instead of a real path.
+	 * @return a label-based path which gives the impression of opening archives as folders, when they are
+	 * actually uncompressed in temp folders that get stitched into the tree.
+	 */
 	public String getPath() {
-        return (f == null) ? "" :
-                getParent() == null ? "" + getLabel() :
-                ((FileTreeNode)getParent()).getPath() + "/" + getLabel();
-    }
+		return (f == null) ? "" : getParent() == null ? "" + getLabel()
+				: ((FileTreeNode) getParent()).getPath() + "/" + getLabel();
+	}
 
-    /**
-     * Returns the FileTreeNode that is a direct ancestor of the passed-in path.
-     * This can be 'this' (if no additional path-elements found in the path) or a few intermediate files (if not)
-     * @param path
-     * @return
-     */
+	/**
+	 * Returns the FileTreeNode that is a direct ancestor of the passed-in path.
+	 * This can be 'this' (if no additional path-elements found in the path) or a few intermediate files (if not)
+	 * @param path
+	 * @return
+	 */
 	private FileTreeNode getOrCreateAncestor(String path) {
         String parentPath = getPath();
         if ( ! path.startsWith(parentPath)) {

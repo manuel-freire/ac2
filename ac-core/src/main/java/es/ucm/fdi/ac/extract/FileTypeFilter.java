@@ -54,17 +54,17 @@ public class FileTypeFilter extends FileTreeFilter {
 		this.type = type;
 	}
 
-
 	public boolean accept(File f) {
 		switch (type) {
-			case Directory:
-				return f.isDirectory();
-			case File:
-				return f.isFile();
-			default:
-				throw new IllegalStateException("Invalid type in filter: " + type);
+		case Directory:
+			return f.isDirectory();
+		case File:
+			return f.isFile();
+		default:
+			throw new IllegalStateException("Invalid type in filter: " + type);
 		}
 	}
+
 	public boolean accept(FileTreeNode ftn) {
 		return accept(ftn.getFile());
 	}

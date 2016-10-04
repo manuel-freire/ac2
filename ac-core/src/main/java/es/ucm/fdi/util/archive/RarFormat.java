@@ -83,7 +83,7 @@ public class RarFormat implements ArchiveFormat {
 					}
 				}
 				File out = new File(destDir, name);
-				if ( ! out.isDirectory()) {
+				if (!out.isDirectory()) {
 					FileOutputStream os = new FileOutputStream(out);
 					a.extractFile(fh, os);
 					os.close();

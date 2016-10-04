@@ -68,8 +68,7 @@ public interface ArchiveFormat {
 	/**
 	 * Expand the archive into its component files
 	 */
-	boolean extractOne(File source, String path, File dest)
-			throws IOException;
+	boolean extractOne(File source, String path, File dest) throws IOException;
 
 	/**
 	 * Return the *size* (in bytes) of compressing the input stream with this algorithm

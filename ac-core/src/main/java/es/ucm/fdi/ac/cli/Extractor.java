@@ -56,8 +56,8 @@ public class Extractor {
 	 * @param destDir directory where the archives should be extracted
 	 * @param destFilter filter to select appropiate files from archive
 	 */
-	public static void extract(File zipDir, FileTreeFilter zipFilter, File destDir,
-							   FileTreeFilter destFilter) throws IOException {
+	public static void extract(File zipDir, FileTreeFilter zipFilter,
+			File destDir, FileTreeFilter destFilter) throws IOException {
 
 		if (!destDir.exists() && !destDir.mkdirs()) {
 			System.err.println("Error: no se pudo crear el directorio destino");
