@@ -21,8 +21,7 @@ You will need a Java Runtime Environment installed (JRE 7 or above).
 You can download the latest [Java JRE from Oracle's website](https://java.com/en/download/),
 although OpenJDK will work just as well.
 
-Once you have Java installed, simply download the [latest release](https://github.com/manuel-freire/ac2/releases/download/v2.0.1/ac-2.0.1-SNAPSHOT-16ce7.jar),
-and either double-click it (assuming the JRE is correctly installed), or use
+Once you have Java installed, simply download the [latest release](https://github.com/manuel-freire/ac2/releases/) (look for the latest one that has a `.jar` file available), and either double-click it (assuming the JRE is correctly installed), or use
 the command-line to execute it via `java -jar name-of-jar`
 
 ## Building the source
