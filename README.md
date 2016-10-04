@@ -21,9 +21,9 @@ You will need a Java Runtime Environment installed (JRE 7 or above).
 You can download the latest [Java JRE from Oracle's website](https://java.com/en/download/),
 although OpenJDK will work just as well.
 
-Once you have Java installed, simply download the [latest release](https://github.com/manuel-freire/ac2/releases/download/v2.0/ac-2.jar),
+Once you have Java installed, simply download the [latest release](https://github.com/manuel-freire/ac2/releases/download/v2.0.1/ac-2.0.1-SNAPSHOT-16ce7.jar),
 and either double-click it (assuming the JRE is correctly installed), or use
-the command-line to execute it via `java -jar ac-2.jar`
+the command-line to execute it via `java -jar name-of-jar`
 
 ## Building the source
 
@@ -32,7 +32,7 @@ to download [Apache Maven](https://maven.apache.org/download.cgi).
 
 To build everything, 
 * run `mvn install`. 
-* the executable jar-file will be stored in `ac-ui/target/ac-ui-2.0-SNAPSHOT-jar-with-dependencies.jar`. Note that there are other entry-points (for instance, without UI or skipping the assignment selection phase) - to specify these, use a main class.
+* the executable jar-file will be stored in `ac-ui/target/ac-version-githash.jar` (note that `version` is set in `pom.xml`, and `githash` is calculated by checking the commit in `git`). There are other, non-default entry-points (for instance, without UI or skipping the assignment selection phase).
 
 Pull requests and issues are *very* welcome.
 
