@@ -42,7 +42,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 /**
- * Unrar driver, calling UNRAR 3.40 freeware to do the real work
+ * Unrar driver
  *
  * @author mfreire
  */
@@ -83,9 +83,11 @@ public class RarFormat implements ArchiveFormat {
 					}
 				}
 				File out = new File(destDir, name);
-				FileOutputStream os = new FileOutputStream(out);
-				a.extractFile(fh, os);
-				os.close();
+				if ( ! out.isDirectory()) {
+					FileOutputStream os = new FileOutputStream(out);
+					a.extractFile(fh, os);
+					os.close();
+				}
 				fh = a.nextFileHeader();
 			}
 		} catch (RarException re) {
