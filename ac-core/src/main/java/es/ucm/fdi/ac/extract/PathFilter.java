@@ -45,6 +45,10 @@ public class PathFilter extends PatternFilter {
 	public PathFilter() {
 	}
 
+	public boolean accept(FileTreeNode ftn) {
+		return ftn.getPath().matches(pattern);
+	}
+
 	public boolean accept(File f) {
 		return f.getPath().matches(pattern);
 	}

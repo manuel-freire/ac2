@@ -31,9 +31,12 @@
 package es.ucm.fdi.ac.extract;
 
 import es.ucm.fdi.util.FileUtils;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -45,6 +48,8 @@ import javax.swing.tree.TreePath;
  * @author mfreire
  */
 public class FileTreeModel extends DefaultTreeModel {
+
+	private static final Logger log = Logger.getLogger(FileTreeModel.class);
 
 	private FileTreeNode root;
 
@@ -58,50 +63,67 @@ public class FileTreeModel extends DefaultTreeModel {
 
 	/**
 	 * Add a new file, compressed file or folder into the system.
-	 * @param f
-	 * @return
+	 * @param f file/archive/folder to add
+	 * @return the tree-path for the newly added file/archive/folder
 	 */
 	public TreePath addSource(File f) {
 		try {
-			String name = f.getName();
+			log.info("Adding source: " + f);
 			FileTreeNode n = new FileTreeNode(f, root, FileUtils
-					.canUncompress(f));
-			insertNodeInto(n, root, findIndexFor(n));
+					.canUncompressPath(f));
+			insertNodeInto(n, root, findIndexFor(n, root));
 			TreePath p = new TreePath(new Object[] { root, n });
+			log.info("Resulting path: " + p);
 			return p;
 		} catch (Exception e) {
-			System.err.println("Error reading '" + f.getAbsolutePath() + "': "
+			log.warn("Error reading '" + f.getAbsolutePath() + "': "
 					+ e);
+            e.printStackTrace();
 		}
 		return null;
 	}
 
-	/**
-	 * Yes, this is insertion-sort, and I know it's evil. If it bites me, I'll
-	 * change it. But it is much better than not sorting.
+    /**
+     * Add a copy of a fileTreeNode from another tree into this one
+     * @param fn
+     * @return
+     */
+	public TreePath addSource(FileTreeNode fn) {
+        FileTreeNode n = new FileTreeNode(fn);
+        insertNodeInto(n, root, findIndexFor(n, root));
+		n.setParent(root);
+        TreePath p = new TreePath(new Object[] { root, n });
+        return p;
+    }
+
+    /**
+	 * Returns correct index for ordered insertion of child in parent
+	 * @param n node to insert
+	 * @param parent to insert into
+	 * @return index to insert into, from 0 to parent.getChildCount() inclusive
 	 */
-	private int findIndexFor(FileTreeNode n) {
-		for (int pos = 0; pos < root.getChildCount(); pos++) {
-			FileTreeNode brother = (FileTreeNode) root.getChildAt(pos);
-			String other = brother.getFile().getAbsolutePath();
-			if (n.getFile().getAbsolutePath().compareToIgnoreCase(other) < 0) {
-				return pos;
+	private static int findIndexFor(FileTreeNode n, FileTreeNode parent) {
+		String key = n.getFile().getAbsolutePath();
+		for (int i = 0; i < parent.getChildCount(); i++) {
+			String other = ((FileTreeNode) parent.getChildAt(i)).getFile().getAbsolutePath();
+			if (key.compareToIgnoreCase(other) < 0) {
+				return i;
 			}
 		}
-		return root.getChildCount();
+		return parent.getChildCount();
 	}
 
 	/**
 	 * Returns the file for a given treepath
 	 */
-	public File getFileFor(TreePath tp) {
-		return ((FileTreeNode) tp.getLastPathComponent()).getFile();
+	public FileTreeNode getNodeFor(TreePath tp) {
+		return (FileTreeNode) tp.getLastPathComponent();
 	}
 
 	/**
 	 * Finds all paths that match the given filter
 	 */
-	public TreePath[] findWithFilter(FileFilter ff, boolean onlyFiles,
+	public TreePath[] findWithFilter(FileTreeFilter ff, boolean onlyFiles,
 			boolean recurseIfFound) {
 
 		ArrayList<TreePath> al = new ArrayList<TreePath>();
@@ -118,7 +140,7 @@ public class FileTreeModel extends DefaultTreeModel {
 	 * Finds all paths that match the given filter, starting from a node;
 	 * If a parent matches, children will not be searched
 	 */
-	public void findInternal(FileTreeNode n, FileFilter ff,
+	public void findInternal(FileTreeNode n, FileTreeFilter ff,
 			ArrayList<TreePath> found, Stack<FileTreeNode> s,
 			boolean onlyFiles, boolean recurseIfFound) {
 
@@ -126,12 +148,12 @@ public class FileTreeModel extends DefaultTreeModel {
 
 		s.push(n);
 
-		//System.err.println("testing "+n.getFile());
+		log.debug("testing " + n.getFile() + " path: " + n.getPath());
 
 		if (!onlyFiles || !n.getAllowsChildren()) {
-			if (ff.accept(n.getFile())) {
+			if (ff.accept(n)) {
 				found.add(new TreePath(s.toArray()));
-				//System.err.println("\t OK!");
+                log.debug("found " + n.getFile() + " to match!");
 				if (!recurseIfFound) {
 					s.pop();
 					return;

@@ -47,6 +47,10 @@ public class FileExtensionFilter extends PatternFilter {
 	public FileExtensionFilter() {
 	}
 
+	public boolean accept(FileTreeNode ftn) {
+		return FileUtils.getExtension(ftn.getLabel()).matches(pattern);
+	}
+
 	public boolean accept(File f) {
 		return FileUtils.getExtension(f.getName()).matches(pattern);
 	}

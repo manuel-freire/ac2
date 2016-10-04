@@ -50,6 +50,10 @@ public class ContentPatternFilter extends PatternFilter {
 	public ContentPatternFilter() {
 	}
 
+	public boolean accept(FileTreeNode ftn) {
+		return accept(ftn.getFile());
+	}
+
 	public boolean accept(File f) {
 		String source = SourceFileCache.getSource(f);
 

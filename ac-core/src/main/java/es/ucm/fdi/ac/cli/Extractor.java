@@ -30,13 +30,8 @@
 
 package es.ucm.fdi.ac.cli;
 
-import es.ucm.fdi.ac.extract.CompositeFilter;
+import es.ucm.fdi.ac.extract.*;
 import es.ucm.fdi.ac.extract.CompositeFilter.Operator;
-import es.ucm.fdi.ac.extract.ContentPatternFilter;
-import es.ucm.fdi.ac.extract.FileExtensionFilter;
-import es.ucm.fdi.ac.extract.FileNameFilter;
-import es.ucm.fdi.ac.extract.LastVersionFilter;
-import es.ucm.fdi.ac.extract.PathFilter;
 import es.ucm.fdi.util.FileUtils;
 import java.io.File;
 import java.io.FileFilter;
@@ -61,8 +56,8 @@ public class Extractor {
 	 * @param destDir directory where the archives should be extracted
 	 * @param destFilter filter to select appropiate files from archive
 	 */
-	public static void extract(File zipDir, FileFilter zipFilter, File destDir,
-			FileFilter destFilter) throws IOException {
+	public static void extract(File zipDir, FileTreeFilter zipFilter, File destDir,
+							   FileTreeFilter destFilter) throws IOException {
 
 		if (!destDir.exists() && !destDir.mkdirs()) {
 			System.err.println("Error: no se pudo crear el directorio destino");
@@ -147,9 +142,6 @@ public class Extractor {
 				+ "         (no se debe usar sobre ficheros comprimidos)\n"
 				+ "     - 'p:', se trata de un patron respecto a la ruta completa del fichero\n"
 				+ "     - 'e:', se trata de un patron respecto a la extension del fichero\n"
-				+ "     - 'v:', es un patron que describe el prefijo comun de los nombres, \n"
-				+ "        a partir del cual se considera que hay varias versiones \n"
-				+ "        (y solamente evalua a 'cierto' la de mayor sufijo).\n"
 				+ "     - si empieza por otra cosa, se refieren al nombre del fichero\n\n"
 				+ " EJ: extraer todos los ficheros .java que no se llamen 'Ejemplo' y contengan un 'main':\n"
 				+ "    extract /tmp/zips /tmp/salida -f AND '.*\\.java' NOT '.*Ejemplo.*' 'c:.*void main.*'";
@@ -248,9 +240,6 @@ public class Extractor {
 			} else if (s.startsWith("e:")) {
 				String ss = s.substring("e:".length());
 				stack.peek().addFilter(new FileExtensionFilter(ss));
-			} else if (s.startsWith("v:")) {
-				String ss = s.substring("v:".length());
-				stack.peek().addFilter(new LastVersionFilter(ss));
 			} else {
 				stack.peek().addFilter(new FileNameFilter(s));
 			}

@@ -119,25 +119,47 @@ public class CompositeFilter extends FileTreeFilter {
 		return filters;
 	}
 
-	public boolean accept(File f) {
+	public boolean accept(FileTreeNode fn) {
 		switch (op) {
 		case Not:
-			return !filters.get(0).accept(f);
+			return !filters.get(0).accept(fn);
 		case Or:
-			for (FileFilter ff : filters) {
-				if (ff.accept(f))
+			for (FileTreeFilter ff : filters) {
+				if (ff.accept(fn))
 					return true;
 			}
 			return false;
 		case And:
-			for (FileFilter ff : filters) {
-				if (!ff.accept(f))
+			for (FileTreeFilter ff : filters) {
+				if (!ff.accept(fn))
 					return false;
 			}
 			return true;
 		default:
 			throw new RuntimeException(
 					"Bad operation in boolean-composite-filter");
+		}
+	}
+
+	public boolean accept(File f) {
+		switch (op) {
+			case Not:
+				return !filters.get(0).accept(f);
+			case Or:
+				for (FileTreeFilter ff : filters) {
+					if (ff.accept(f))
+						return true;
+				}
+				return false;
+			case And:
+				for (FileTreeFilter ff : filters) {
+					if (!ff.accept(f))
+						return false;
+				}
+				return true;
+			default:
+				throw new RuntimeException(
+						"Bad operation in boolean-composite-filter");
 		}
 	}
 
