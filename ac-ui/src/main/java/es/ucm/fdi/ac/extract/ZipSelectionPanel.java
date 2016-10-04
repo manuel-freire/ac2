@@ -115,12 +115,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 				if (!(value instanceof FileTreeNode)) {
 					s = value.toString();
 				} else {
-					FileTreeNode v = (FileTreeNode) value;
-					if (v.getFile() == null) {
-						s = "invisible-root";
-					} else {
-						s = v.getFile().getName();
-					}
+					s = ((FileTreeNode) value).getLabel();
 				}
 				return super.getTreeCellRendererComponent(tree, s, sel,
 						expanded, leaf, row, hasFocus);
@@ -164,9 +159,8 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 					if (v.getFile() == null) {
 						s = "invisible-root";
 					} else {
-						File f = v.getFile();
-						if (v.getParent() == selectedFilesModel.getRoot()) {
-							s = f.getName();
+                        s = v.getLabel();
+                        if (v.getParent() == selectedFilesModel.getRoot()) {
 							if (s.contains(".")) {
 								s = s.substring(0, s.lastIndexOf("."));
 							}
@@ -175,7 +169,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 								l.setForeground(Color.red.brighter());
 							}
 						} else {
-							s = f.getName();
+							s = v.getLabel();
 						}
 					}
 				}
@@ -252,7 +246,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 				reloadFileSelTree(true);
 			}
 
-			FileFilter zf = ((FilterExpression) e).getFilter();
+			FileTreeFilter zf = ((FilterExpression) e).getFilter();
 			TreePath[] selPaths = fileTreeModel
 					.findWithFilter(zf, false, false);
 			jtSources.setSelectionPaths(selPaths);
@@ -266,36 +260,42 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 		if (fromScratch) {
 			selectedFilesModel.clear();
 			// Initializes with a fresh set of files
-			FileFilter zf = filterExpression.getFilter();
+			FileTreeFilter zf = filterExpression.getFilter();
 			TreePath[] allPaths = fileTreeModel
 					.findWithFilter(zf, false, false);
 			for (TreePath tp : allPaths) {
-				// System.err.println("Adding compressed source... "+tp);
-				File f = fileTreeModel.getFileFor(tp);
-				addSubmissionFile(f);
+				addSubmissionNode(fileTreeModel.getNodeFor(tp));
 			}
 		}
 
 		// Purges out those that do not match the filter
-		FileFilter ff = fileSelFilterExpression.getFilter();
+		FileTreeFilter ff = fileSelFilterExpression.getFilter();
 		TreePath[] selPaths = selectedFilesModel
 				.findWithFilter(ff, true, false);
 		HashSet<FileTreeNode> valid = new HashSet<FileTreeNode>();
 		for (TreePath tp : selPaths) {
 			valid.add((FileTreeNode) tp.getLastPathComponent());
 		}
-		ArrayList<FileTreeNode> allNodes = selectedFilesModel.getAllTerminals();
-		for (FileTreeNode n : allNodes) {
-			if (!valid.contains(n)) {
-				// System.err.println("Removing "+n.getFile());
-				try {
-					selectedFilesModel.removeNodeFromParent(n);
-				} catch (Exception e) {
-					System.err.println("could not remove " + n + " ("
-							+ n.getFile().getAbsolutePath() + ") from parent");
-				}
-			}
-		}
+
+		boolean removedSomething = true;
+		while (removedSomething) {
+            removedSomething = false;
+            ArrayList<FileTreeNode> allNodes = selectedFilesModel.getAllTerminals();
+            for (FileTreeNode n : allNodes) {
+                if (!valid.contains(n)) {
+                    // System.err.println("Removing "+n.getFile());
+                    try {
+                        selectedFilesModel.removeNodeFromParent(n);
+                        removedSomething = true;
+                        log.info("removed " + n + " ("
+                                + n.getPath() + ") from parent");
+                    } catch (Exception e) {
+                        log.warn("could not remove " + n + " ("
+                                + n.getPath() + ") from parent", e);
+                    }
+                }
+            }
+        }
 	}
 
 	public class FileSelListener implements ExpressionListener {
@@ -304,7 +304,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 			if (!test) {
 				reloadFileSelTree(false);
 			} else {
-				FileFilter ff = ((FilterExpression) e).getFilter();
+				FileTreeFilter ff = ((FilterExpression) e).getFilter();
 				TreePath[] selPaths = selectedFilesModel.findWithFilter(ff,
 						true, false);
 				jtSelected.setSelectionPaths(selPaths);
@@ -312,9 +312,12 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 		}
 	}
 
-	public void addFile(File f) {
-		if (f == null) {
-			return;
+	public void addSourceFile(File f) {
+        log.info("Adding source: " + f);
+
+        if (f == null || ! f.exists()) {
+            log.warn("Ignored: null or no longer there");
+            return;
 		}
 
 		TreePath path = fileTreeModel.addSource(f);
@@ -324,8 +327,27 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 		}
 	}
 
+    /**
+     * Adds a single fileTreeNode from the sources tree.
+     * @param fn
+     */
+	public void addSubmissionNode(FileTreeNode fn) {
+        TreePath path = selectedFilesModel.addSource(fn);
+        if (path != null) {
+            jtSelected.expandPath(path);
+        }
+    }
+
+	/**
+	 * Adds a single file. If it happens to be a folder with folders, then each 1st-level subfolder will be
+     * considered a submission.
+	 * @param f
+	 */
 	public void addSubmissionFile(File f) {
-		if (f == null) {
+		log.info("Adding submission file: " + f);
+
+		if (f == null || ! f.exists()) {
+            log.warn("Ignored: null or no longer there");
 			return;
 		}
 
@@ -640,7 +662,7 @@ public class ZipSelectionPanel extends javax.swing.JPanel {
 		// TODO add your handling code here:
 		File f = FileUtils.chooseFile(this, m("Extract.SubmissionDirectory"),
 				true, JFileChooser.FILES_AND_DIRECTORIES);
-		addFile(f);
+		addSourceFile(f);
 	}//GEN-LAST:event_jbAddTreeActionPerformed
 
 	private void jbRemoveTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoveTreeActionPerformed

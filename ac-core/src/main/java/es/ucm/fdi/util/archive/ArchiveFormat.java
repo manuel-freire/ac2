@@ -39,7 +39,7 @@ import java.util.ArrayList;
  * An ArchiveFormat encapsulates a data compression algorithm and/or a file
  * archival format. Data compression means that data that is fed into the
  * ArchiveFormat is reduced in size; file archival means that the format
- * understands how to arhive and expand a series of files into/from a single
+ * understands how to archive and expand a series of files into/from a single
  * file.
  *
  * Zip is both; Gzip is only a data compression algorithm; Tar is only an archiver.
@@ -53,22 +53,22 @@ public interface ArchiveFormat {
 	 * Returns the pattern that describes the extensions that this archiver
 	 * can process
 	 */
-	public String getArchiveExtensions();
+	String getArchiveExtensions();
 
 	/**
 	 * List the contents of the archive
 	 */
-	public ArrayList<String> list(File source) throws IOException;
+	ArrayList<String> list(File source) throws IOException;
 
 	/**
 	 * Expand the archive into its component files
 	 */
-	public void expand(File source, File destDir) throws IOException;
+	void expand(File source, File destDir) throws IOException;
 
 	/**
 	 * Expand the archive into its component files
 	 */
-	public boolean extractOne(File source, String path, File dest)
+	boolean extractOne(File source, String path, File dest)
 			throws IOException;
 
 	/**
@@ -76,12 +76,12 @@ public interface ArchiveFormat {
 	 * This allows the archiver to be used in compression-distance calculations, without the need
 	 * to create intermediate files
 	 */
-	public int compressedSize(InputStream is) throws IOException;
+	int compressedSize(InputStream is) throws IOException;
 
 	/**
 	 * Create an archive from the given sources; files in the archive are
 	 * relative to baseDir.
 	 */
-	public void create(ArrayList<File> sources, File destFile, File baseDir)
+	void create(ArrayList<File> sources, File destFile, File baseDir)
 			throws IOException;
 }

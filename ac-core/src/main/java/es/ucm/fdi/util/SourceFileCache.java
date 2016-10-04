@@ -139,7 +139,7 @@ public class SourceFileCache {
 	}
 
 	private static String read(File f) throws IOException {
-		if (FileUtils.canUncompress(f)) {
+		if (FileUtils.canUncompressPath(f)) {
 			getArchiveListing(f);
 			return cache.get(f);
 		} else {

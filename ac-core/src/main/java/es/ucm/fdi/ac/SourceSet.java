@@ -31,6 +31,7 @@ import es.ucm.fdi.util.FileUtils;
 import es.ucm.fdi.util.XMLSerializable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +49,7 @@ public class SourceSet implements XMLSerializable {
 
 	private static final Logger log = Logger.getLogger(SourceSet.class);
 
-	private final ArrayList<File> sourceRoots = new ArrayList<File>();
+	private final ArrayList<FileTreeNode> sourceRoots = new ArrayList<FileTreeNode>();
 	private final CompositeFilter rootFilter = new CompositeFilter();
 	private final CompositeFilter sourceFilter = new CompositeFilter();
 
@@ -58,7 +59,7 @@ public class SourceSet implements XMLSerializable {
 	}
 
 	public SourceSet(File d) {
-		sourceRoots.add(d);
+		sourceRoots.add(new FileTreeNode(d, null));
 	}
 
 	/**
@@ -67,15 +68,17 @@ public class SourceSet implements XMLSerializable {
 	 * @param dn 
 	 */
 	public SourceSet(FileTreeNode dn) throws IOException {
-		File d = File.createTempFile("ac-", null);
-		d.delete();
-		d.mkdir();
+		File d = Files.createTempDirectory("ac-").toFile();
+		d.deleteOnExit();
 		export(dn, d);
 		log.info("Exported sources to " + d.getAbsolutePath());
-		for (FileTreeNode fn : dn.getChildren()) {
-			sourceRoots.add(fn.getFile());
-		}
-	}
+
+        FileTreeModel roots = new FileTreeModel();
+        for (FileTreeNode root : sourceRoots) {
+            roots.addSource(root);
+        }
+        filteredTree = (FileTreeNode) roots.getRoot();
+    }
 
 	public Element saveToXML() throws IOException {
 		Element sourcesElement = new Element("sources");
@@ -83,11 +86,11 @@ public class SourceSet implements XMLSerializable {
 		// Create and add roots node
 		Hasher h = new Hasher();
 		Element rootsElement = new Element("roots");
-		for (File sourceRoot : sourceRoots) {
+		for (FileTreeNode sourceRoot : sourceRoots) {
 			// Create node
 			Element rootElement = new Element("root");
 			rootElement.setAttribute("path", sourceRoot.toString());
-			rootElement.setAttribute("sha1", h.showBytes(h.hash(sourceRoot)
+			rootElement.setAttribute("sha1", h.showBytes(h.hash(sourceRoot.getFile())
 					.getSha1()));
 
 			// Add node
@@ -137,30 +140,36 @@ public class SourceSet implements XMLSerializable {
 	public void buildFilteredTree() {
 
 		FileTreeModel roots = new FileTreeModel();
-		for (File root : sourceRoots) {
+		for (FileTreeNode root : sourceRoots) {
 			roots.addSource(root);
 		}
+
 		// Filter roots to reach actual inputs
-		HashSet<FileTreeNode> valid = new HashSet<FileTreeNode>();
+		HashSet<FileTreeNode> valid = new HashSet<>();
 		for (TreePath tp : roots.findWithFilter(rootFilter, false, false)) {
 			valid.add((FileTreeNode) tp.getLastPathComponent());
 		}
-
-		// Filter unnecessary files from each submission
 		FileTreeModel subTree = new FileTreeModel();
 		for (FileTreeNode sn : valid) {
-			log.info("Valid root: " + sn.getFile().getName());
-			subTree.addSource(sn.getFile());
+			log.info("Valid root: " + sn.getLabel());
+			subTree.addSource(sn);
 		}
+
+		// Filter unnecessary files from each submission
 		valid.clear();
 		for (TreePath tp : subTree.findWithFilter(sourceFilter, true, false)) {
 			valid.add((FileTreeNode) tp.getLastPathComponent());
 		}
-		ArrayList<FileTreeNode> leaves = subTree.getAllTerminals();
-		for (FileTreeNode ln : leaves) {
-			if (!valid.contains(ln)) {
-				log.info("Removing bad: " + ln.getFile().getName());
-				subTree.removeNodeFromParent(ln);
+		boolean removedSomething = true;
+		while (removedSomething) {
+            removedSomething = false;
+            ArrayList<FileTreeNode> leaves = subTree.getAllTerminals();
+			for (FileTreeNode ln : leaves) {
+				if (!valid.contains(ln)) {
+					log.info("Removing bad: " + ln.getFile().getName());
+					subTree.removeNodeFromParent(ln);
+					removedSomething = true;
+				}
 			}
 		}
 
@@ -185,14 +194,20 @@ public class SourceSet implements XMLSerializable {
 	 * @param targetDirectory where it will be saved
 	 * @throws IOException 
 	 */
-	public static void export(FileTreeNode sourceTree, File targetDirectory)
+	public void export(FileTreeNode sourceTree, File targetDirectory)
 			throws IOException {
 		for (FileTreeNode dn : sourceTree.getChildren()) {
-			File dir = new File(targetDirectory, dn.getFile().getName());
+			// each of these first-level nodes will be a source root
+			File dir = new File(targetDirectory, dn.getLabel());
 			dir.mkdir();
-			for (FileTreeNode fn : dn.getChildren()) {
-				FileUtils.copy(fn.getFile(), new File(dir, fn.getFile()
-						.getName()));
+            FileTreeNode newRoot = new FileTreeNode(dir, null);
+            sourceRoots.add(newRoot);
+			for (FileTreeNode fn : dn.getLeafChildren()) {
+				log.info("child for root " + dn.getLabel() + ": " + fn.getLabel());
+                File target = new File(dir, fn.getLabel());
+				FileUtils.copy(fn.getFile(), target);
+                FileTreeNode newNode = new FileTreeNode(target, newRoot);
+                newRoot.insert(newNode, newRoot.getChildCount());
 			}
 		}
 	}
@@ -203,8 +218,6 @@ public class SourceSet implements XMLSerializable {
 	 * this instance.
 	 *
 	 * @param rootsElement roots element in sources node
-	 * @param xmlFile File representing the xml save file (needed to use
-	 * relative paths inside save file)
 	 * @throws java.io.IOException if mount points can't be loaded, for example
 	 * when a wrong digest is found.
 	 */
@@ -240,7 +253,7 @@ public class SourceSet implements XMLSerializable {
 				}
 
 				// Add all roots: they'll be filtered afterwards
-				sourceRoots.add(path);
+				sourceRoots.add(new FileTreeNode(path, null));
 
 			} catch (IOException ex) {
 				throw new IOException("Error loading roots", ex);

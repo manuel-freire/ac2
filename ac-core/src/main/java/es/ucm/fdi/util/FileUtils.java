@@ -154,8 +154,8 @@ public class FileUtils {
 	 * Returns 'true' if the given file can be uncompressed (may fail, because
 	 * it is based on matching the extension against a known list...)
 	 */
-	public static boolean canUncompress(File f) {
-		return f.exists() && f.isFile() && getArchiverFor(f.getName()) != null;
+	public static boolean canUncompressPath(File f) {
+		return getArchiverFor(f.getPath()) != null;
 	}
 
 	/**
@@ -170,12 +170,11 @@ public class FileUtils {
 
 	/**
 	 * @param fileName
-	 * @return the ArchiveFormat to use for a given extension
+	 * @return the ArchiveFormat to use for a given fileName
 	 */
 	public static ArchiveFormat getArchiverFor(String fileName) {
-		String extension = getExtension(fileName);
 		for (ArchiveFormat af : formats) {
-			if (extension.matches(af.getArchiveExtensions()))
+			if (fileName.matches(af.getArchiveExtensions()))
 				return af;
 		}
 		return null;

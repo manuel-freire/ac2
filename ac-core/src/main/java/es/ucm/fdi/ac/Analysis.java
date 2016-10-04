@@ -101,6 +101,7 @@ public class Analysis implements XMLSerializable {
 
 	/**
 	 * Initialize subjects from a FileTreeNode.
+	 *
 	 * Allows complex filters and 'virtual' files (using the SourceFileCache).
 	 * After filtering, the resulting filteredTree is expected to contain, on
 	 * the first level, one folder per submission (folder name to be used as ID);
@@ -122,9 +123,9 @@ public class Analysis implements XMLSerializable {
 
 		int i = 0;
 		for (FileTreeNode dn : root.getChildren()) {
-			subs[i] = new Submission(dn.getFile().getName(), i);
+			subs[i] = new Submission(dn.getLabel(), i);
 			log.info("   created sub " + subs[i].getId());
-			for (FileTreeNode fn : dn.getChildren()) {
+			for (FileTreeNode fn : dn.getLeafChildren()) {
 				log.info("    - " + fn.getFile().getName());
 				subs[i].addSource(fn.getFile());
 			}

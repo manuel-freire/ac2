@@ -268,7 +268,8 @@ public class MainGui extends javax.swing.JFrame {
 		}
 
 		// Update panel appearance
-		String helpContent = m("Test.DefaultHelpMessage", jcbTests.getSelectedItem());
+		String helpContent = m("Test.DefaultHelpMessage", jcbTests
+				.getSelectedItem());
 		if (testHelpMap != null) {
 			if (testHelpMap.containsKey(jcbTests.getSelectedItem())) {
 				helpContent = testHelpMap.get(jcbTests.getSelectedItem());

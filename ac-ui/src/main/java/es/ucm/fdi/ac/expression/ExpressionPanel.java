@@ -280,8 +280,6 @@ public abstract class ExpressionPanel extends JPanel {
 		}
 	}
 
-	private static Image background;
-
 	public abstract void setExpression(Expression e);
 
 	public abstract Expression getExpression();
