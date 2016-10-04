@@ -30,6 +30,8 @@
 
 package es.ucm.fdi.ac.extract;
 
+import es.ucm.fdi.util.FileUtils;
+
 import java.io.File;
 
 /**
@@ -46,11 +48,11 @@ public class FileExtensionFilter extends PatternFilter {
 	}
 
 	public boolean accept(File f) {
-		return f.getName().matches(pattern);
+		return FileUtils.getExtension(f.getName()).matches(pattern);
 	}
 
 	@Override
 	public String toString() {
-		return "name='" + pattern + "'";
+		return "extension='" + pattern + "'";
 	}
 }

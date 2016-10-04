@@ -31,7 +31,6 @@
 package es.ucm.fdi.ac.extract;
 
 import java.io.File;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Looks for a pattern in the fileName
@@ -47,11 +46,11 @@ public class FileNameFilter extends PatternFilter {
 	}
 
 	public boolean accept(File f) {
-		return FileUtils.getExtension(f.getName()).matches(pattern);
+		return f.getName().matches(pattern);
 	}
 
 	@Override
 	public String toString() {
-		return "extension='" + pattern + "'";
+		return "name='" + pattern + "'";
 	}
 }
