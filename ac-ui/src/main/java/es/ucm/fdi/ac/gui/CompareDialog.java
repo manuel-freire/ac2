@@ -47,8 +47,8 @@ import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import org.syntax.jedit.JEditTextArea;
 import org.syntax.jedit.SyntaxDocument;
-import org.syntax.jedit.tokenmarker.CCTokenMarker;
-import org.syntax.jedit.tokenmarker.JavaTokenMarker;
+import org.syntax.jedit.tokenmarker.*;
+
 import static es.ucm.fdi.util.I18N.m;
 
 /**
@@ -190,6 +190,14 @@ public class CompareDialog extends javax.swing.JDialog {
 				|| extension.equalsIgnoreCase("cc")
 				|| extension.equalsIgnoreCase("c++")) {
 			jeta.setTokenMarker(new CCTokenMarker());
+		} else if (extension.equalsIgnoreCase("php")) {
+			jeta.setTokenMarker(new PHPTokenMarker());
+		} else if (extension.equalsIgnoreCase("js")) {
+			jeta.setTokenMarker(new JavaScriptTokenMarker());
+		} else if (extension.equalsIgnoreCase("xml")
+				|| extension.equalsIgnoreCase("html")
+				|| extension.equalsIgnoreCase("htm")) {
+			jeta.setTokenMarker(new HTMLTokenMarker());
 		}
 		jeta.setText(source);
 		return jeta;

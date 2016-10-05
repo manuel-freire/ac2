@@ -69,7 +69,7 @@ public class CommonHighlighter extends JPopupMenu implements Highlight {
 	}
 
 	public CommonHighlighter(ArrayList<Node> sel, Mapper m, final Object base) {
-		this.intervals = new ArrayList<Interval>(sel.size());
+		this.intervals = new ArrayList<>(sel.size());
 
 		// for debugging only (print in order); disable to get consistent colors!
 		//            sortNodes(sel, base);
