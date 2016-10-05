@@ -23,14 +23,20 @@
 package es.ucm.fdi.ac.parser;
 
 import es.ucm.fdi.ac.*;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Maintains instances of tokenizers for supported languages, returns a good one on demand.
+ *
  * Created by mfreire on 22/07/16.
  */
 public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
+
+	private static final Logger log = Logger
+			.getLogger(AntlrTokenizerFactory.class);
 
 	static HashMap<String, AntlrTokenizer> tokenizers;
 
@@ -38,10 +44,18 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
         if (tokenizers != null) return;
 
         tokenizers = new HashMap<>();
-        tokenizers.put("java", new AntlrTokenizer("es.ucm.fdi.ac.lexers.Java",
-                "compilationUnit"));
+        AntlrTokenizer java = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Java", "compilationUnit");
+        tokenizers.put("java", java);
         AntlrTokenizer cpp14 = new AntlrTokenizer("es.ucm.fdi.ac.lexers.CPP14", "translationunit");
         tokenizers.put("(c|cpp|cxx|h)", cpp14);
+        AntlrTokenizer vhdl = new AntlrTokenizer("es.ucm.fdi.ac.lexers.vhdl", "design_file");
+        tokenizers.put("(vhdl|vhd)", vhdl);
+        AntlrTokenizer php = new AntlrTokenizer("es.ucm.fdi.ac.lexers.PHP", "htmlDocument");
+        tokenizers.put("(php)", vhdl);
+        AntlrTokenizer xml = new AntlrTokenizer("es.ucm.fdi.ac.lexers.XML", "document");
+        tokenizers.put("(xml|html)", xml);
+        AntlrTokenizer js = new AntlrTokenizer("es.ucm.fdi.ac.lexers.ECMAScript", "program");
+        tokenizers.put("(js)", xml);
     }
 
 	@Override
@@ -66,7 +80,7 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
                         votes.put(current, t);
                         if (t > votes.get(best)) {
                             best = current;
-                            System.err.println("best is " + best + " with " + t);
+                            log.debug("best is " + best + " with " + t);
                         }
                     }
                 }
@@ -75,12 +89,12 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
                     votes.put(empty, t);
                     if (t > votes.get(best)) {
                         best = empty;
-                        System.err.println("best is " + best + " with " + t);
+                        log.debug("best is " + best + " with " + t);
                     }
                 }
             }
         }
-        System.err.println("best was " + best + " with " + votes.get(best));
+        log.info("chosen tokenizer: " + best + " with " + votes.get(best));
         return best;
     }
 }

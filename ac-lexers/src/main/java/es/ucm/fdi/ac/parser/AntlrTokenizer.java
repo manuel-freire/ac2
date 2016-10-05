@@ -25,6 +25,7 @@ package es.ucm.fdi.ac.parser;
 import es.ucm.fdi.ac.Tokenizer;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.Trees;
+import org.apache.log4j.Logger;
 import org.jdom2.Element;
 
 import java.io.IOException;
@@ -37,6 +38,8 @@ import java.util.HashMap;
  * Created by mfreire on 20/07/16.
  */
 public class AntlrTokenizer implements Tokenizer {
+
+	private static final Logger log = Logger.getLogger(AntlrTokenizer.class);
 
 	public static boolean parse = false;
 
@@ -88,7 +91,9 @@ public class AntlrTokenizer implements Tokenizer {
 			for (final Token tok : tokens.getTokens()) {
 				out.print(tok.getType());
 				out.print(" ");
-				System.err.println(tok);
+				if (log.isDebugEnabled()) {
+					log.debug(tok);
+				}
 			}
 
 			if (parse) {
@@ -98,8 +103,9 @@ public class AntlrTokenizer implements Tokenizer {
 				ParserRuleContext parserRuleContext = (ParserRuleContext) language.parserMethod
 						.invoke(parser);
 
-				System.err.println(Trees
-						.toStringTree(parserRuleContext, parser));
+				if (log.isDebugEnabled()) {
+					log.debug(Trees.toStringTree(parserRuleContext, parser));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
