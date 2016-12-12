@@ -32,7 +32,6 @@
 
 package es.ucm.fdi.ac.dgram;
 
-import es.ucm.fdi.ac.gui.ACGraphPanelD;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,8 +63,8 @@ public class DendrogramModel {
 	public DendrogramModel(int nLeaves, LinkageModel linkage) {
 		this.linkage = linkage;
 		OD = new float[nLeaves][];
-		leafToInt = new HashMap<DNode, Integer>();
-		nodes = new HashSet<DNode>();
+		leafToInt = new HashMap<>();
+		nodes = new HashSet<>();
 	}
 
 	public void addLeaf(Object o, float[] distances) {
@@ -162,8 +161,10 @@ public class DendrogramModel {
 		long startTime = System.currentTimeMillis();
 
 		while (nodes.size() > 1) {
-			if ((++total) % step == 0) {
-				System.err.print(".");
+			if (log.isDebugEnabled()) {
+				if ((++total) % step == 0) {
+					log.debug("progress: " + total);
+				}
 			}
 
 			// remove lowest
@@ -233,9 +234,8 @@ public class DendrogramModel {
 		}
 	}
 
-	public static interface LinkageModel {
-		public float distance(DNode a, DNode b, float[][] dt,
-				Map<DNode, Integer> m);
+	public interface LinkageModel {
+		float distance(DNode a, DNode b, float[][] dt, Map<DNode, Integer> m);
 	}
 
 	public static class DNode extends DefaultMutableTreeNode {

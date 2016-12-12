@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
+import org.apache.log4j.NDC;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -166,10 +167,11 @@ public class Analysis implements XMLSerializable {
 				return;
 			}
 			try {
-
+				NDC.push("Pre-" + subs[i].getId());
 				t.preprocess(subs[i]);
+				NDC.pop();
 			} catch (Throwable re) {
-				throw new RuntimeException("Error preprocesando "
+				throw new RuntimeException("Error during pre-processing "
 						+ subs[i].getId(), re);
 			}
 			t.setProgress(i / (float) subs.length);

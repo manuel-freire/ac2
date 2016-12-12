@@ -49,6 +49,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Comparator;
@@ -57,6 +58,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
 
 /**
@@ -68,9 +71,9 @@ import org.jgraph.graph.DefaultGraphCell;
  */
 public class ACGraphPanel extends javax.swing.JPanel {
 
+	private static final Logger log = Logger.getLogger(ACGraphPanel.class);
+
 	private ACGraph acg;
-	private Submission sub1 = null;
-	private Submission sub2 = null;
 	private Histogram histogram;
 	private boolean suggestThresholds;
 
@@ -101,7 +104,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 			jf.setSize(600, 400);
 			jf.setVisible(true);
 		} catch (Exception e) {
-			System.err.println("UNCAUGHT EXCEPTION:" + e);
+			log.warn("UNCAUGHT EXCEPTION:" + e);
 			e.printStackTrace();
 		}
 	}
@@ -218,7 +221,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 	 * Changes the center
 	 */
 	private void centerVertexChanged(Submission nextCenter) {
-		System.err.println("Next center will be " + nextCenter);
+		log.debug("Next center will be " + nextCenter);
 		Submission oldCenter = ((ACModel) acg.getBase()).getCenterSubmission();
 
 		if (oldCenter == nextCenter) {
@@ -383,21 +386,18 @@ public class ACGraphPanel extends javax.swing.JPanel {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.getGraphics();
 		acg.paint(g);
-		String fname = "/tmp/screenshot_ac_" + (int) (Math.random() * 1000)
-				+ ".png";
-		System.err.println("Creating screenshot (" + w + " x " + h + ") at "
-				+ fname);
-		FileOutputStream fos = null;
+		File tmpFile = null;
 		try {
-			fos = new FileOutputStream(new File(fname));
+			tmpFile = Files.createTempFile("screenshot_ac_", null).toFile();
+		} catch (IOException ioe) {
+			log.warn("Could not create temp file to hold screenshot", ioe);
+		}
+		log.info("Creating screenshot (" + w + " x " + h + ") at "
+				+ tmpFile.getAbsolutePath());
+		try (FileOutputStream fos = new FileOutputStream(tmpFile)) {
 			ImageIO.write(bi, "png", fos);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				fos.close();
-			} catch (Exception e) {
-			}
+		} catch (IOException ioe) {
+			log.warn("Error saving screenshot", ioe);
 		}
 	}//GEN-LAST:event_jButton1ActionPerformed
 

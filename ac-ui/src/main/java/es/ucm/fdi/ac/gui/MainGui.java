@@ -333,7 +333,7 @@ public class MainGui extends javax.swing.JFrame {
 			return;
 
 		try {
-			System.err.println("Test shall be " + t);
+			log.info("Starting test " + t);
 			if (t instanceof TokenizingTest) {
 				((TokenizingTest) t).setTokenizer(ac.chooseTokenizer());
 			}

@@ -55,6 +55,7 @@ public class Extractor extends javax.swing.JFrame {
 		setLocationByPlatform(true);
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle(m("Extract.Title", ACVersion.getVersion()));
+		setLocationByPlatform(true);
 		setVisible(true);
 	}
 

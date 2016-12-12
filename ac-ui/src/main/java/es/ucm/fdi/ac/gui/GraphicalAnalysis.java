@@ -42,6 +42,7 @@ import javax.swing.JOptionPane;
 import static es.ucm.fdi.util.I18N.m;
 import es.ucm.fdi.util.MemUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.NDC;
 
 /**
  * A small dialog that provides feedback on the progress of a test, and
@@ -55,7 +56,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 	private static final Logger log = Logger.getLogger(GraphicalAnalysis.class);
 
 	private javax.swing.JButton jbCancelProgress;
-	private javax.swing.JLabel jlProgreso;
+	private javax.swing.JLabel jlProgress;
 	private javax.swing.JProgressBar jpProgress;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JSeparator jSeparator1;
@@ -77,6 +78,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 		initComponents();
 		setSize(300, 200);
 		setTitle(testName + ": " + m("Analysis.Preprocessing"));
+		setLocationByPlatform(true);
 		setVisible(true);
 	}
 
@@ -95,7 +97,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 
 		public void run() {
 			try {
-
+				NDC.push("T-" + test);
 				ac.prepareTest(test);
 				java.awt.EventQueue.invokeLater(new Runnable() {
 					public void run() {
@@ -105,6 +107,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 
 				ac.applyTest(test);
 				isTestFinished = true;
+				NDC.pop();
 			} catch (RuntimeException e) {
 				java.io.StringWriter sw = new java.io.StringWriter();
 				e.printStackTrace(new PrintWriter(sw));
@@ -133,7 +136,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 		int seconds = s % 60;
 		int es = ((int) elapsed / 1000) % 60;
 		int em = ((int) elapsed / 1000) / 60;
-		jlProgreso.setText("<html>" + m("Analysis.TimeSoFar") + " " + em
+		jlProgress.setText("<html>" + m("Analysis.TimeSoFar") + " " + em
 				+ " min, " + es + " s<br>" + m("Analysis.TimeRemaining") + " "
 				+ minutes + " min, " + seconds + " s<br>"
 				+ m("Analysis.Memory") + " " + MemUtils.getMemUsage()
@@ -158,7 +161,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 		jpProgress = new javax.swing.JProgressBar();
 		jPanel2 = new javax.swing.JPanel();
 		jbCancelProgress = new javax.swing.JButton();
-		jlProgreso = new javax.swing.JLabel();
+		jlProgress = new javax.swing.JLabel();
 		jSeparator1 = new javax.swing.JSeparator();
 
 		getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -188,12 +191,12 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		getContentPane().add(jPanel2, gridBagConstraints);
 
-		jlProgreso.setText(m("Analysis.TimeRemaining") + " ??? min");
+		jlProgress.setText(m("Analysis.TimeRemaining") + " ??? min");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
 		gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-		getContentPane().add(jlProgreso, gridBagConstraints);
+		getContentPane().add(jlProgress, gridBagConstraints);
 
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;

@@ -75,8 +75,6 @@ public class ACGraphPanelD extends JPanel {
 	private static final Logger log = Logger.getLogger(ACGraphPanelD.class);
 
 	private ACGraph acg;
-	private Submission sub1 = null;
-	private Submission sub2 = null;
 	private Dendrogram dendrogram;
 
 	private String testKey = null;
