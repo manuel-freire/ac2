@@ -23,15 +23,17 @@
 package es.ucm.fdi.ac.parser;
 
 import es.ucm.fdi.ac.Tokenizer;
+import es.ucm.fdi.util.FileUtils;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.Trees;
 import org.apache.log4j.Logger;
+import org.apache.log4j.NDC;
 import org.jdom2.Element;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 /**
@@ -83,16 +85,30 @@ public class AntlrTokenizer implements Tokenizer {
 	}
 
 	public void tokenize(String source, String sourceFile, PrintWriter out) {
+		Writer debugWriter = null;
 		try {
 			Lexer lexer = (Lexer) language.lexerConstructor
 					.newInstance(new ANTLRInputStream(source));
 			final CommonTokenStream tokens = new CommonTokenStream(lexer);
 			tokens.fill();
+
+			if (log.isDebugEnabled()) {
+				try {
+					debugWriter = new BufferedWriter(new FileWriter(
+							Files.createTempFile("tokens-" + NDC.get() + "-",
+									".txt").toFile()));
+				} catch (IOException ioe) {
+					log.warn("Could not create debugWriter", ioe);
+				}
+			}
+
 			for (final Token tok : tokens.getTokens()) {
-				out.print(tok.getType());
-				out.print(" ");
+				out.print(tokenToString(tok));
 				if (log.isDebugEnabled()) {
 					log.debug(tok);
+					if (debugWriter != null) {
+						debugWriter.write(tokenToString(tok));
+					}
 				}
 			}
 
@@ -113,23 +129,34 @@ public class AntlrTokenizer implements Tokenizer {
 					"Bad token in source, or failed to parse", e);
 		} finally {
 			out.flush();
+			if (log.isDebugEnabled() && debugWriter != null) {
+				try {
+					debugWriter.close();
+				} catch (IOException ioe) {
+					log.warn("Could not close debugWriter", ioe);
+				}
+			}
 		}
+	}
+
+	private String tokenToString(Token token) {
+		return "" + Integer.toString(token.getType(), 32) + " ";
+	}
+
+	public int tokenId(String token) {
+		return Integer.parseInt(token, 32);
 	}
 
 	public void retrieveComments(String source, String sourceFile,
 			PrintWriter out) {
-
-	}
-
-	public int tokenId(String token) {
-		return 0;
+		throw new UnsupportedOperationException("Not yet supported");
 	}
 
 	public Element saveToXML() throws IOException {
-		return null;
+		throw new UnsupportedOperationException("Not yet supported");
 	}
 
 	public void loadFromXML(Element element) throws IOException {
-
+		throw new UnsupportedOperationException("Not yet supported");
 	}
 }

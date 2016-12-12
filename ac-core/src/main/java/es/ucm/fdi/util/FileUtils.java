@@ -33,6 +33,8 @@
 
 package es.ucm.fdi.util;
 
+import com.ibm.icu.text.CharsetDetector;
+import com.ibm.icu.text.CharsetMatch;
 import es.ucm.fdi.util.archive.ArchiveFormat;
 import es.ucm.fdi.util.archive.ZipFormat;
 import es.ucm.fdi.util.archive.TarFormat;
@@ -71,7 +73,6 @@ public class FileUtils {
 	public static final Logger log = Logger.getLogger(FileUtils.class);
 
 	public static String UTF_8 = "UTF-8";
-	public static String LATIN_1 = "ISO-8859-1";
 
 	/**
 	 * Copies a file from source to destination. Uses then 'nio' package
@@ -313,17 +314,14 @@ public class FileUtils {
 	 */
 	public static String readFileToString(File f) throws IOException {
 		byte contents[] = readFileToBytes(f, 0);
-		String s1 = new String(contents, UTF_8);
-		String s2 = new String(contents, LATIN_1);
-		int badChars1 = 0;
-		int badChars2 = 0;
-		for (int i = 0; i < s1.length(); i++) {
-			if (s1.charAt(i) == '?')
-				badChars1++;
-			if (s2.charAt(i) == '?')
-				badChars2++;
-		}
-		return (badChars1 < badChars2) ? s1 : s2;
+		CharsetDetector charsetDetector = new CharsetDetector();
+		charsetDetector.setText(FileUtils.readFileToBytes(f, 0));
+		charsetDetector.enableInputFilter(true);
+		CharsetMatch cm = charsetDetector.detect();
+
+		log.info("Charset for " + f.getAbsolutePath() + " is " + cm.getName());
+
+		return new String(contents, cm.getName());
 	}
 
 	/**
@@ -333,17 +331,12 @@ public class FileUtils {
 	 * @throws java.io.IOException
 	 */
 	public static void writeStringToFile(File f, String s) throws IOException {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(f), UTF_8));
+		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(f), UTF_8))) {
 			bw.write(s);
 		} catch (IOException ioe) {
-
-		} finally {
-			if (bw != null) {
-				bw.close();
-			}
+			log.warn("Could not write string to file " + f.getAbsolutePath(), ioe);
+			throw ioe;
 		}
 	}
 
