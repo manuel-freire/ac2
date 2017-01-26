@@ -96,7 +96,7 @@ public class Analysis implements XMLSerializable {
 	 */
 	public Analysis() {
 		sourceSet = null;
-		appliedTests = new HashSet<Test>();
+		appliedTests = new HashSet<>();
 		subs = new Submission[0];
 	}
 
@@ -119,19 +119,34 @@ public class Analysis implements XMLSerializable {
 			throw new IllegalArgumentException("nothing to analyze");
 		}
 
-		subs = new Submission[root.getChildCount()];
+		HashMap<String, Submission> unique = new HashMap<>();
 		idsToSubs.clear();
-
 		int i = 0;
 		for (FileTreeNode dn : root.getChildren()) {
-			subs[i] = new Submission(dn.getLabel(), i);
-			log.info("   created sub " + subs[i].getId());
+			Submission s = new Submission(dn.getLabel(), dn.getPath(), 0);
+			log.info("   created sub " + s.getId());
 			for (FileTreeNode fn : dn.getLeafChildren()) {
-				log.info("    - " + fn.getFile().getName());
-				subs[i].addSource(fn.getFile());
+				log.debug("    - " + fn.getFile().getName());
+				s.addSource(fn.getFile());
 			}
-			idsToSubs.put(subs[i].getId(), subs[i]);
-			i++;
+
+			if ( ! unique.containsKey(s.getHash())) {
+				unique.put(s.getHash(), s);
+				s.setInternalId(i++);
+			} else {
+				Submission p = unique.get(s.getHash());
+				log.warn("Detected EXACT duplicate: " +
+						s.getHash() + "\n" +
+						" - " + p.getId() + " (" + p.getOriginalPath() + ")\n" +
+						" - " + s.getId() + " (" + s.getOriginalPath() + ")\n");
+			}
+		}
+
+		subs = new Submission[unique.size()];
+        i = 0;
+		for (Submission s : unique.values()) {
+            subs[i++] = s;
+			idsToSubs.put(s.getId(), s);
 		}
 	}
 

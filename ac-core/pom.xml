@@ -57,14 +57,19 @@
 			<artifactId>junrar</artifactId>
 			<version>0.7</version>
 		</dependency>
-		<!-- zip (better than JDK), bzip2, tar -->
-		<dependency>
-			<groupId>org.apache.ant</groupId>
-			<artifactId>ant</artifactId>
-			<version>1.9.2</version>
-		</dependency>		
-		
-		
+		<!-- zip (better than JDK), bzip2, tar, 7z -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.13</version>
+        </dependency>
+        <!-- needed for 7z support from apache-commons -->
+        <dependency>
+            <groupId>org.tukaani</groupId>
+            <artifactId>xz</artifactId>
+            <version>1.6</version>
+        </dependency>
+
     </dependencies>
 </project>
 

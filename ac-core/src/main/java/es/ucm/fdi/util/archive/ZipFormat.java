@@ -31,6 +31,10 @@
 package es.ucm.fdi.util.archive;
 
 import es.ucm.fdi.util.FileUtils;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,9 +43,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
-import org.apache.tools.zip.ZipOutputStream;
 
 /**
  * Manages the popular Zip format (PKZIP, Jar, War); uses Ant's buit-in
@@ -71,19 +72,19 @@ public class ZipFormat implements ArchiveFormat {
 	public ArrayList<String> list(File source) throws IOException {
 		assertIsZip(source);
 
-		ZipFile zf = new ZipFile(source);
 		ArrayList<String> paths = new ArrayList<String>();
+        try (ZipFile zf = new ZipFile(source)) {
+            Enumeration entries = zf.getEntries();
+            while (entries.hasMoreElements()) {
+                ZipArchiveEntry e = (ZipArchiveEntry) entries.nextElement();
 
-		Enumeration entries = zf.getEntries();
-		while (entries.hasMoreElements()) {
-			ZipEntry e = (ZipEntry) entries.nextElement();
+                String name = FileUtils.toCanonicalPath(e.getName());
+                if (e.isDirectory()) {
+                    continue;
+                }
 
-			String name = FileUtils.toCanonicalPath(e.getName());
-			if (e.isDirectory()) {
-				continue;
-			}
-
-			paths.add(name);
+                paths.add(name);
+            }
 		}
 		return paths;
 	}
@@ -91,16 +92,15 @@ public class ZipFormat implements ArchiveFormat {
 	public void expand(File source, File destDir) throws IOException {
 		assertIsZip(source);
 
-		ZipFile zf = new ZipFile(source);
-		byte[] b = new byte[512];
+        try (ZipFile zf = new ZipFile(source)) {
+            byte[] b = new byte[512];
 
-		try {
-			//log.debug("Extracting zip: "+ficheroZip.getName());
-			Enumeration entries = zf.getEntries();
-			while (entries.hasMoreElements()) {
-				ZipEntry e = (ZipEntry) entries.nextElement();
+            Enumeration entries = zf.getEntries();
+            while (entries.hasMoreElements()) {
+                ZipArchiveEntry e = (ZipArchiveEntry)entries.nextElement();
+                //log.debug("Extracting zip: "+ficheroZip.getName());
 
-				// baskslash-protection: zip format expects only 'fw' slashes
+                // baskslash-protection: zip format expects only 'fw' slashes
 				String name = FileUtils.toCanonicalPath(e.getName());
 
 				if (e.isDirectory()) {
@@ -116,17 +116,16 @@ public class ZipFormat implements ArchiveFormat {
 					//log.warn("weird zip: had to create parent: "+outFile.getParentFile());
 					outFile.getParentFile().mkdirs();
 				}
-				FileOutputStream fos = new FileOutputStream(outFile);
-
-				InputStream zis = zf.getInputStream(e);
-				int len = 0;
-				while ((len = zis.read(b)) != -1)
-					fos.write(b, 0, len);
-				fos.close();
-				zis.close();
+                try (
+                        FileOutputStream fos = new FileOutputStream(outFile);
+                        InputStream is = zf.getInputStream(e)
+                ){
+                    int len;
+                    while ((len = is.read(b)) != -1) {
+                        fos.write(b, 0, len);
+                    }
+                }
 			}
-		} finally {
-			zf.close();
 		}
 	}
 
@@ -134,14 +133,13 @@ public class ZipFormat implements ArchiveFormat {
 			throws IOException {
 		assertIsZip(source);
 
-		ZipFile zf = new ZipFile(source);
-		byte[] b = new byte[512];
+		try (ZipFile zf = new ZipFile(source)) {
+			byte[] b = new byte[512];
 
-		try {
-			//log.debug("Extracting zip: "+ficheroZip.getName());        
+			//log.debug("Extracting zip: "+ficheroZip.getName());
 			Enumeration entries = zf.getEntries();
 			while (entries.hasMoreElements()) {
-				ZipEntry e = (ZipEntry) entries.nextElement();
+				ZipArchiveEntry e = (ZipArchiveEntry) entries.nextElement();
 
 				// baskslash-protection: zip format expects only 'fw' slashes
 				String name = FileUtils.toCanonicalPath(e.getName());
@@ -154,81 +152,101 @@ public class ZipFormat implements ArchiveFormat {
 					//log.warn("weird zip: had to create parent: "+outFile.getParentFile());
 					dest.getParentFile().mkdirs();
 				}
-				FileOutputStream fos = new FileOutputStream(dest);
 
-				InputStream zis = zf.getInputStream(e);
-				int len = 0;
-				while ((len = zis.read(b)) != -1)
-					fos.write(b, 0, len);
-				fos.close();
-				zis.close();
-				return true;
+				try (
+						FileOutputStream fos = new FileOutputStream(dest);
+						InputStream is = zf.getInputStream(e)
+				){
+					int len;
+					while ((len = is.read(b)) != -1) {
+						fos.write(b, 0, len);
+					}
+					return true;
+				}
 			}
-		} finally {
-			zf.close();
 		}
-
 		return false;
 	}
 
 	public void create(ArrayList<File> sources, File destFile, File baseDir)
 			throws IOException {
-		FileOutputStream fos = new FileOutputStream(destFile);
-		ZipOutputStream zipoutputstream = new ZipOutputStream(fos);
-		zipoutputstream.setMethod(ZipOutputStream.DEFLATED);
-		byte[] rgb = new byte[1024];
-		FileInputStream fis;
 
-		//log.debug("Creating zip file: "+ficheroZip.getName());
-		for (int i = 0; i < sources.size(); i++) {
-			File file = (File) sources.get(i);
-			int n;
+        // to avoid modifying input argument
+        ArrayList<File> toAdd = new ArrayList<>(sources);
+        ZipArchiveOutputStream zos = null;
 
-			// zip standard uses fw slashes instead of backslashes, always
-			String baseName = baseDir.getAbsolutePath() + '/';
-			String fileName = file.getAbsolutePath().substring(
-					baseName.length());
-			if (file.isDirectory())
-				fileName += '/';
-			ZipEntry entry = new ZipEntry(fileName);
-			entry.setSize(file.length());
-			entry.setTime(file.lastModified());
+        try {
+            zos = new ZipArchiveOutputStream(
+                    new FileOutputStream(destFile));
+            zos.setMethod(ZipArchiveOutputStream.DEFLATED);
+            byte[] b = new byte[1024];
 
-			// skip directories - after assuring that their children *will* be included.
-			if (file.isDirectory()) {
-				//log.debug("\tAdding dir "+fileName);
-				File[] children = file.listFiles();
-				for (int j = 0; j < children.length; j++) {
-					sources.add(children[j]);
-				}
-				zipoutputstream.putNextEntry(entry);
-				continue;
-			}
+            //log.debug("Creating zip file: "+ficheroZip.getName());
+            for (int i = 0; i < toAdd.size(); i++) {
+                // note: cannot use foreach because sources gets modified
+                File file = toAdd.get(i);
 
-			//log.debug("\tAdding file "+fileName);
+                // zip standard uses fw slashes instead of backslashes, always
+                String baseName = baseDir.getAbsolutePath() + '/';
+                String fileName = file.getAbsolutePath().substring(
+                        baseName.length());
+                if (file.isDirectory()) {
+                    fileName += '/';
+                }
+                ZipArchiveEntry entry = new ZipArchiveEntry(fileName);
 
-			// Add the zip entry and associated data.
-			zipoutputstream.putNextEntry(entry);
-			fis = new FileInputStream(file);
-			while ((n = fis.read(rgb)) > -1)
-				zipoutputstream.write(rgb, 0, n);
-			fis.close();
-			zipoutputstream.closeEntry();
-		}
+                // skip directories - after assuring that their children *will* be included.
+                if (file.isDirectory()) {
+                    //log.debug("\tAdding dir "+fileName);
+                    for (File child : file.listFiles()) {
+                        toAdd.add(child);
+                    }
+                    zos.putArchiveEntry(entry);
+                    continue;
+                }
 
-		zipoutputstream.close();
-	}
+                //log.debug("\tAdding file "+fileName);
+
+                // Add the zip entry and associated data.
+                zos.putArchiveEntry(entry);
+
+                int n;
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    while ((n = fis.read(b)) > -1) {
+                        zos.write(b, 0, n);
+                    }
+                    zos.closeArchiveEntry();
+                }
+            }
+        } finally {
+            if (zos != null) {
+                zos.finish();
+                zos.close();
+            }
+        }
+    }
 
 	/**
 	 * Simulates creation of a zip file, but returns only the size of the zip
 	 * that results from the given input stream
 	 */
 	public int compressedSize(InputStream is) throws IOException {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ZipOutputStream zout = new ZipOutputStream(bos);
-		zout.setMethod(ZipOutputStream.DEFLATED);
-		ZipEntry entry = new ZipEntry("z");
-		zout.putNextEntry(entry);
-		return FileUtils.compressedSize(is, zout, bos);
+		try (
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ZipArchiveOutputStream zout = new ZipArchiveOutputStream(bos);
+		) {
+			zout.setMethod(ZipArchiveOutputStream.DEFLATED);
+			ZipArchiveEntry entry = new ZipArchiveEntry("z");
+			zout.putArchiveEntry(entry);
+			int n;
+			byte[] bytes = new byte[1024];
+			while ((n = is.read(bytes)) > -1) {
+				zout.write(bytes, 0, n);
+			}
+			is.close();
+			zout.closeArchiveEntry();
+			zout.finish();
+			return bos.size();
+		}
 	}
 }

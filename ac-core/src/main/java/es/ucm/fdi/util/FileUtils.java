@@ -35,10 +35,8 @@ package es.ucm.fdi.util;
 
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
-import es.ucm.fdi.util.archive.ArchiveFormat;
-import es.ucm.fdi.util.archive.ZipFormat;
-import es.ucm.fdi.util.archive.TarFormat;
-import es.ucm.fdi.util.archive.RarFormat;
+import es.ucm.fdi.util.archive.*;
+
 import java.awt.Component;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -149,7 +147,8 @@ public class FileUtils {
 
 	// little static list of accepted formats
 	private static final ArchiveFormat[] formats = new ArchiveFormat[] {
-			new ZipFormat(), new TarFormat(), new RarFormat() };
+			new ZipFormat(), new TarFormat(), new RarFormat(),
+			new SevenZipFormat() };
 
 	/**
 	 * Returns 'true' if the given file can be uncompressed (may fail, because

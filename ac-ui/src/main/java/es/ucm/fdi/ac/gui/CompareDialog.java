@@ -85,9 +85,9 @@ public class CompareDialog extends javax.swing.JDialog {
 				try {
 					File f1 = d.listFiles()[1];
 					File f2 = d.listFiles()[2];
-					Submission sa = new Submission("a", 0);
+					Submission sa = new Submission("a", f1.getPath(), 0);
 					sa.addSource(f1);
-					Submission sb = new Submission("b", 1);
+					Submission sb = new Submission("b", f2.getPath(), 1);
 					sb.addSource(f2);
 					System.err.println("f1: " + sa + " vs f2: " + sb);
 
@@ -211,6 +211,7 @@ public class CompareDialog extends javax.swing.JDialog {
 					.substring(sourceName.lastIndexOf('.') + 1);
 			jtp.add(s.getId() + ":" + sourceName, getSourcePanel(source,
 					extension));
+			jtp.setToolTipTextAt(i, s.getOriginalPath());
 		}
 		if (s.getSources().isEmpty()) {
 			jtp.add(new JLabel("<html>" + m("Compare.NoSources") + "</html>"));

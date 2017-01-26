@@ -29,6 +29,7 @@
  */
 package es.ucm.fdi.ac;
 
+import es.ucm.fdi.ac.extract.Hasher;
 import es.ucm.fdi.util.SourceFileCache;
 import es.ucm.fdi.util.XMLSerializable;
 import java.io.File;
@@ -54,9 +55,13 @@ public class Submission implements XMLSerializable {
 	 */
 	private final String id;
 	/**
+	 * subject ID
+	 */
+	private final String originalPath;
+	/**
 	 * subject internal index
 	 */
-	private final int internalId;
+	private int internalId;
 	/**
 	 * source code, as a list of filename+filecontents
 	 */
@@ -65,6 +70,10 @@ public class Submission implements XMLSerializable {
 	private final ArrayList<Annotation> annotations = new ArrayList();
 
 	private final static String annotationKey = "annotation";
+
+	private String hash;
+
+    private boolean hashUpToDate;
 
 	/**
 	 * Processed source, test run results, and so on the key 'annotations' is
@@ -77,12 +86,13 @@ public class Submission implements XMLSerializable {
 	 * @param id used to identify this submission
 	 * @param index used as an internal ID
 	 */
-	public Submission(String id, int index) {
+	public Submission(String id, String originalPath, int index) {
 		if (id.contains(".")) {
 			id = id.substring(0, id.lastIndexOf("."));
 		}
 		this.id = id;
 		this.internalId = index;
+		this.originalPath = originalPath;
 		data.put(annotationKey, annotations);
 	}
 
@@ -95,12 +105,32 @@ public class Submission implements XMLSerializable {
 		sources.add(new Source(source, f.getName()));
 	}
 
+	public String getHash() {
+        if (!hashUpToDate) {
+            StringBuilder sb = new StringBuilder();
+            for (Source s : getSources()) {
+                sb.append(s.getCode());
+            }
+            hash = Hasher.hash(sb.toString());
+            hashUpToDate = true;
+        }
+        return hash;
+    }
+
 	public String getId() {
 		return id;
 	}
 
+    public void setInternalId(int internalId) {
+        this.internalId = internalId;
+    }
+
 	public int getInternalId() {
 		return internalId;
+	}
+
+	public String getOriginalPath() {
+		return originalPath;
 	}
 
 	public boolean containsSource(String sourceName) {

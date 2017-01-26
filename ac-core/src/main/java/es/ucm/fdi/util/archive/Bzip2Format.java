@@ -31,12 +31,13 @@
 package es.ucm.fdi.util.archive;
 
 import es.ucm.fdi.util.FileUtils;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import org.apache.tools.bzip2.CBZip2OutputStream;
 
 /**
  * Manages the BZip2 compression format. Ant's implementation is slow and requires
@@ -78,6 +79,7 @@ public class Bzip2Format implements ArchiveFormat {
 	 */
 	public int compressedSize(InputStream is) throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		return FileUtils.compressedSize(is, new CBZip2OutputStream(bos), bos);
+		return FileUtils.compressedSize(is,
+				new BZip2CompressorOutputStream(bos), bos);
 	}
 }

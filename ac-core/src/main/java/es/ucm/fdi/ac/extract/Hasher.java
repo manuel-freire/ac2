@@ -30,6 +30,7 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -67,12 +68,16 @@ public class Hasher {
 		}
 	};
 
-	public String showBytes(byte[] b) {
+	public static String showBytes(byte[] b) {
 		StringBuilder sb = new StringBuilder("0x");
 		for (int i = 0; i < b.length; i++) {
 			sb.append(String.format("%x", b[i]));
 		}
 		return sb.toString();
+	}
+
+	public static String hash(String data) {
+		return showBytes(hashBytes(data.getBytes(Charset.forName("UTF-8"))));
 	}
 
 	/**
@@ -308,7 +313,7 @@ public class Hasher {
 		}
 	}
 
-	private byte[] hashBytes(byte[] b) {
+	private static byte[] hashBytes(byte[] b) {
 		try {
 			MessageDigest sha1Sun = MessageDigest.getInstance("SHA-1");
 			sha1Sun.update(b);

@@ -31,6 +31,9 @@
 package es.ucm.fdi.util.archive;
 
 import es.ucm.fdi.util.FileUtils;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -38,8 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarInputStream;
 
 /**
  *
@@ -57,60 +58,57 @@ public class TarFormat implements ArchiveFormat {
 	}
 
 	public ArrayList<String> list(File source) throws IOException {
-		InputStream is = getTarInputStream(source);
-		TarInputStream tis = new TarInputStream(is);
-		TarEntry e;
-		byte[] b = new byte[512];
+
 		ArrayList<String> paths = new ArrayList<String>();
-
-		while ((e = tis.getNextEntry()) != null) {
-
-			String name = FileUtils.toCanonicalPath(e.getName());
-			if (e.isDirectory()) {
-				continue;
+		try (
+				InputStream is = getTarInputStream(source);
+				TarArchiveInputStream tis = new TarArchiveInputStream(is)
+		){
+			for (TarArchiveEntry e; (e = tis.getNextTarEntry()) != null; /**/) {
+				String name = FileUtils.toCanonicalPath(e.getName());
+				if (e.isDirectory()) {
+					continue;
+				}
+				paths.add(name);
 			}
-
-			paths.add(name);
 		}
-		tis.close();
-
 		return paths;
 	}
 
 	public void expand(File source, File destDir) throws IOException {
-		InputStream is = getTarInputStream(source);
-		TarInputStream tis = new TarInputStream(is);
-		TarEntry e;
-		byte[] b = new byte[512];
 
-		//System.err.println("Extract begins here");
-		//log.debug("Extracting zip: "+ficheroZip.getName());
-		while ((e = tis.getNextEntry()) != null) {
+		try (
+				InputStream is = getTarInputStream(source);
+				TarArchiveInputStream tis = new TarArchiveInputStream(is)
+		){
+			byte[] b = new byte[512];
+			for (TarArchiveEntry e; (e = tis.getNextTarEntry()) != null; /**/) {
 
-			// baskslash-protection: zip format expects only 'fw' slashes
-			//System.err.println("Found entry: "+e.getName());
-			String name = FileUtils.toCanonicalPath(e.getName());
+				// backslash-protection: zip format expects only 'fw' slashes
+				//System.err.println("Found entry: "+e.getName());
+				String name = FileUtils.toCanonicalPath(e.getName());
 
-			if (e.isDirectory()) {
-				//log.debug("\tExtracting directory "+e.getName());
-				File dir = new File(destDir, name);
-				dir.mkdirs();
-				continue;
+				if (e.isDirectory()) {
+					//log.debug("\tExtracting directory "+e.getName());
+					File dir = new File(destDir, name);
+					dir.mkdirs();
+					continue;
+				}
+
+				//System.err.println("\tExtracting file "+name);
+				File outFile = new File(destDir, name);
+				if (!outFile.getParentFile().exists()) {
+					outFile.getParentFile().mkdirs();
+				}
+
+				try (FileOutputStream fos = new FileOutputStream(outFile)) {
+					int len;
+					while ((len = tis.read(b)) != -1) {
+						fos.write(b, 0, len);
+					}
+				}
 			}
-
-			//System.err.println("\tExtracting file "+name);
-			File outFile = new File(destDir, name);
-			if (!outFile.getParentFile().exists()) {
-				outFile.getParentFile().mkdirs();
-			}
-			FileOutputStream fos = new FileOutputStream(outFile);
-
-			int len = 0;
-			while ((len = tis.read(b)) != -1)
-				fos.write(b, 0, len);
-			fos.close();
 		}
-		tis.close();
 	}
 
 	private InputStream getTarInputStream(File tarFile) throws IOException {
@@ -122,11 +120,8 @@ public class TarFormat implements ArchiveFormat {
 		if (isTar) {
 			return new FileInputStream(tarFile);
 		} else if (isGz) {
-			InputStream is = new GZIPInputStream(new FileInputStream(tarFile));
-			try {
+			try (InputStream is = new GZIPInputStream(new FileInputStream(tarFile))) {
 				isTar = FileUtils.startMatches(is, tarMagic, tarMagicOffset);
-			} finally {
-				is.close();
 			}
 			if (!isTar) {
 				throw new IOException(
@@ -151,33 +146,36 @@ public class TarFormat implements ArchiveFormat {
 
 	public boolean extractOne(File source, String path, File dest)
 			throws IOException {
-		InputStream is = getTarInputStream(source);
-		TarInputStream tis = new TarInputStream(is);
-		TarEntry e;
-		byte[] b = new byte[512];
 
-		//System.err.println("Extract begins here");
-		//log.debug("Extracting zip: "+ficheroZip.getName());
-		while ((e = tis.getNextEntry()) != null) {
+		try (
+				InputStream is = getTarInputStream(source);
+				TarArchiveInputStream tis = new TarArchiveInputStream(is)
+		){
+			byte[] b = new byte[512];
+			for (TarArchiveEntry e; (e = tis.getNextTarEntry()) != null; /**/) {
 
-			String name = FileUtils.toCanonicalPath(e.getName());
-			if (!name.equals(path) || e.isDirectory())
-				continue;
+				// backslash-protection: zip format expects only 'fw' slashes
+				//System.err.println("Found entry: "+e.getName());
+				String name = FileUtils.toCanonicalPath(e.getName());
 
-			if (!dest.getParentFile().exists()) {
-				dest.getParentFile().mkdirs();
+				if (!name.equals(path) || e.isDirectory()) {
+					continue;
+				}
+
+				//System.err.println("\tExtracting file "+name);
+				if (!dest.getParentFile().exists()) {
+					dest.getParentFile().mkdirs();
+				}
+
+				try (FileOutputStream fos = new FileOutputStream(dest)) {
+					int len;
+					while ((len = tis.read(b)) != -1) {
+						fos.write(b, 0, len);
+					}
+					return true;
+				}
 			}
-			FileOutputStream fos = new FileOutputStream(dest);
-
-			int len = 0;
-			while ((len = tis.read(b)) != -1)
-				fos.write(b, 0, len);
-			fos.close();
-			tis.close();
-			return true;
 		}
-
-		tis.close();
 		return false;
 	}
 }

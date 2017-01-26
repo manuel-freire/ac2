@@ -281,7 +281,7 @@ public class ACGraph extends BaseView {
 					//System.err.println("Using key = "+key);
 				}
 
-				// FIXME: should probably know wether to suggest or not; always suggesting here
+				// FIXME: should probably know whether to suggest or not; always suggesting here
 				Histogram bh = ACHistogram.createBarHistogram(ac, s, key, true);
 				jtpHist.add(s.getId(), bh);
 				jtpHist.setSelectedComponent(bh);

@@ -35,6 +35,8 @@ import es.ucm.fdi.ac.Analysis;
 import es.ucm.fdi.ac.Submission;
 
 import es.ucm.fdi.ac.outlier.Hampel;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -73,6 +75,8 @@ import static es.ucm.fdi.util.I18N.m;
  * @author mfreire
  */
 public class ACHistogram {
+
+	private static final Logger log = Logger.getLogger(ACHistogram.class);
 
 	/**
 	 * Creates a new instance of ACHistogram
@@ -344,7 +348,11 @@ public class ACHistogram {
 								+ h.getModel().getLabelsForPoint(f).get(0);
 						Submission another = m
 								.getSubmission(label.split(" ")[0]);
-						new CompareDialog(null, one, another).setVisible(true);
+						if (another == null) {
+							log.warn("Could not find second target");
+						} else {
+							new CompareDialog(null, one, another).setVisible(true);
+						}
 					} else {
 						System.err.println("Error too large; "
 								+ Math.abs(f - o)

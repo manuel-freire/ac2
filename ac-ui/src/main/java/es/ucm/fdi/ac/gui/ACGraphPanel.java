@@ -204,6 +204,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		jlSub.setText(s1 + " -- " + s2);
 		jlSub.setEnabled(acg.getFirst() != null && acg.getSecond() != null);
 		jlSub.repaint();
+		log.info("Selection change: \n\t" + s1 + "\n\t" + s2);
 	}
 
 	/**

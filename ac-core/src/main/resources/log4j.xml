@@ -8,9 +8,27 @@
             <param name="ConversionPattern" value="%-5p %c{1} - %m%n"/>
         </layout>
     </appender>
+    <appender name="file" class="org.apache.log4j.FileAppender">
+        <param name="file" value="/tmp/ac2-log4j.log"/>
+        <param name="append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %c{1} - %m%n"/>
+        </layout>
+    </appender>
 
     <root>
-        <priority value ="debug" />
+        <priority value ="info" />
         <appender-ref ref="console" />
+        <appender-ref ref="file" />
     </root>
+
+    <logger name="ACModel">
+        <level value="warn"/>
+    </logger>
+    <logger name="ACGraphPanelD">
+        <level value="warn"/>
+    </logger>
+    <logger name="FileUtils">
+        <level value="warn"/>
+    </logger>
 </log4j:configuration>

@@ -112,15 +112,15 @@ public class MainGui extends javax.swing.JFrame {
 		setTitle(m("Test.WindowTitle", ACVersion.getVersion()));
 		pack();
 
-		testResults = new HashMap<String, TestResultsDialog>();
-		testTypeCheckBoxes = new HashMap<Test, JCheckBoxMenuItem>();
-		testNameLookup = new LinkedHashMap<String, Test>();
+		testResults = new HashMap<>();
+		testTypeCheckBoxes = new HashMap<>();
+		testNameLookup = new LinkedHashMap<>();
 
 		ac = new Analysis();
 		ac.setTokenizerFactory(new AntlrTokenizerFactory());
 		saveFile = null;
 
-		ArrayList<String> tks = new ArrayList<String>();
+		ArrayList<String> tks = new ArrayList<>();
 		Test t;
 
 		t = new NCDTest(new ZipFormat());
@@ -321,16 +321,18 @@ public class MainGui extends javax.swing.JFrame {
 	}
 
 	public void launchTest(Test t, boolean suggestThresholds) {
-		if (ac == null)
+		if (ac == null) {
 			return;
+		}
 
 		if (ac.hasResultsForKey(t.getTestKey())) {
 			showResults(t.getTestKey());
 			return;
 		}
 
-		if (sourcesDir == null && jtfSources.isEnabled())
+		if (sourcesDir == null && jtfSources.isEnabled()) {
 			return;
+		}
 
 		try {
 			log.info("Starting test " + t);
@@ -662,8 +664,6 @@ public class MainGui extends javax.swing.JFrame {
 		gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
 		jpTest.add(jLabel3, gridBagConstraints);
 
-		jcbTests.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
-				"Item 1", "Item 2", "Item 3", "Item 4" }));
 		jcbTests.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jcbTestsActionPerformed(evt);

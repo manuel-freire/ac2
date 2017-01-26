@@ -86,7 +86,7 @@ public class ACDendrogram {
 			if (!n.isLeaf()) {
 				leavesInNode.clear();
 				n.getLeaves(leavesInNode);
-				sub = new Submission(id, nextInternalId++);
+				sub = new Submission(id, "", nextInternalId++);
 				StringBuilder sb = new StringBuilder();
 				for (DNode nn : leavesInNode) {
 					sb.append(t.getTokens((Submission) nn.getUserObject()));

@@ -32,6 +32,8 @@
 
 package es.ucm.fdi.ac.outlier;
 
+import org.codehaus.plexus.util.StringInputStream;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +42,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.apache.tools.ant.filters.StringInputStream;
 
 /**
  * Instances of this class can interpolate an n-dimensional function, given an
