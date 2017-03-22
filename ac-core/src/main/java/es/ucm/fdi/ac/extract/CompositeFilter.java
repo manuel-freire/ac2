@@ -31,7 +31,6 @@
 package es.ucm.fdi.ac.extract;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +44,14 @@ import org.jdom2.Element;
 public class CompositeFilter extends FileTreeFilter {
 
 	public enum Operator {
-		Not, And, Or
+		Nor, And, Or
 	};
 
 	private final ArrayList<FileTreeFilter> filters = new ArrayList<FileTreeFilter>();
 	private Operator op = Operator.And;
 
 	public void saveInner(Element e) throws IOException {
-		e.setAttribute("operation", op.toString().toLowerCase());
+		e.setAttribute("operation", op.toString());
 
 		// Add child filters
 		for (FileTreeFilter filter : filters) {
@@ -61,7 +60,7 @@ public class CompositeFilter extends FileTreeFilter {
 	}
 
 	public void loadFromXML(Element filterElement) throws IOException {
-		setOp(filterElement.getAttributeValue("operation"));
+		setOp(Operator.valueOf(filterElement.getAttributeValue("operation")));
 		filters.clear();
 
 		List<Element> children = filterElement.getChildren();
@@ -83,10 +82,6 @@ public class CompositeFilter extends FileTreeFilter {
 	}
 
 	public void setOp(Operator op) {
-		if (filters.size() != 1 && op.equals(Operator.Not)) {
-			throw new IllegalArgumentException(
-					"'Not' operator requires exactly 1 argument");
-		}
 		this.op = op;
 	}
 
@@ -100,18 +95,10 @@ public class CompositeFilter extends FileTreeFilter {
 	}
 
 	public void removeFilter(FileTreeFilter f) {
-		if (filters.size() == 1 && op.equals(Operator.Not)) {
-			throw new IllegalArgumentException(
-					"Cannot remove that many filters from a Not operation");
-		}
 		filters.remove(f);
 	}
 
 	public void addFilter(FileTreeFilter f) {
-		if (filters.size() > 0 && op.equals(Operator.Not)) {
-			throw new IllegalArgumentException(
-					"Unexpected second argument to 'Not' operator");
-		}
 		filters.add(f);
 	}
 
@@ -121,8 +108,12 @@ public class CompositeFilter extends FileTreeFilter {
 
 	public boolean accept(FileTreeNode fn) {
 		switch (op) {
-		case Not:
-			return !filters.get(0).accept(fn);
+		case Nor:
+			for (FileTreeFilter ff : filters) {
+				if (ff.accept(fn))
+					return false;
+			}
+			return true;
 		case Or:
 			for (FileTreeFilter ff : filters) {
 				if (ff.accept(fn))
@@ -143,7 +134,7 @@ public class CompositeFilter extends FileTreeFilter {
 
 	public boolean accept(File f) {
 		switch (op) {
-		case Not:
+		case Nor:
 			return !filters.get(0).accept(f);
 		case Or:
 			for (FileTreeFilter ff : filters) {
@@ -160,23 +151,6 @@ public class CompositeFilter extends FileTreeFilter {
 		default:
 			throw new RuntimeException(
 					"Bad operation in boolean-composite-filter");
-		}
-	}
-
-	/**
-	 * Sets node boolean operation.
-	 * This method can be used instead of Operator.valueOf since
-	 * it provides more flexible syntax (it is case insensitive).
-	 * @param op string of the operation
-	 */
-	public void setOp(String op) {
-		String operation = op.toLowerCase();
-		if (operation.equals("not")) {
-			setOp(Operator.Not);
-		} else if (operation.equals("or")) {
-			setOp(Operator.Or);
-		} else if (operation.equals("and")) {
-			setOp(Operator.And);
 		}
 	}
 

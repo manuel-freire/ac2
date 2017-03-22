@@ -34,7 +34,6 @@ import es.ucm.fdi.ac.extract.*;
 import es.ucm.fdi.ac.extract.CompositeFilter.Operator;
 import es.ucm.fdi.util.FileUtils;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Stack;
@@ -214,7 +213,7 @@ public class Extractor {
 				CompositeFilter f = new CompositeFilter();
 				switch (s.charAt(0)) {
 				case 'N':
-					f.setOp(CompositeFilter.Operator.Not);
+					f.setOp(CompositeFilter.Operator.Nor);
 					break;
 				case 'A':
 					f.setOp(CompositeFilter.Operator.And);
@@ -226,7 +225,7 @@ public class Extractor {
 				// push new operator
 				stack.push(f);
 			} else if (s.equals("END")
-					|| ((stack.peek().getOp() == Operator.Not) && (stack.peek()
+					|| ((stack.peek().getOp() == Operator.Nor) && (stack.peek()
 							.getFilters().size() == 1))) {
 				// end operator, and adds as filter to new top                
 				CompositeFilter f = stack.pop();

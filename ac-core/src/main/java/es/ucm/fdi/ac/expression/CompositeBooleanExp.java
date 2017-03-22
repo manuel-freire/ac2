@@ -76,7 +76,7 @@ public class CompositeBooleanExp implements CompositeExpression,
 	}
 
 	public void removeChild(Expression e) {
-		children.remove((FilterExpression) e);
+		children.remove(e);
 		filter.removeFilter(((FilterExpression) e).getFilter());
 	}
 
@@ -118,6 +118,8 @@ public class CompositeBooleanExp implements CompositeExpression,
 			filter.setOp(CompositeFilter.Operator.And);
 		} else if (header.equals(m("Filter.AtLeastOneCondition"))) {
 			filter.setOp(CompositeFilter.Operator.Or);
+		} else if (header.equals(m("Filter.NoCondition"))) {
+			filter.setOp(CompositeFilter.Operator.Nor);
 		} else {
 			throw new IllegalArgumentException("Bad composition: " + header);
 		}
