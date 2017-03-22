@@ -351,7 +351,8 @@ public class ACHistogram {
 						if (another == null) {
 							log.warn("Could not find second target");
 						} else {
-							new CompareDialog(null, one, another).setVisible(true);
+							new CompareDialog(null, one, another)
+									.setVisible(true);
 						}
 					} else {
 						System.err.println("Error too large; "

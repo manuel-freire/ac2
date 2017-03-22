@@ -73,7 +73,7 @@ public class Submission implements XMLSerializable {
 
 	private String hash;
 
-    private boolean hashUpToDate;
+	private boolean hashUpToDate;
 
 	/**
 	 * Processed source, test run results, and so on the key 'annotations' is
@@ -106,24 +106,24 @@ public class Submission implements XMLSerializable {
 	}
 
 	public String getHash() {
-        if (!hashUpToDate) {
-            StringBuilder sb = new StringBuilder();
-            for (Source s : getSources()) {
-                sb.append(s.getCode());
-            }
-            hash = Hasher.hash(sb.toString());
-            hashUpToDate = true;
-        }
-        return hash;
-    }
+		if (!hashUpToDate) {
+			StringBuilder sb = new StringBuilder();
+			for (Source s : getSources()) {
+				sb.append(s.getCode());
+			}
+			hash = Hasher.hash(sb.toString());
+			hashUpToDate = true;
+		}
+		return hash;
+	}
 
 	public String getId() {
 		return id;
 	}
 
-    public void setInternalId(int internalId) {
-        this.internalId = internalId;
-    }
+	public void setInternalId(int internalId) {
+		this.internalId = internalId;
+	}
 
 	public int getInternalId() {
 		return internalId;
