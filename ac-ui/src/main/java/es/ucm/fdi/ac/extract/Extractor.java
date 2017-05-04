@@ -31,6 +31,8 @@ package es.ucm.fdi.ac.extract;
 
 import es.ucm.fdi.ac.gui.ACVersion;
 import es.ucm.fdi.util.I18N;
+import org.apache.log4j.Logger;
+
 import static es.ucm.fdi.util.I18N.m;
 
 import java.io.File;
@@ -42,6 +44,8 @@ import java.util.Locale;
  * @author  mfreire
  */
 public class Extractor extends javax.swing.JFrame {
+
+	private static final Logger log = Logger.getLogger(Extractor.class);
 
 	private ZipSelectionPanel zsp;
 
@@ -55,6 +59,7 @@ public class Extractor extends javax.swing.JFrame {
 		setLocationByPlatform(true);
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle(m("Extract.Title", ACVersion.getVersion()));
+		log.info("Launched version: " + ACVersion.getVersion());
 		setLocationByPlatform(true);
 		setVisible(true);
 	}

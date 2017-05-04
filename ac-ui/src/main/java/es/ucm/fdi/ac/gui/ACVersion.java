@@ -36,7 +36,6 @@ public class ACVersion {
 			// relies on the Implementation-Version META-INF/MANIFEST.MF property
 			String v = MainGui.class.getPackage().getImplementationVersion();
 			version = (v == null || v.isEmpty()) ? "[dev]" : v;
-			System.err.println("Version: " + version);
 		}
 		return version;
 	}
