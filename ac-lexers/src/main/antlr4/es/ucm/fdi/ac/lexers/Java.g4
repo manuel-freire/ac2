@@ -57,6 +57,11 @@ grammar Java;
  * Productions from §3 (Lexical Structure)
  */
 
+// MFM: channels
+@lexer::members {
+    public static final int COMMENT_CH = 2;
+}
+
 literal
 	:	IntegerLiteral
 	|	FloatingPointLiteral
