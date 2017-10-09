@@ -1,5 +1,7 @@
 # AC
 
+Read the [wiki](https://github.com/manuel-freire/ac2/wiki) for a step-by-step example of an analysis, and documentation on how to perform the most common tasks in AC2. 
+
 ## Introduction
 
 AC is a source code plagiarism detection tool.
