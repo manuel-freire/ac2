@@ -210,7 +210,8 @@ public class ZipSelectionPanel extends JPanel {
 					String next = textArea.getText();
 					if (!next.equals(SourceFileCache.getSource(node.getFile()))) {
 						log.info("Prompting for save-it or lose-it");
-						int rc = JOptionPane.showConfirmDialog(null, m("Extract.ChangedFile"));
+						int rc = JOptionPane.showConfirmDialog(null,
+								m("Extract.ChangedFile"));
 						if (rc == JOptionPane.YES_OPTION) {
 							log.info("User chose to save");
 							SourceFileCache.setSource(node.getFile(), next);
@@ -624,7 +625,7 @@ public class ZipSelectionPanel extends JPanel {
 
 	private void jbAddSubmissionTreeActionPerformed(
 			java.awt.event.ActionEvent evt) {
-		
+
 		File f = FileUtils.chooseFile(this, m("Extract.SelectSubmissionDirs"),
 				true, JFileChooser.FILES_AND_DIRECTORIES);
 		addSubmissionFile(f);
