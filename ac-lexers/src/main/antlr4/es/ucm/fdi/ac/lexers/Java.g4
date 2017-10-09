@@ -51,7 +51,7 @@
 /Users/parrt/antlr/code/grammars-v4/java8/./Test.java
 Total lexer+parser time 30844ms.
  */
-grammar Java8;
+grammar Java;
 
 /*
  * Productions from §3 (Lexical Structure)
