@@ -43,6 +43,8 @@ import es.ucm.fdi.util.SourceFileCache;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -50,6 +52,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+
 import org.syntax.jedit.JEditTextArea;
 import static es.ucm.fdi.util.I18N.m;
 import org.apache.log4j.Logger;
@@ -118,6 +122,13 @@ public class ZipSelectionPanel extends JPanel {
 		});
 		jtSources.addMouseListener(new TreeDoubleClickListener());
 
+		jtSources.setTransferHandler(new FileDropHandler(new FileDropHandler.FileDropListener() {
+			@Override
+			public void fileDropped(File file) {
+				addSourceFile(file);
+			}
+		}));
+
 		filterPanel = new CompositeExpressionPanel(null);
 		filterExpression = new CompositeBooleanExp(new CompositeFilter());
 		filterPanel.setExpression(filterExpression);
@@ -173,6 +184,56 @@ public class ZipSelectionPanel extends JPanel {
 			}
 		});
 		jtSelected.addMouseListener(new TreeDoubleClickListener());
+	}
+
+	/**
+	 * To enable source-file drag&drop from outside. See
+	 * https://stackoverflow.com/a/39415436/15472
+	 */
+	final static class FileDropHandler extends TransferHandler {
+
+		interface FileDropListener {
+			void fileDropped(File file);
+		}
+
+		private FileDropListener listener;
+
+		public FileDropHandler(FileDropListener listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		public boolean canImport(TransferHandler.TransferSupport support) {
+			for (DataFlavor flavor : support.getDataFlavors()) {
+				if (flavor.isFlavorJavaFileListType()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public boolean importData(TransferHandler.TransferSupport support) {
+			if (!this.canImport(support))
+				return false;
+
+			List<File> files;
+			try {
+				files = (List<File>) support.getTransferable()
+						.getTransferData(DataFlavor.javaFileListFlavor);
+			} catch (UnsupportedFlavorException | IOException ex) {
+				// should never happen (or JDK is buggy)
+				return false;
+			}
+
+			for (File file: files) {
+				if (listener != null) {
+					listener.fileDropped(file);
+				}
+			}
+			return true;
+		}
 	}
 
 	public static class TreeDoubleClickListener extends MouseAdapter {

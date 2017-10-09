@@ -55,7 +55,7 @@ public class Extractor extends javax.swing.JFrame {
 	public Extractor() {
 		zsp = new ZipSelectionPanel();
 		getContentPane().add(zsp);
-		setSize(1000, 800);
+		setSize(1200, 800);
 		setLocationByPlatform(true);
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle(m("Extract.Title", ACVersion.getVersion()));
@@ -69,7 +69,7 @@ public class Extractor extends javax.swing.JFrame {
 	 */
 	public static void main(String args[]) {
 		I18N.setLang(Locale.getDefault().getLanguage());
-		final String[] argCopy = (String[]) args.clone();
+		final String[] argCopy = args.clone();
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				Extractor e = new Extractor();
