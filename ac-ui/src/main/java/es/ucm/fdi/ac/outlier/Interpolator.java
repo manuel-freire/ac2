@@ -32,14 +32,8 @@
 
 package es.ucm.fdi.ac.outlier;
 
-import org.codehaus.plexus.util.StringInputStream;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -105,7 +99,7 @@ public class Interpolator {
 
 		// init grid points and sample counts in each axis
 		int nValues = 1;
-		points = new ArrayList<double[]>();
+		points = new ArrayList<>();
 		for (int i = 0; i < dims; i++) {
 			s = r.readLine();
 			StringTokenizer t = new StringTokenizer(s, " \n\r");
@@ -280,10 +274,8 @@ public class Interpolator {
 		al.add(new double[] { 1, 1.2, 1.5, 2, 3, 4 });
 		al.add(new double[] { 1, 1.1, 2, 2.2, 2.5, 3, 4 });
 
-		int nValues = 1;
 		for (int i = 0; i < al.size(); i++) {
 			double d[] = al.get(i);
-			nValues *= d.length;
 		}
 
 		// this part only good for 2d...
@@ -301,8 +293,9 @@ public class Interpolator {
 		ip.saveGrid(sw);
 		System.err.println(sw.toString());
 
-		StringInputStream sis = new StringInputStream(sw.toString());
-		ip = new Interpolator(sis);
+		InputStream is = new ByteArrayInputStream(sw.toString().getBytes(
+				StandardCharsets.UTF_8));
+		ip = new Interpolator(is);
 
 		/**
 		 * interpolate and print deviations from exact result

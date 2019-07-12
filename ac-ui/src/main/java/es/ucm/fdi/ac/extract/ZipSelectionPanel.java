@@ -122,12 +122,13 @@ public class ZipSelectionPanel extends JPanel {
 		});
 		jtSources.addMouseListener(new TreeDoubleClickListener());
 
-		jtSources.setTransferHandler(new FileDropHandler(new FileDropHandler.FileDropListener() {
-			@Override
-			public void fileDropped(File file) {
-				addSourceFile(file);
-			}
-		}));
+		jtSources.setTransferHandler(new FileDropHandler(
+				new FileDropHandler.FileDropListener() {
+					@Override
+					public void fileDropped(File file) {
+						addSourceFile(file);
+					}
+				}));
 
 		filterPanel = new CompositeExpressionPanel(null);
 		filterExpression = new CompositeBooleanExp(new CompositeFilter());
