@@ -43,6 +43,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 
+import static es.ucm.fdi.util.I18N.m;
+
 /**
  * A very simple html browser with support for links
  *
@@ -75,7 +77,7 @@ public class HelpBrowser extends JDialog implements
 				}
 			}
 		});
-		JButton closeButton = new JButton("dismiss");
+		JButton closeButton = new JButton(m("Compare.Dismiss"));
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
