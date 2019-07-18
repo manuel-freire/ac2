@@ -427,6 +427,7 @@ public class ZipSelectionPanel extends JPanel {
 		TreePath path = selectedFilesModel.addSource(f);
 		if (path != null) {
 			jtSelected.expandPath(path);
+			jtSelected.scrollPathToVisible(path);
 		}
 	}
 
