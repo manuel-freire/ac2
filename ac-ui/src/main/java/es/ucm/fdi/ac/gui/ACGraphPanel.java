@@ -53,14 +53,14 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Comparator;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.imageio.ImageIO;
 
+import es.ucm.fdi.util.FileUtils;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
+
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  * Graphically displays the results of a given test. Allows the user
@@ -387,15 +387,12 @@ public class ACGraphPanel extends javax.swing.JPanel {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.getGraphics();
 		acg.paint(g);
-		File tmpFile = null;
-		try {
-			tmpFile = Files.createTempFile("screenshot_ac_", null).toFile();
-		} catch (IOException ioe) {
-			log.warn("Could not create temp file to hold screenshot", ioe);
-		}
+		File ssFile = FileUtils.chooseFile(this, m("AC.saveDialog.Title"), false, JFileChooser.FILES_ONLY);
+		if (ssFile == null)
+			return;
 		log.info("Creating screenshot (" + w + " x " + h + ") at "
-				+ tmpFile.getAbsolutePath());
-		try (FileOutputStream fos = new FileOutputStream(tmpFile)) {
+				+ ssFile.getAbsolutePath());
+		try (FileOutputStream fos = new FileOutputStream(ssFile)) {
 			ImageIO.write(bi, "png", fos);
 		} catch (IOException ioe) {
 			log.warn("Error saving screenshot", ioe);

@@ -37,6 +37,9 @@ import es.ucm.fdi.ac.dgram.DendrogramModel.LinkageModel;
 import es.ucm.fdi.ac.tableviz.SimpleRenderer;
 import es.ucm.fdi.ac.tableviz.TableModel;
 import es.ucm.fdi.ac.tableviz.TableViz;
+import es.ucm.fdi.util.FileUtils;
+import org.apache.log4j.Logger;
+
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -44,14 +47,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
+
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  *
  * @author  mfreire
  */
 public class ACTableViz extends javax.swing.JPanel {
+
+	private static final Logger log = Logger.getLogger(ACGraphPanelD.class);
 
 	private Analysis ac;
 	private String testKey;
@@ -149,21 +155,15 @@ public class ACTableViz extends javax.swing.JPanel {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.getGraphics();
 		tv.paint(g);
-		String fname = "/tmp/screenshot_ac_" + (int) (Math.random() * 1000)
-				+ ".png";
-		System.err.println("Creating screenshot (" + w + " x " + h + ") at "
-				+ fname);
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(new File(fname));
+		File ssFile = FileUtils.chooseFile(this, m("AC.saveDialog.Title"), false, JFileChooser.FILES_ONLY);
+		if (ssFile == null)
+			return;
+		log.info("Creating screenshot (" + w + " x " + h + ") at "
+				+ ssFile.getAbsolutePath());
+		try (FileOutputStream fos = new FileOutputStream(ssFile)) {
 			ImageIO.write(bi, "png", fos);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				fos.close();
-			} catch (Exception e) {
-			}
+		} catch (IOException ioe) {
+			log.warn("Error saving screenshot", ioe);
 		}
 	}//GEN-LAST:event_jButton1ActionPerformed
 

@@ -56,12 +56,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
+
+import es.ucm.fdi.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import org.jgraph.graph.DefaultGraphCell;
+
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  * Graphically displays the results of a given test. Allows the user
@@ -377,21 +379,15 @@ public class ACGraphPanelD extends JPanel {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.getGraphics();
 		acg.paint(g);
-		String fname = "/tmp/screenshot_ac_" + (int) (Math.random() * 1000)
-				+ ".png";
-		System.err.println("Creating screenshot (" + w + " x " + h + ") at "
-				+ fname);
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(new File(fname));
+		File ssFile = FileUtils.chooseFile(this, m("AC.saveDialog.Title"), false, JFileChooser.FILES_ONLY);
+		if (ssFile == null)
+			return;
+		log.info("Creating screenshot (" + w + " x " + h + ") at "
+				+ ssFile.getAbsolutePath());
+		try (FileOutputStream fos = new FileOutputStream(ssFile)) {
 			ImageIO.write(bi, "png", fos);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				fos.close();
-			} catch (Exception e) {
-			}
+		} catch (IOException ioe) {
+			log.warn("Error saving screenshot", ioe);
 		}
 	}//GEN-LAST:event_jbTakeScreenshotActionPerformed
 
