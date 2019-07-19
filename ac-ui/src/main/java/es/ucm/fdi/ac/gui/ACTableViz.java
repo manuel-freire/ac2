@@ -162,6 +162,8 @@ public class ACTableViz extends javax.swing.JPanel {
 				+ ssFile.getAbsolutePath());
 		try (FileOutputStream fos = new FileOutputStream(ssFile)) {
 			ImageIO.write(bi, "png", fos);
+			JOptionPane.showMessageDialog(this, m("Test.resultsSavedOk"),
+					m("DONE"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException ioe) {
 			log.warn("Error saving screenshot", ioe);
 		}
