@@ -437,15 +437,15 @@ public class MainGui extends javax.swing.JFrame {
 		}
 		try {
 			ac.saveToFile(f);
+			setSaveFile(f);
+			JOptionPane.showMessageDialog(this, m("Test.resultsSavedOk"),
+					m("DONE"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, m("Test.errorSaving"),
 					m("ERROR"), JOptionPane.ERROR_MESSAGE);
 			System.err.println(e);
 			e.printStackTrace();
 		}
-		setSaveFile(f);
-		JOptionPane.showMessageDialog(this, m("Test.resultsSavedOk"),
-				m("DONE"), JOptionPane.INFORMATION_MESSAGE);
 		return;
 	}
 
@@ -656,7 +656,8 @@ public class MainGui extends javax.swing.JFrame {
 		gridBagConstraints.weightx = 1.0;
 		getContentPane().add(jpFiles, gridBagConstraints);
 
-		jpTest.setBorder(javax.swing.BorderFactory.createTitledBorder(m("Test.TestSel.Title")));
+		jpTest.setBorder(javax.swing.BorderFactory
+				.createTitledBorder(m("Test.TestSel.Title")));
 		jpTest.setLayout(new java.awt.GridBagLayout());
 
 		jLabel3.setText(m("Test.TestSel.Label"));
