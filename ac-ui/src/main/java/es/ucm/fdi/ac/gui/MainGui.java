@@ -656,7 +656,7 @@ public class MainGui extends javax.swing.JFrame {
 		gridBagConstraints.weightx = 1.0;
 		getContentPane().add(jpFiles, gridBagConstraints);
 
-		jpTest.setBorder(javax.swing.BorderFactory.createTitledBorder("Tests"));
+		jpTest.setBorder(javax.swing.BorderFactory.createTitledBorder(m("Test.TestSel.Title")));
 		jpTest.setLayout(new java.awt.GridBagLayout());
 
 		jLabel3.setText(m("Test.TestSel.Label"));
@@ -747,10 +747,10 @@ public class MainGui extends javax.swing.JFrame {
 
 		jmFile.setText(m("Test.Menu.File"));
 
-		jmiNewAnalysis.setText("Nuevo Analisis");
+		jmiNewAnalysis.setText(m("Test.Menu.NewAnalysis"));
 		jmFile.add(jmiNewAnalysis);
 
-		jmiOpenAnalysis.setText("Cargar Resultados");
+		jmiOpenAnalysis.setText(m("Test.Menu.LoadAnalysis"));
 		jmiOpenAnalysis.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jmiOpenAnalysisActionPerformed(evt);
@@ -758,7 +758,7 @@ public class MainGui extends javax.swing.JFrame {
 		});
 		jmFile.add(jmiOpenAnalysis);
 
-		jmiSaveAnalysis.setText("Guardar Resultados");
+		jmiSaveAnalysis.setText(m("Test.Menu.SaveAnalysis"));
 		jmiSaveAnalysis.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jmiSaveAnalysisActionPerformed(evt);
@@ -768,7 +768,7 @@ public class MainGui extends javax.swing.JFrame {
 
 		jmbBigMenu.add(jmFile);
 
-		jmTest.setText("Test");
+		jmTest.setText(m("Test.Menu.Test"));
 		jmbBigMenu.add(jmTest);
 
 		jmHelp.setText(m("Test.Menu.Help"));
