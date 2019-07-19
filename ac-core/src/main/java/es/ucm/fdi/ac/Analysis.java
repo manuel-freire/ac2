@@ -123,23 +123,7 @@ public class Analysis implements XMLSerializable {
 		idsToSubs.clear();
 		int i = 0;
 		for (FileTreeNode dn : root.getChildren()) {
-			Submission s = new Submission(dn.getLabel(), dn.getPath(), 0);
-			log.info("   created sub " + s.getId());
-			for (FileTreeNode fn : dn.getLeafChildren()) {
-				log.debug("    - " + fn.getFile().getName());
-				s.addSource(fn.getFile());
-			}
-
-			if ( ! unique.containsKey(s.getHash())) {
-				unique.put(s.getHash(), s);
-				s.setInternalId(i++);
-			} else {
-				Submission p = unique.get(s.getHash());
-				log.warn("Detected EXACT duplicate: " +
-						s.getHash() + "\n" +
-						" - " + p.getId() + " (" + p.getOriginalPath() + ")\n" +
-						" - " + s.getId() + " (" + s.getOriginalPath() + ")\n");
-			}
+			addSubmissionRecursive(dn, unique, i);
 		}
 
 		subs = new Submission[unique.size()];
@@ -147,6 +131,34 @@ public class Analysis implements XMLSerializable {
 		for (Submission s : unique.values()) {
             subs[i++] = s;
 			idsToSubs.put(s.getId(), s);
+		}
+	}
+
+	private void addSubmissionRecursive(FileTreeNode tn,
+			HashMap<String, Submission> unique, int i) {
+		if (tn.getFile().isDirectory()) {
+			for (FileTreeNode fn : tn.getLeafChildren()) {
+				addSubmissionRecursive(fn, unique, i);
+				i++;
+			}
+		} else {
+			Submission s = new Submission(tn.getLabel(), tn.getPath(), 0);
+			log.info("created sub " + s.getId());
+			for (FileTreeNode fn : tn.getLeafChildren()) {
+				log.debug(" - " + fn.getFile().getName());
+				s.addSource(fn.getFile());
+			}
+
+			if (!unique.containsKey(s.getHash())) {
+				unique.put(s.getHash(), s);
+				s.setInternalId(i);
+			} else {
+				Submission p = unique.get(s.getHash());
+				log.warn("Detected EXACT duplicate: " + s.getHash() + "\n"
+						+ " - " + p.getId() + " (" + p.getOriginalPath()
+						+ ")\n" + " - " + s.getId() + " ("
+						+ s.getOriginalPath() + ")\n");
+			}
 		}
 	}
 

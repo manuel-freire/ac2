@@ -59,13 +59,7 @@ public class SourceSet implements XMLSerializable {
 	}
 
 	public SourceSet(File d) {
-		if (d.isDirectory()) {
-			for (File f : d.listFiles()) {
-				sourceRoots.add(new FileTreeNode(f, null));
-			}
-		} else {
-			sourceRoots.add(new FileTreeNode(d, null));
-		}
+		sourceRoots.add(new FileTreeNode(d, null));
 	}
 
 	/**
