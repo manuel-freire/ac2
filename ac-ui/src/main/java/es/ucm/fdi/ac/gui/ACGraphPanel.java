@@ -267,7 +267,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 
 		jpProgress.setLayout(new java.awt.BorderLayout(8, 0));
 
-		jbStop.setText("stop layout");
+		jbStop.setText(m("AC.StopLayout"));
 		jbStop.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbStopActionPerformed(evt);
@@ -278,7 +278,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		jpbProgress.setStringPainted(true);
 		jpProgress.add(jpbProgress, java.awt.BorderLayout.CENTER);
 
-		jlProgress.setText("Layout Progress");
+		jlProgress.setText(m("AC.LayoutProgress"));
 		jpProgress.add(jlProgress, java.awt.BorderLayout.WEST);
 
 		setLayout(new java.awt.BorderLayout());
@@ -287,7 +287,6 @@ public class ACGraphPanel extends javax.swing.JPanel {
 
 		add(jspGraph, java.awt.BorderLayout.CENTER);
 
-		jpMaxDistance.setToolTipText("Take Screenshot");
 		jpMaxDistance.setLayout(new java.awt.GridBagLayout());
 
 		jsMaxDistance.setMajorTickSpacing(100);
@@ -306,7 +305,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 0);
 		jpMaxDistance.add(jsMaxDistance, gridBagConstraints);
 
-		jlMaxDistance.setText("Max. Distance: 0.40");
+		jlMaxDistance.setText(m("AC.MaxDistance"));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = 0;
@@ -326,7 +325,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 11, 11, 5);
 		jpMaxDistance.add(jpHist, gridBagConstraints);
 
-		jlNumSubmissions.setText("Edges shown: ?");
+		jlNumSubmissions.setText(m("AC.EdgesShown"));
 		jlNumSubmissions.setEnabled(false);
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
@@ -367,6 +366,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		jpMaxDistance.add(jlCenter, gridBagConstraints);
 
 		jButton1.setText("click!");
+		jButton1.setToolTipText("Take a Screenshot");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);

@@ -244,7 +244,7 @@ public class ACGraphPanelD extends JPanel {
 
 		jpProgress.setLayout(new java.awt.BorderLayout(8, 0));
 
-		jbStop.setText("stop layout");
+		jbStop.setText(m("AC.StopLayout"));
 		jbStop.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbStopActionPerformed(evt);
@@ -255,7 +255,7 @@ public class ACGraphPanelD extends JPanel {
 		jpbProgress.setStringPainted(true);
 		jpProgress.add(jpbProgress, java.awt.BorderLayout.CENTER);
 
-		jlProgress.setText("Layout Progress");
+		jlProgress.setText(m("AC.LayoutProgress"));
 		jpProgress.add(jlProgress, java.awt.BorderLayout.WEST);
 
 		setLayout(new java.awt.BorderLayout());
@@ -263,7 +263,6 @@ public class ACGraphPanelD extends JPanel {
 		jSplitPane1.setResizeWeight(0.5);
 		jSplitPane1.setOneTouchExpandable(true);
 
-		jpMaxDistance.setToolTipText("Take Screenshot");
 		jpMaxDistance.setLayout(new java.awt.GridBagLayout());
 
 		jsMaxDistance.setMajorTickSpacing(100);
@@ -284,7 +283,7 @@ public class ACGraphPanelD extends JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
 		jpMaxDistance.add(jsMaxDistance, gridBagConstraints);
 
-		jlMaxDistance.setText("Max. Distance: 0.40");
+		jlMaxDistance.setText(m("AC.MaxDistance"));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
@@ -304,7 +303,7 @@ public class ACGraphPanelD extends JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 11, 11, 5);
 		jpMaxDistance.add(jpHist, gridBagConstraints);
 
-		jlNumSubjects.setText("Edges shown: ?");
+		jlNumSubjects.setText(m("AC.EdgesShown"));
 		jlNumSubjects.setEnabled(false);
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
@@ -343,6 +342,7 @@ public class ACGraphPanelD extends JPanel {
 		jpMaxDistance.add(jlCenter, gridBagConstraints);
 
 		jbTakeScreenshot.setText("click!");
+		jbTakeScreenshot.setToolTipText("Take a Screenshot");
 		jbTakeScreenshot.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbTakeScreenshotActionPerformed(evt);
