@@ -398,6 +398,8 @@ public class ACGraphPanel extends javax.swing.JPanel {
 					m("DONE"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException ioe) {
 			log.warn("Error saving screenshot", ioe);
+			JOptionPane.showMessageDialog(null, m("Test.errorSaving"),
+					m("ERROR"), JOptionPane.ERROR_MESSAGE);
 		}
 	}//GEN-LAST:event_jButton1ActionPerformed
 

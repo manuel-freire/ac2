@@ -390,6 +390,8 @@ public class ACGraphPanelD extends JPanel {
 					m("DONE"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException ioe) {
 			log.warn("Error saving screenshot", ioe);
+			JOptionPane.showMessageDialog(null, m("Test.errorSaving"),
+					m("ERROR"), JOptionPane.ERROR_MESSAGE);
 		}
 	}//GEN-LAST:event_jbTakeScreenshotActionPerformed
 
