@@ -637,6 +637,7 @@ public class ZipSelectionPanel extends JPanel {
 		jpRightTreeButtons.add(jbRemoveSubmissionTree, gridBagConstraints);
 
 		jbRemoveAllSubmissions.setText(m("Extract.Clean"));
+		jbRemoveAllSubmissions.setToolTipText(m("Extract.CleanTooltip"));
 		jbRemoveAllSubmissions
 				.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
