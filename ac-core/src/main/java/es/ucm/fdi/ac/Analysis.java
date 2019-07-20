@@ -142,6 +142,8 @@ public class Analysis implements XMLSerializable {
 				i++;
 			}
 		} else {
+			if (tn.getFile().getName().startsWith(".")) // skip hidden file such as .DS_Store
+				return;
 			Submission s = new Submission(tn.getLabel(), tn.getPath(), 0);
 			log.info("created sub " + s.getId());
 			for (FileTreeNode fn : tn.getLeafChildren()) {
