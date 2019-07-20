@@ -366,8 +366,8 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(2, 3, 2, 3);
 		jpMaxDistance.add(jlCenter, gridBagConstraints);
 
-		jButton1.setText("click!");
-		jButton1.setToolTipText("Take a Screenshot");
+		jButton1.setText(m("AC.saveImageButton"));
+		jButton1.setToolTipText(m("AC.saveImageButtonTooltip"));
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);

@@ -343,8 +343,8 @@ public class ACGraphPanelD extends JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(2, 3, 2, 3);
 		jpMaxDistance.add(jlCenter, gridBagConstraints);
 
-		jbTakeScreenshot.setText("click!");
-		jbTakeScreenshot.setToolTipText("Take a Screenshot");
+		jbTakeScreenshot.setText(m("AC.saveImageButton"));
+		jbTakeScreenshot.setToolTipText(m("AC.saveImageButtonTooltip"));
 		jbTakeScreenshot.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbTakeScreenshotActionPerformed(evt);

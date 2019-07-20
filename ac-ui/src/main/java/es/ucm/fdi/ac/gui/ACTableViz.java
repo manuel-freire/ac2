@@ -127,8 +127,8 @@ public class ACTableViz extends javax.swing.JPanel {
 		});
 		jPanel1.add(jcbLinkageType);
 
-		jButton1.setText("click!");
-		jButton1.setToolTipText("Take a screenshot");
+		jButton1.setText(m("AC.saveImageButton"));
+		jButton1.setToolTipText(m("AC.saveImageButtonTooltip"));
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
