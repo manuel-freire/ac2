@@ -52,6 +52,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -392,6 +394,14 @@ public class ACGraphPanelD extends JPanel {
 			log.warn("Error saving screenshot", ioe);
 			JOptionPane.showMessageDialog(null, m("Test.errorSaving"),
 					m("ERROR"), JOptionPane.ERROR_MESSAGE);
+		}
+		try {
+			if(!ssFile.getName().contains(".png")){
+				Files.move(Paths.get(ssFile.getAbsolutePath()), Paths.get(ssFile.getAbsolutePath() + ".png"));
+			}
+		} catch (IOException e) {
+			log.warn("Channot add a extention to screenshot file");
+			e.printStackTrace();
 		}
 	}//GEN-LAST:event_jbTakeScreenshotActionPerformed
 
