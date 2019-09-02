@@ -15,7 +15,7 @@ Manuel Freire, the main author, is currently teaching Computer Science at the [U
 There are other plagiarism detection tools, such as [JPlag](https://github.com/jplag/jplag), [Moss](https://theory.stanford.edu/~aiken/moss/), or [Plaggie](https://www.cs.hut.fi/Software/Plaggie/). AC is, in this context
 * **local**, and does not require sending data to remote servers (not the case of Moss)
 * **robust**, using [Normalized Compression Distance](https://en.wikipedia.org/wiki/Normalized_compression_distance) as its main measure-of-similarity, but with the possibility of integrating other, additional measures to gain better pictures of what is going on (JPlag, Moss and Plaggie have hard-coded analyses, mostly based on sub-string matching after tokenization).
-* is heavy on **information visualization**. AC will not provide "percentage of copy"; instead, it wil provide graphical explanations of the degree of similarity between student submissions within a group, so instructors can build their own explanations regarding what really happened (see [here](http://doi.acm.org/10.1145/1385569.1385644) and [here](http://dx.doi.org/10.1109/VAST.2010.5652834) for papers on AC's visualizations).
+* heavy on **information visualization**. AC will not provide "percentage of copy"; instead, it will create graphical representations of the degree of similarity between student submissions within a group, so instructors can build their own explanations regarding what really happened (see [here](http://doi.acm.org/10.1145/1385569.1385644) and [here](http://dx.doi.org/10.1109/VAST.2010.5652834) for papers on AC's visualizations).
 
 ## Installing and running the program
 
