@@ -55,7 +55,9 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
         AntlrTokenizer xml = new AntlrTokenizer("es.ucm.fdi.ac.lexers.XML", "document");
         tokenizers.put("(xml|html)", xml);
         AntlrTokenizer js = new AntlrTokenizer("es.ucm.fdi.ac.lexers.ECMAScript", "program");
-        tokenizers.put("(js)", xml);
+        tokenizers.put("(js)", js);
+        AntlrTokenizer python = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Python", "root");
+        tokenizers.put("(py)", python);
     }
 
 	@Override

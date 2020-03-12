@@ -6,7 +6,7 @@ Read the [wiki](https://github.com/manuel-freire/ac2/wiki) for a step-by-step ex
 
 AC is a source code plagiarism detection tool.
 It aids instructors and graders to detect plagiarism within a group of assignments
-written in languages such as C, C++ or Java (plaintext works too, but is less precise).
+written in languages such as C, C++, Java, PHP, XML, Python, ECMAScript or VHDL (plaintext works too, but is less precise).
 AC incorporates multiple similarity detection algorithms found in the scientific
 literature, and allows their results to be visualized graphically.
 
@@ -46,6 +46,8 @@ Currently, AC supports
 adapted from https://github.com/antlr/grammars-v4/tree/master/java8, which is licensed under the BSD license.
 * C and C++ (up to C++ 14),
 adapted from https://github.com/antlr/grammars-v4/tree/master/cpp, which is licensed under the MIT license.
+* Python (2 and 3)
+adapted from https://github.com/antlr/grammars-v4/tree/master/python/python, which is licensed under the MIT license.
 
 To add support for tokenizing more programming languages, place the grammar file (`.g4`) into
 the [grammars](https://github.com/manuel-freire/ac2/tree/v2.0/ac-lexers/src/main/antlr4/es/ucm/fdi/ac/lexers), and update the [AntlrTokenizerFactory](https://github.com/manuel-freire/ac2/blob/v2.0/ac-lexers/src/main/java/es/ucm/fdi/ac/parser/AntlrTokenizerFactory.java#L41) so that files with your

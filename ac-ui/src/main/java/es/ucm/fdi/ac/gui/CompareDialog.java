@@ -198,6 +198,8 @@ public class CompareDialog extends javax.swing.JDialog {
 				|| extension.equalsIgnoreCase("html")
 				|| extension.equalsIgnoreCase("htm")) {
 			jeta.setTokenMarker(new HTMLTokenMarker());
+		} else if (extension.equalsIgnoreCase("py")) {
+			jeta.setTokenMarker(new PythonTokenMarker());
 		}
 		jeta.setText(source);
 		return jeta;
