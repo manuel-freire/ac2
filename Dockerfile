@@ -6,4 +6,7 @@ WORKDIR /usr/src
 
 COPY . .
 
-CMD mvn install && java -jar ac-ui/target/*SNAPSHOT*.jar
+RUN mvn -Dmaven.test.skip=true install
+
+#CMD mvn install
+CMD java -jar ac-ui/target/*SNAPSHOT*.jar
