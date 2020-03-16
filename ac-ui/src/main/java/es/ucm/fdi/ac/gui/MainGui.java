@@ -143,7 +143,7 @@ public class MainGui extends javax.swing.JFrame {
 		addTestType("Token counting test", new TokenCountTest());
 		tks.add(t.getTestKey());
 
-		vt = new VarianceSubtest(TokenCountTest.SUBJECT_TOKSIMILARITY, 0.5);
+		vt = new VarianceSubtest(TokenCountTest.SUBJECT_TOKVECTOR, 0.5);
 		addTestType("Variance Subtest on TokenCountTest", vt);
 		tks.add(vt.getTestKey());
 
