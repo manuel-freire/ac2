@@ -37,6 +37,13 @@ To build everything,
 
 Pull requests and issues are *very* welcome.
 
+## Docker
+
+You can also run this with docker. You will need an X-server to use as the display.
+
+`docker build -t ac2 .`
+`docker run -it --rm -e DISPLAY=<x-server-host>:0.0 -v <local_path>:<container_path> ac2`
+
 ### Adding support for programming languages
 
 AC2 uses [Antlr4](https://github.com/antlr/antlr4) grammars to generate lexers (= tokenizers) and parsers for languages. This makes adding support for new languages a breeze: you only need to plug in a good Antlr4 grammar.
