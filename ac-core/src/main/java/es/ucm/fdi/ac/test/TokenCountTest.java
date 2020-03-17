@@ -64,7 +64,7 @@ public class TokenCountTest extends TokenizingTest {
 		String tokens = getTokens(s);
 
 		TreeMap<Integer, Integer> counter = new TreeMap<Integer, Integer>();
-		StringTokenizer st = new StringTokenizer(tokens, "\n\r");
+		StringTokenizer st = new StringTokenizer(tokens, "\n\r\t ");
 		while (st.hasMoreTokens()) {
 			int token = tokenizer.tokenId(st.nextToken());
 			int count = counter.containsKey(token) ? counter.get(token) : 0;
