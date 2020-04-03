@@ -50,17 +50,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Comparator;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.imageio.ImageIO;
 
+import es.ucm.fdi.util.FileUtils;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
+
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  * Graphically displays the results of a given test. Allows the user
@@ -267,7 +268,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 
 		jpProgress.setLayout(new java.awt.BorderLayout(8, 0));
 
-		jbStop.setText("stop layout");
+		jbStop.setText(m("AC.StopLayout"));
 		jbStop.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jbStopActionPerformed(evt);
@@ -278,7 +279,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		jpbProgress.setStringPainted(true);
 		jpProgress.add(jpbProgress, java.awt.BorderLayout.CENTER);
 
-		jlProgress.setText("Layout Progress");
+		jlProgress.setText(m("AC.LayoutProgress"));
 		jpProgress.add(jlProgress, java.awt.BorderLayout.WEST);
 
 		setLayout(new java.awt.BorderLayout());
@@ -287,7 +288,6 @@ public class ACGraphPanel extends javax.swing.JPanel {
 
 		add(jspGraph, java.awt.BorderLayout.CENTER);
 
-		jpMaxDistance.setToolTipText("Take Screenshot");
 		jpMaxDistance.setLayout(new java.awt.GridBagLayout());
 
 		jsMaxDistance.setMajorTickSpacing(100);
@@ -306,7 +306,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 0);
 		jpMaxDistance.add(jsMaxDistance, gridBagConstraints);
 
-		jlMaxDistance.setText("Max. Distance: 0.40");
+		jlMaxDistance.setText(m("AC.MaxDistance"));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = 0;
@@ -326,7 +326,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(0, 11, 11, 5);
 		jpMaxDistance.add(jpHist, gridBagConstraints);
 
-		jlNumSubmissions.setText("Edges shown: ?");
+		jlNumSubmissions.setText(m("AC.EdgesShown"));
 		jlNumSubmissions.setEnabled(false);
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
@@ -366,7 +366,8 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(2, 3, 2, 3);
 		jpMaxDistance.add(jlCenter, gridBagConstraints);
 
-		jButton1.setText("click!");
+		jButton1.setText(m("AC.saveImageButton"));
+		jButton1.setToolTipText(m("AC.saveImageButtonTooltip"));
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
@@ -387,18 +388,27 @@ public class ACGraphPanel extends javax.swing.JPanel {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.getGraphics();
 		acg.paint(g);
-		File tmpFile = null;
-		try {
-			tmpFile = Files.createTempFile("screenshot_ac_", null).toFile();
-		} catch (IOException ioe) {
-			log.warn("Could not create temp file to hold screenshot", ioe);
-		}
+		File ssFile = FileUtils.chooseFile(this, m("AC.saveDialog.Title"), false, JFileChooser.FILES_ONLY);
+		if (ssFile == null)
+			return;
 		log.info("Creating screenshot (" + w + " x " + h + ") at "
-				+ tmpFile.getAbsolutePath());
-		try (FileOutputStream fos = new FileOutputStream(tmpFile)) {
+				+ ssFile.getAbsolutePath());
+		try (FileOutputStream fos = new FileOutputStream(ssFile)) {
 			ImageIO.write(bi, "png", fos);
+			JOptionPane.showMessageDialog(this, m("Test.resultsSavedOk"),
+					m("DONE"), JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException ioe) {
 			log.warn("Error saving screenshot", ioe);
+			JOptionPane.showMessageDialog(null, m("Test.errorSaving"),
+					m("ERROR"), JOptionPane.ERROR_MESSAGE);
+		}
+		try {
+			if(!ssFile.getName().contains(".png")){
+				Files.move(Paths.get(ssFile.getAbsolutePath()), Paths.get(ssFile.getAbsolutePath() + ".png"));
+			}
+		} catch (IOException e) {
+			log.warn("Channot add a extention to screenshot file");
+			e.printStackTrace();
 		}
 	}//GEN-LAST:event_jButton1ActionPerformed
 

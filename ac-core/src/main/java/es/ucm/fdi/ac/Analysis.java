@@ -63,6 +63,7 @@ public class Analysis implements XMLSerializable {
 	private static final Logger log = Logger.getLogger(Analysis.class);
 
 	private static final String VERSION_STRING = "2.0";
+	private static int subCounter = 0;
 
 	/** Set of sources that are being analyzed. */
 	private SourceSet sourceSet;
@@ -121,32 +122,46 @@ public class Analysis implements XMLSerializable {
 
 		HashMap<String, Submission> unique = new HashMap<>();
 		idsToSubs.clear();
-		int i = 0;
+        subCounter = 0;
 		for (FileTreeNode dn : root.getChildren()) {
-			Submission s = new Submission(dn.getLabel(), dn.getPath(), 0);
-			log.info("   created sub " + s.getId());
-			for (FileTreeNode fn : dn.getLeafChildren()) {
-				log.debug("    - " + fn.getFile().getName());
-				s.addSource(fn.getFile());
-			}
-
-			if ( ! unique.containsKey(s.getHash())) {
-				unique.put(s.getHash(), s);
-				s.setInternalId(i++);
-			} else {
-				Submission p = unique.get(s.getHash());
-				log.warn("Detected EXACT duplicate: " +
-						s.getHash() + "\n" +
-						" - " + p.getId() + " (" + p.getOriginalPath() + ")\n" +
-						" - " + s.getId() + " (" + s.getOriginalPath() + ")\n");
-			}
+			addSubmissionRecursive(dn, unique);
 		}
 
 		subs = new Submission[unique.size()];
-        i = 0;
+        int i = 0;
 		for (Submission s : unique.values()) {
             subs[i++] = s;
 			idsToSubs.put(s.getId(), s);
+		}
+	}
+
+	private void addSubmissionRecursive(FileTreeNode tn,
+			HashMap<String, Submission> unique) {
+		if (tn.getFile().isDirectory()) {
+			for (FileTreeNode fn : tn.getLeafChildren()) {
+				addSubmissionRecursive(fn, unique);
+			}
+		} else {
+			if (tn.getFile().getName().startsWith(".")) // skip hidden file such as .DS_Store
+				return;
+			Submission s = new Submission(tn.getLabel(), tn.getPath(), 0);
+			log.info("created sub " + s.getId() + s.getInternalId());
+			for (FileTreeNode fn : tn.getLeafChildren()) {
+				log.debug(" - " + fn.getFile().getName());
+				s.addSource(fn.getFile());
+			}
+
+			if (!unique.containsKey(s.getHash())) {
+				unique.put(s.getHash(), s);
+				s.setInternalId(subCounter++);
+				log.info("sub internal id " + s.getInternalId());
+			} else {
+				Submission p = unique.get(s.getHash());
+				log.warn("Detected EXACT duplicate: " + s.getHash() + "\n"
+						+ " - " + p.getId() + " (" + p.getOriginalPath()
+						+ ")\n" + " - " + s.getId() + " ("
+						+ s.getOriginalPath() + ")\n");
+			}
 		}
 	}
 

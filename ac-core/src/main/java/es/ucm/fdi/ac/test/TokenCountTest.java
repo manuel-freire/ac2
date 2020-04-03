@@ -51,7 +51,7 @@ public class TokenCountTest extends TokenizingTest {
 
 	/** Creates a new instance of TokenCountTest */
 	public TokenCountTest() {
-		testKey = SUBJECT_TOKVECTOR;
+		testKey = SUBJECT_TOKSIMILARITY;
 	}
 
 	/**

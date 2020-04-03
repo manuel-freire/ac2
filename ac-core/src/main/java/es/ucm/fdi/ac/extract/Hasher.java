@@ -262,7 +262,7 @@ public class Hasher {
 		ArrayList<byte[]> all = new ArrayList<byte[]>();
 		int totalBytes = directoryPrefix.length;
 		all.add(directoryPrefix);
-		for (FileTreeNode child : fn.getChildren()) {
+		for (FileTreeNode child : fn.getLeafChildren()) {
 			doHash(child);
 			all.add(child.getSha1());
 			totalBytes += child.getSha1().length;

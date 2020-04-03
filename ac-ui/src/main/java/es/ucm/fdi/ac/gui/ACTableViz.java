@@ -37,21 +37,29 @@ import es.ucm.fdi.ac.dgram.DendrogramModel.LinkageModel;
 import es.ucm.fdi.ac.tableviz.SimpleRenderer;
 import es.ucm.fdi.ac.tableviz.TableModel;
 import es.ucm.fdi.ac.tableviz.TableViz;
+import es.ucm.fdi.util.FileUtils;
+import org.apache.log4j.Logger;
+
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
+
+import static es.ucm.fdi.util.I18N.m;
 
 /**
  *
  * @author  mfreire
  */
 public class ACTableViz extends javax.swing.JPanel {
+
+	private static final Logger log = Logger.getLogger(ACGraphPanelD.class);
 
 	private Analysis ac;
 	private String testKey;
@@ -119,7 +127,8 @@ public class ACTableViz extends javax.swing.JPanel {
 		});
 		jPanel1.add(jcbLinkageType);
 
-		jButton1.setText("click!");
+		jButton1.setText(m("AC.saveImageButton"));
+		jButton1.setToolTipText(m("AC.saveImageButtonTooltip"));
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
@@ -149,21 +158,27 @@ public class ACTableViz extends javax.swing.JPanel {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.getGraphics();
 		tv.paint(g);
-		String fname = "/tmp/screenshot_ac_" + (int) (Math.random() * 1000)
-				+ ".png";
-		System.err.println("Creating screenshot (" + w + " x " + h + ") at "
-				+ fname);
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(new File(fname));
+		File ssFile = FileUtils.chooseFile(this, m("AC.saveDialog.Title"), false, JFileChooser.FILES_ONLY);
+		if (ssFile == null)
+			return;
+		log.info("Creating screenshot (" + w + " x " + h + ") at "
+				+ ssFile.getAbsolutePath());
+		try (FileOutputStream fos = new FileOutputStream(ssFile)) {
 			ImageIO.write(bi, "png", fos);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				fos.close();
-			} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, m("Test.resultsSavedOk"),
+					m("DONE"), JOptionPane.INFORMATION_MESSAGE);
+		} catch (IOException ioe) {
+			log.warn("Error saving screenshot", ioe);
+			JOptionPane.showMessageDialog(null, m("Test.errorSaving"),
+					m("ERROR"), JOptionPane.ERROR_MESSAGE);
+		}
+		try {
+			if(!ssFile.getName().contains(".png")){
+				Files.move(Paths.get(ssFile.getAbsolutePath()), Paths.get(ssFile.getAbsolutePath() + ".png"));
 			}
+		} catch (IOException e) {
+			log.warn("Channot add a extention to screenshot file");
+			e.printStackTrace();
 		}
 	}//GEN-LAST:event_jButton1ActionPerformed
 

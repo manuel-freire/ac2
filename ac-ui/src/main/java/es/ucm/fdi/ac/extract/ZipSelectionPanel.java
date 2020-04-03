@@ -427,6 +427,7 @@ public class ZipSelectionPanel extends JPanel {
 		TreePath path = selectedFilesModel.addSource(f);
 		if (path != null) {
 			jtSelected.expandPath(path);
+			jtSelected.scrollPathToVisible(path);
 		}
 	}
 
@@ -489,7 +490,7 @@ public class ZipSelectionPanel extends JPanel {
 		JPanel jpMainButtons = new JPanel();
 		JButton jbFindSuspects = new JButton();
 		JButton jbAccept = new JButton();
-		JButton jbCancel = new JButton();
+		JButton jbExit = new JButton();
 		JSplitPane jSplitPane3 = new JSplitPane();
 		JPanel centerPanel = new JPanel();
 		jspConditions = new JScrollPane();
@@ -572,14 +573,14 @@ public class ZipSelectionPanel extends JPanel {
 		});
 		jpMainButtons.add(jbAccept);
 
-		jbCancel.setText(m("Cancel"));
-		jbCancel.setToolTipText(m("Extract.Exit"));
-		jbCancel.addActionListener(new java.awt.event.ActionListener() {
+		jbExit.setText(m("Extract.Exit"));
+		jbExit.setToolTipText(m("Extract.Exit.Tooltip"));
+		jbExit.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jbCancelActionPerformed(evt);
+				jbExitActionPerformed(evt);
 			}
 		});
-		jpMainButtons.add(jbCancel);
+		jpMainButtons.add(jbExit);
 
 		jpCenterPanel.add(jpMainButtons, java.awt.BorderLayout.SOUTH);
 
@@ -636,6 +637,7 @@ public class ZipSelectionPanel extends JPanel {
 		jpRightTreeButtons.add(jbRemoveSubmissionTree, gridBagConstraints);
 
 		jbRemoveAllSubmissions.setText(m("Extract.Clean"));
+		jbRemoveAllSubmissions.setToolTipText(m("Extract.CleanTooltip"));
 		jbRemoveAllSubmissions
 				.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -694,8 +696,9 @@ public class ZipSelectionPanel extends JPanel {
 		// FIXME: should insure that it not removed back again when the filter is applied
 	}
 
-	private void jbCancelActionPerformed(java.awt.event.ActionEvent evt) {
-		log.info("Cancelled!");
+	private void jbExitActionPerformed(java.awt.event.ActionEvent evt) {
+		log.info("Exit!");
+		System.exit(0);
 	}
 
 	private void jbAcceptActionPerformed(java.awt.event.ActionEvent evt) {
