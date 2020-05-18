@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -47,7 +69,6 @@ import java.util.TreeMap;
 public class TokenCountTest extends TokenizingTest {
 
 	static final public String SUBJECT_TOKVECTOR = "tokenvector";
-	static final public String SUBJECT_TOKSIMILARITY = "tokensim";
 
 	/** Creates a new instance of TokenCountTest */
 	public TokenCountTest() {
@@ -98,21 +119,17 @@ public class TokenCountTest extends TokenizingTest {
 		tb = (TreeMap<Integer, Double>) sb.getData(SUBJECT_TOKVECTOR);
 		ArrayList<Integer> keys = new ArrayList<Integer>(ta.keySet());
 		keys.addAll(tb.keySet());
-		Float distance = 0f;
 		double total = 0;
-		double ca, cb, dk, dm;
-		double max = 0;
+		double ca, cb, dk;
 		for (int k : keys) {
 			ca = ta.containsKey(k) ? ta.get(k) : 0;
 			cb = tb.containsKey(k) ? tb.get(k) : 0;
 			dk = ca - cb;
 			// System.err.println("ca - cb = "+ca+" - "+cb+" = "+dk);
 			total += dk * dk;
-			max = Math.max(total, max);
 		}
-
-		//System.err.println(sa.getId() + "-"+sb.getId()+" total: "+total+" max: "+max);
-		// maximum distance (2.0) is unnatainable; empirical overshooting
-		return (float) Math.sqrt(total) * 3;
+		double distance = Math.sqrt(total);
+		// empirical overshooting, since distances tend to be much smaller than 2.0
+		return (float) Math.min(distance * 3, 1);
 	}
 }

@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -56,15 +78,15 @@ import java.util.List;
 
 import org.syntax.jedit.JEditTextArea;
 import static es.ucm.fdi.util.I18N.m;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 /**
- * A panel that allows selection of what is to be searched for copies. There
+ * A panel that allows selection of what is to be searched for plagiarism. There
  * are two levels of selection: what "assignment files" (either folders or
  * archives) to consider, and what files to select for each. Nested filters can
  * be used to aid in the selection process; although "manual" selection
@@ -74,7 +96,18 @@ import javax.swing.tree.TreePath;
  */
 public class ZipSelectionPanel extends JPanel {
 
-	private static final Logger log = Logger.getLogger(ZipSelectionPanel.class);
+	private static final Logger log = LogManager
+			.getLogger(ZipSelectionPanel.class);
+
+	/**
+	 * Must be implemented by whoever is interested in the final selection,
+	 * and the process to get there
+	 */
+	public interface SelectionListener {
+		void selectionConfirmed(SourceSet ss);
+	}
+
+	private SelectionListener selectionListener;
 
 	/**
 	 * The left-hand-side, a view of the filesystem where submission roots
@@ -95,9 +128,10 @@ public class ZipSelectionPanel extends JPanel {
 	private DTree jtSelected;
 
 	/** Creates new form ZipSelectionPanel */
-	public ZipSelectionPanel() {
+	public ZipSelectionPanel(SelectionListener selectionListener) {
 		initComponents();
 
+		this.selectionListener = selectionListener;
 		fileTreeModel = new FileTreeModel();
 		jtSources = new DTree();
 		jspLeftTree.setViewportView(jtSources);
@@ -665,12 +699,10 @@ public class ZipSelectionPanel extends JPanel {
 	}
 
 	private void jbFindGuiltyActionPerformed(java.awt.event.ActionEvent evt) {
-		MainGui main = new MainGui();
 		try {
 			SourceSet ss = new SourceSet((FileTreeNode) selectedFilesModel
 					.getRoot());
-			main.loadSources(ss);
-			main.setVisible(true);
+			selectionListener.selectionConfirmed(ss);
 		} catch (IOException ioe) {
 			log.error("Error exporting sources ", ioe);
 		}

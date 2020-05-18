@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -61,12 +83,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import org.jdom2.Document;
@@ -77,7 +94,8 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import static es.ucm.fdi.util.I18N.m;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * A graphical interface for AC. Also provides a simple 
@@ -85,9 +103,9 @@ import org.apache.log4j.Logger;
  *
  * @author  mfreire
  */
-public class MainGui extends javax.swing.JFrame {
+public class MainGui extends JPanel {
 
-	private static final Logger log = Logger.getLogger(MainGui.class);
+	private static final Logger log = LogManager.getLogger(MainGui.class);
 
 	private Analysis ac;
 	private GraphicalAnalysis analysis;
@@ -109,8 +127,6 @@ public class MainGui extends javax.swing.JFrame {
 	/** Creates new form MainGui */
 	public MainGui() {
 		initComponents();
-		setTitle(m("Test.WindowTitle", ACVersion.getVersion()));
-		pack();
 
 		testResults = new HashMap<>();
 		testTypeCheckBoxes = new HashMap<>();
@@ -453,7 +469,7 @@ public class MainGui extends javax.swing.JFrame {
 		TestResultsDialog trd = (TestResultsDialog) testResults.get(testKey);
 
 		if (trd == null) {
-			trd = new TestResultsDialog(this, ac, testKey);
+			trd = new TestResultsDialog(null, ac, testKey);
 			testResults.put(testKey, trd);
 			trd.setVisible(true);
 			trd.setSuggestThresholds(jcbxSuggestThresholds.isSelected());
@@ -529,10 +545,8 @@ public class MainGui extends javax.swing.JFrame {
 		jmiHelp = new javax.swing.JMenuItem();
 		jmiAbout = new javax.swing.JMenuItem();
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-		setLocationByPlatform(true);
 		setMinimumSize(new java.awt.Dimension(423, 250));
-		getContentPane().setLayout(new java.awt.GridBagLayout());
+		setLayout(new java.awt.GridBagLayout());
 
 		jpFiles.setBorder(javax.swing.BorderFactory
 				.createTitledBorder(m("Test.SourcesAndResults.Title")));
@@ -654,7 +668,7 @@ public class MainGui extends javax.swing.JFrame {
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.weightx = 1.0;
-		getContentPane().add(jpFiles, gridBagConstraints);
+		add(jpFiles, gridBagConstraints);
 
 		jpTest.setBorder(javax.swing.BorderFactory.createTitledBorder("Tests"));
 		jpTest.setLayout(new java.awt.GridBagLayout());
@@ -717,7 +731,7 @@ public class MainGui extends javax.swing.JFrame {
 		gridBagConstraints.gridy = 1;
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.weightx = 1.0;
-		getContentPane().add(jpTest, gridBagConstraints);
+		add(jpTest, gridBagConstraints);
 
 		jpHelp.setBorder(javax.swing.BorderFactory
 				.createTitledBorder(m("Test.Menu.Help")));
@@ -742,8 +756,12 @@ public class MainGui extends javax.swing.JFrame {
 		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
 		gridBagConstraints.weightx = 1.0;
 		gridBagConstraints.weighty = 1.0;
-		getContentPane().add(jpHelp, gridBagConstraints);
+		add(jpHelp, gridBagConstraints);
 		jpHelp.getAccessibleContext().setAccessibleName("");
+	}// </editor-fold>//GEN-END:initComponents
+
+	public void addToFrame(JFrame jframe) {
+		jframe.setTitle(m("Test.WindowTitle", ACVersion.getVersion()));
 
 		jmFile.setText(m("Test.Menu.File"));
 
@@ -794,10 +812,8 @@ public class MainGui extends javax.swing.JFrame {
 
 		jmbBigMenu.add(jmHelp);
 
-		setJMenuBar(jmbBigMenu);
-
-		pack();
-	}// </editor-fold>//GEN-END:initComponents
+		jframe.setJMenuBar(jmbBigMenu);
+	}
 
 	private void jtfResultsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfResultsFocusGained
 		// TODO add your handling code here:
@@ -867,7 +883,7 @@ public class MainGui extends javax.swing.JFrame {
 	private void jmiHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiHelpActionPerformed
 		// TODO add your handling code here:        
 		if (helpBrowser == null) {
-			helpBrowser = new HelpBrowser(this, m("Test.Menu.Help"),
+			helpBrowser = new HelpBrowser(null, m("Test.Menu.Help"),
 					"index.html", true);
 		}
 		helpBrowser.setVisible(true);
@@ -880,7 +896,7 @@ public class MainGui extends javax.swing.JFrame {
 
 	private void jmiAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAboutActionPerformed
 		if (aboutBrowser == null) {
-			aboutBrowser = new HelpBrowser(this, m("Test.Menu.About") + " (v "
+			aboutBrowser = new HelpBrowser(null, m("Test.Menu.About") + " (v "
 					+ ACVersion.getVersion() + ")", "about-ac.html", false);
 		}
 		aboutBrowser.setVisible(true);
@@ -913,8 +929,12 @@ public class MainGui extends javax.swing.JFrame {
 		}
 
 		MainGui gui = new MainGui();
-		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gui.setVisible(true);
+		JFrame jf = new JFrame();
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.add(gui);
+		gui.addToFrame(jf);
+		jf.pack();
+		jf.setVisible(true);
 
 		switch (args.length) {
 		case 0: {

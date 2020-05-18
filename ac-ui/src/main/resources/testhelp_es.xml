@@ -10,6 +10,9 @@ Creation date: 28-feb-2009
     <testhelp>
         <testname>Zip NCD Test</testname>
         <helpcontent>
+            <p>Lee la <a href="https://github.com/manuel-freire/ac2/wiki/Quickstart">Guía Rápida</a>
+                (en inglés) para ver cómo empezar a usar esta herramienta
+            </p>
             <p>Entregas que se parecen mucho se comprimirán más juntas que si fuesen muy distintas.
             </p>
             <p>Este test usa fuentes tokenizados, y por tanto ignora comentarios, identificadores y espaciado.

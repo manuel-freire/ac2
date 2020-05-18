@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -31,15 +53,15 @@
 package es.ucm.fdi.clover.layout;
 
 import es.ucm.fdi.clover.model.BaseGraph;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jdom2.Element;
+
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
-import org.jdom2.Element;
 
 /**
  * Stores previous layouts in a mixed LRU/max-available-mem approach
@@ -47,8 +69,7 @@ import org.jdom2.Element;
  * @author mfreire
  */
 public class LayoutCache {
-
-	private static Logger log = Logger.getLogger(LayoutCache.class);
+	private Log log = LogFactory.getLog(LayoutCache.class);
 
 	/** max elements in strong cache */
 	private int maxSize;

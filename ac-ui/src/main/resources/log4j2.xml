@@ -1,0 +1,26 @@
+<Configuration status="info" strict="true" name="XMLConfig"
+               packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="filename">/tmp/ac-ui.log</Property>
+    </Properties>
+
+    <Appenders>
+        <Appender type="Console" name="STDOUT"> <!-- do not change this name (See Main.java) -->
+            <Layout type="PatternLayout">
+                <Pattern>%-5p %c{1} - %x %m%n</Pattern>
+            </Layout>
+        </Appender>
+        <Appender type="File" name="File" fileName="${filename}">
+            <Layout type="PatternLayout">
+                <Pattern>%d %p %C{1.} [%t] %x %m%n</Pattern>
+            </Layout>
+        </Appender>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

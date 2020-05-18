@@ -5,7 +5,7 @@
     <parent>
         <groupId>es.ucm.fdi</groupId>
         <artifactId>ac</artifactId>
-        <version>2.1.3-SNAPSHOT</version>
+        <version>2.1.4-SNAPSHOT</version>
     </parent>
     <artifactId>ac-ui</artifactId>
 
@@ -56,7 +56,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>es.ucm.fdi.ac.extract.Extractor</mainClass>
+                            <mainClass>es.ucm.fdi.ac.Main</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>

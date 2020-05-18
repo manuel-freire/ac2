@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -33,7 +55,8 @@ import es.ucm.fdi.ac.Submission.Source;
 import es.ucm.fdi.util.archive.ArchiveFormat;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.jdom2.Element;
 
 /**
@@ -49,7 +72,7 @@ import org.jdom2.Element;
  */
 public class RawNCDTest extends Test {
 
-	private static final Logger log = Logger.getLogger(RawNCDTest.class);
+	private static final Logger log = LogManager.getLogger(RawNCDTest.class);
 
 	static final public String rawNcdSimilaritySuffix = "_raw_ncd_sim";
 	static final public String rawNcdSizeSuffix = "_raw_ncd_size";

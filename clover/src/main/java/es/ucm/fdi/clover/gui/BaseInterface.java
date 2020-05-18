@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -81,10 +103,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.EdgeView;
 
 /**
  * Base interface for clover apps. The interface centralizes actions,
@@ -97,9 +118,9 @@ import org.jgraph.graph.EdgeView;
 public abstract class BaseInterface extends JFrame implements
 		ClusterViewFactory {
 
-	private static Logger log = Logger.getLogger(BaseInterface.class);
+	private static Log log = LogFactory.getLog(BaseInterface.class);
 	private final static String CLOVER_PROPS = "clover.properties";
-	private final static String LOG_PROPS = "log4j.properties";
+	private final static String LOG_PROPS = "log4j2.properties";
 
 	/** used to register/deregister listeners from tabs */
 	private int oldTab = -1;
@@ -111,7 +132,8 @@ public abstract class BaseInterface extends JFrame implements
 			InputStream in = loader.getResourceAsStream(CLOVER_PROPS);
 			props.load(in);
 			in.close();
-			PropertyConfigurator.configure(loader.getResource(LOG_PROPS));
+			// no equivalent in log4j 2
+			// PropertyConfigurator.configure(loader.getResource(LOG_PROPS));
 		} catch (Exception e) {
 			log.error("Unable to load properties: ", e);
 			JOptionPane.showMessageDialog(this, "Unable to load properties, "

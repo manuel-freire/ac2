@@ -10,6 +10,9 @@ Creation date: 28-feb-2009
     <testhelp>
         <testname>Zip NCD Test</testname>
         <helpcontent>
+            <p>Read our <a href="https://github.com/manuel-freire/ac2/wiki/Quickstart">Quickstart Guide</a>
+                for initial steps
+            </p>
             <p>Submissions that are very similar will compress together much more than submissions that are very
                 different.
             </p>

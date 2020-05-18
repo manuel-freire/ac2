@@ -1,0 +1,31 @@
+<Configuration status="info" strict="true" name="XMLConfig"
+               packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="filename">/tmp/ac-core.log</Property>
+    </Properties>
+
+    <Appenders>
+        <Appender type="Console" name="STDOUT">
+            <Layout type="PatternLayout">
+                <Pattern>%-5p %c{1} - %x %m%n</Pattern>
+            </Layout>
+        </Appender>
+        <Appender type="File" name="File" fileName="${filename}">
+            <Layout type="PatternLayout">
+                <Pattern>%d %p %C{1.} [%t] %x %m%n</Pattern>
+            </Layout>
+        </Appender>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="es.ucm.fdi.util.FileUtils" level="warn" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="File"/>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -41,8 +63,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static es.ucm.fdi.util.I18N.m;
 import es.ucm.fdi.util.MemUtils;
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 
 /**
  * A small dialog that provides feedback on the progress of a test, and
@@ -53,7 +76,8 @@ import org.apache.log4j.NDC;
  */
 public class GraphicalAnalysis extends JDialog implements ActionListener {
 
-	private static final Logger log = Logger.getLogger(GraphicalAnalysis.class);
+	private static final Logger log = LogManager
+			.getLogger(GraphicalAnalysis.class);
 
 	private javax.swing.JButton jbCancelProgress;
 	private javax.swing.JLabel jlProgress;
@@ -97,7 +121,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 
 		public void run() {
 			try {
-				NDC.push("T-" + test);
+				ThreadContext.push("T-" + test);
 				ac.prepareTest(test);
 				java.awt.EventQueue.invokeLater(new Runnable() {
 					public void run() {
@@ -107,7 +131,7 @@ public class GraphicalAnalysis extends JDialog implements ActionListener {
 
 				ac.applyTest(test);
 				isTestFinished = true;
-				NDC.pop();
+				ThreadContext.pop();
 			} catch (RuntimeException e) {
 				java.io.StringWriter sw = new java.io.StringWriter();
 				e.printStackTrace(new PrintWriter(sw));

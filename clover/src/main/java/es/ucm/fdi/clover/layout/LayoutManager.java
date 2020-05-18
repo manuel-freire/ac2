@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -32,19 +54,14 @@
 
 package es.ucm.fdi.clover.layout;
 
-import es.ucm.fdi.clover.model.BaseGraph;
 import es.ucm.fdi.clover.model.ViewGraph;
 import es.ucm.fdi.clover.view.BaseView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.awt.geom.Rectangle2D;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Set;
-import org.apache.log4j.Logger;
-import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultGraphCell;
 
 /**
  * A layout container. Supports running layouts until certain
@@ -58,7 +75,7 @@ import org.jgraph.graph.DefaultGraphCell;
  */
 public class LayoutManager extends Observable implements Runnable {
 
-	Logger log = Logger.getLogger(LayoutManager.class);
+	private Log log = LogFactory.getLog(LayoutManager.class);
 
 	/** if false, the layout should stop immediately */
 	private boolean canContinue;
@@ -125,7 +142,7 @@ public class LayoutManager extends Observable implements Runnable {
 			long startTime = System.currentTimeMillis();
 			long currentTime = startTime;
 			int iterations;
-			for (iterations = 1; algorithm.layoutFinished() == false; iterations++) {
+			for (iterations = 1; !algorithm.layoutFinished(); iterations++) {
 
 				// layout some
 				algorithm.layout();

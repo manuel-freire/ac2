@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -31,25 +53,15 @@
 package es.ucm.fdi.clover.test;
 
 import es.ucm.fdi.clover.event.ClusteringChangeEvent;
-import es.ucm.fdi.clover.model.Cluster;
-import es.ucm.fdi.clover.model.ClusterHierarchy;
-import es.ucm.fdi.clover.model.ClusterViewGraph;
-import es.ucm.fdi.clover.model.ClusteredGraph;
-import es.ucm.fdi.clover.model.DepthFirstIterator;
-import es.ucm.fdi.clover.model.SimpleRuleClusterer;
-import es.ucm.fdi.clover.test.TestGraph;
-
+import es.ucm.fdi.clover.model.*;
 import es.ucm.fdi.clover.view.ClusterView;
-import es.ucm.fdi.clover.view.BaseView;
-import es.ucm.fdi.clover.view.HighlightMouseListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
-import java.awt.geom.*;
-
-import org.jgrapht.*;
-
-import org.apache.log4j.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -57,7 +69,7 @@ import org.apache.log4j.*;
  */
 public class CGTest extends JFrame {
 
-	private static Logger log = Logger.getLogger(CGTest.class);
+	private static Log log = LogFactory.getLog(CGTest.class);
 
 	int state = 0;
 	private ClusteredGraph cg;

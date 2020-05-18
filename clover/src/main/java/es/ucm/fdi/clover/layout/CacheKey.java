@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -40,7 +62,8 @@ import java.util.StringTokenizer;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * A cache key to be used in saving/loading layouts. This is a simplified graph
@@ -51,7 +74,7 @@ import org.apache.log4j.Logger;
  */
 public class CacheKey {
 
-	private static Logger log = Logger.getLogger(CacheKey.class);
+	private Log log = LogFactory.getLog(CacheKey.class);
 
 	private HashMap<Object, HashSet<Object>> k = new HashMap<Object, HashSet<Object>>();
 

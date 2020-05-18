@@ -5,6 +5,28 @@
  *
  * ****************************************************************************
  *
+ * This file is part of AC, version 2.x
+ *
+ * AC is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * AC is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with AC.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * AC - A source-code copy detector
+ *
+ *     For more information please visit:  http://github.com/manuel-freire/ac
+ *
+ * ****************************************************************************
+ *
  * This file is part of AC, version 2.0
  *
  * AC is free software: you can redistribute it and/or modify it under the
@@ -42,8 +64,10 @@ import java.util.Date;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -60,7 +84,7 @@ import org.jdom2.output.XMLOutputter;
  */
 public class Analysis implements XMLSerializable {
 
-	private static final Logger log = Logger.getLogger(Analysis.class);
+	private static final Logger log = LogManager.getLogger(Analysis.class);
 
 	private static final String VERSION_STRING = "2.0";
 
@@ -121,6 +145,7 @@ public class Analysis implements XMLSerializable {
 
 		HashMap<String, Submission> unique = new HashMap<>();
 		idsToSubs.clear();
+		boolean detectedDuplicates = false;
 		int i = 0;
 		for (FileTreeNode dn : root.getChildren()) {
 			Submission s = new Submission(dn.getLabel(), dn.getPath(), 0);
@@ -141,12 +166,21 @@ public class Analysis implements XMLSerializable {
 						" - " + s.getId() + " (" + s.getOriginalPath() + ")\n");
 			}
 		}
+		if (detectedDuplicates) {
+			log.warn("Duplicate submissions were detected. They will NOT be included in later analysis, " +
+					"because their distance is 0 (= identical contents)");
+		}
 
 		subs = new Submission[unique.size()];
         i = 0;
 		for (Submission s : unique.values()) {
-            subs[i++] = s;
+			subs[i++] = s;
 			idsToSubs.put(s.getId(), s);
+		}
+		if (i < 2) {
+			log.warn("There are less than 2 unique submissions. No analysis can be carried out.");
+		} else {
+			log.info("{} unique submissions loaded for analysis", i);
 		}
 	}
 
@@ -182,9 +216,9 @@ public class Analysis implements XMLSerializable {
 				return;
 			}
 			try {
-				NDC.push("Pre-" + subs[i].getId());
+				ThreadContext.push("Pre-" + subs[i].getId());
 				t.preprocess(subs[i]);
-				NDC.pop();
+				ThreadContext.pop();
 			} catch (Throwable re) {
 				throw new RuntimeException("Error during pre-processing "
 						+ subs[i].getId(), re);
