@@ -1,6 +1,6 @@
 # AC
 
-Read the [wiki](https://github.com/manuel-freire/ac2/wiki) for a step-by-step example of an analysis, and documentation on how to perform the most common tasks in AC2. 
+**Read the [wiki](https://github.com/manuel-freire/ac2/wiki) for a step-by-step example of an analysis, and documentation on how to perform the most common tasks in AC2.**
 
 ## Introduction
 
@@ -10,7 +10,8 @@ written in languages such as C, C++, Java, PHP, XML, Python, ECMAScript or VHDL 
 AC incorporates multiple similarity detection algorithms found in the scientific
 literature, and allows their results to be visualized graphically.
 
-Manuel Freire, the main author, is currently teaching Computer Science at the [Universidad Complutense de Madrid](http://informatica.ucm.es/). AC is still being used in other Spanish universities (UAM, URJC) and abroad (UTorino), although this list is by no means either complete or exhaustive. By moving to Github, the project expects to gain contributors and ensure future development.
+Manuel Freire, the main author, is currently teaching Computer Science at the [Universidad Complutense de Madrid](http://informatica.ucm.es/). AC is still being used in other Spanish universities (UAM, URJC) and abroad (UTorino), 
+although this list is by no means either complete or exhaustive. By moving to Github, the project expects to gain contributors and ensure future development.
 
 There are other plagiarism detection tools, such as [JPlag](https://github.com/jplag/jplag), [Moss](https://theory.stanford.edu/~aiken/moss/), or [Plaggie](https://www.cs.hut.fi/Software/Plaggie/). AC is, in this context
 * **local**, and does not require sending data to remote servers (not the case of Moss)
@@ -23,8 +24,9 @@ You will need a Java Runtime Environment installed (JRE 7 or above).
 You can download the latest [Java JRE from Oracle's website](https://java.com/en/download/),
 although OpenJDK will work just as well.
 
-Once you have Java installed, simply download the [latest release](https://github.com/manuel-freire/ac2/releases/) (look for the latest one that has a `.jar` file available), and either double-click it (assuming the JRE is correctly installed), or use
-the command-line to execute it via `java -jar name-of-jar`
+Once you have Java installed, simply download the [latest release](https://github.com/manuel-freire/ac2/releases/) 
+(look for the latest one that has a `.jar` file available), and either double-click it 
+(assuming the JRE is correctly installed), or use the command-line to execute it via `java -jar name-of-jar`
 
 ## Building the source
 
@@ -33,7 +35,9 @@ to download [Apache Maven](https://maven.apache.org/download.cgi).
 
 To build everything, 
 * run `mvn install`. 
-* the executable jar-file will be stored in `ac-ui/target/ac-version-githash.jar` (note that `version` is set in `pom.xml`, and `githash` is calculated by checking the commit in `git`). There are other, non-default entry-points (for instance, without UI or skipping the assignment selection phase).
+* the executable jar-file will be stored in `ac-ui/target/ac-version-githash.jar` 
+(note that `version` is set in `pom.xml`, and `githash` is calculated by checking the commit in `git`). 
+There are other, non-default entry-points (for instance, without UI or skipping the assignment selection phase).
 
 Pull requests and issues are *very* welcome.
 
