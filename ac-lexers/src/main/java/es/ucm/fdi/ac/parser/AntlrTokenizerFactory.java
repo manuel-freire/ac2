@@ -81,6 +81,8 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
         tokenizers.put("(js)", js);
         AntlrTokenizer python = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Python", "root");
         tokenizers.put("(py)", python);
+        AntlrTokenizer pascal = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Pascal", "program");
+        tokenizers.put("(pas|inc|pp)", pascal);        
     }
 
 	@Override

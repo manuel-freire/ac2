@@ -43,11 +43,11 @@ public class AntlrTokenizerTest extends TestCase {
 			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.Java",
 					"compilationUnit");
 		case "c":
-			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.C",
-					"compilationUnit");
-		case "cpp":
-			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.C",
-					"compilationUnit");
+			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.CPP14",
+					"translationunit");
+
+		case "pas":
+			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.Pascal", "program");
 		default:
 			throw new IllegalArgumentException("not a valid language: " + lang);
 		}
@@ -76,7 +76,12 @@ public class AntlrTokenizerTest extends TestCase {
 	}
 
 	@Test
-	public void testC() {
+	public void testCpp() {
 		tokenize(new File("src/test/resources/sample.c"));
+	}
+
+	@Test
+	public void testPascal() {
+		tokenize(new File("src/test/resources/sample.pas"));
 	}
 }
