@@ -1,7 +1,7 @@
-/**
+/*
  * AC - A source-code copy detector
  *
- *     For more information please visit:  http://github.com/manuel-freire/ac
+ *     For more information please visit: http://github.com/manuel-freire/ac2
  *
  * ****************************************************************************
  *
@@ -20,54 +20,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with AC.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * AC - A source-code copy detector
- *
- *     For more information please visit:  http://github.com/manuel-freire/ac
- *
- * ****************************************************************************
- *
- * This file is part of AC, version 2.0
- *
- * AC is free software: you can redistribute it and/or modify it under the
- * terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
- *
- * AC is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with AC.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
- * FileTreeNode.java
- *
- * Created on September 18, 2006, 5:39 PM
- *
- */
-
 package es.ucm.fdi.ac.extract;
 
 import es.ucm.fdi.util.FileUtils;
-import es.ucm.fdi.util.SourceFileCache;
-import es.ucm.fdi.util.archive.ArchiveFormat;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.regex.Pattern;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 

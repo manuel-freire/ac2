@@ -1,6 +1,6 @@
 AC - A source-code copy detector
 
-    For more information please visit:  http://github.com/manuel-freire/ac
+    For more information please visit: http://github.com/manuel-freire/ac2
 
 ****************************************************************************
 
