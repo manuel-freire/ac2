@@ -6,7 +6,8 @@
 
 AC is a source code plagiarism detection tool.
 It aids instructors and graders to detect plagiarism within a group of assignments
-written in languages such as C, C++, Java, PHP, XML, Python, ECMAScript or VHDL (plaintext works too, but is less precise).
+written in languages such as C, C++, Java, PHP, XML, Python, ECMAScript, Pascal or VHDL 
+(plaintext works too, but is less precise).
 AC incorporates multiple similarity detection algorithms found in the scientific
 literature, and allows their results to be visualized graphically.
 
@@ -53,16 +54,25 @@ You can also run this with docker. You will need an X-server to use as the displ
 AC2 uses [Antlr4](https://github.com/antlr/antlr4) grammars to generate lexers (= tokenizers) and parsers for languages. This makes adding support for new languages a breeze: you only need to plug in a good Antlr4 grammar.
 
 Currently, AC supports
-* Java (up to Java 8),
-adapted from https://github.com/antlr/grammars-v4/tree/master/java8, which is licensed under the BSD license.
+* Java (up to Java 17),
+adapted from https://github.com/antlr/grammars-v4/blob/master/java, BSD license.
 * C and C++ (up to C++ 14),
-adapted from https://github.com/antlr/grammars-v4/tree/master/cpp, which is licensed under the MIT license.
+adapted from https://github.com/antlr/grammars-v4/blob/master/cpp, MIT license.
 * Python (2 and 3)
-adapted from https://github.com/antlr/grammars-v4/tree/master/python/python, which is licensed under the MIT license.
+adapted from https://github.com/antlr/grammars-v4/blob/master/python/python, MIT license.
+* Pascal
+adapted from https://github.com/antlr/grammars-v4/blob/master/pascal, BSD license.
+* JS
+adapted from https://github.com/antlr/grammars-v4/blob/master/javascript/ecmascript, MIT license.
+* PHP
+adapted from https://github.com/antlr/grammars-v4/blob/master/php/,  MIT license.
+* VHDL
+adapted from https://github.com/antlr/grammars-v4/blob/master/vhdl/, GNU v3 or later license.
+* XML
+adapted from https://github.com/antlr/grammars-v4/blob/master/xml/, BSD license.
 
 To add support for tokenizing more programming languages, place the grammar file (`.g4`) into
-the [grammars](https://github.com/manuel-freire/ac2/tree/v2.0/ac-lexers/src/main/antlr4/es/ucm/fdi/ac/lexers), and update the [AntlrTokenizerFactory](https://github.com/manuel-freire/ac2/blob/v2.0/ac-lexers/src/main/java/es/ucm/fdi/ac/parser/AntlrTokenizerFactory.java#L41) so that files with your
-chosen extensions are parsed using the corresponding parsers and lexers.
+the [grammars](https://github.com/manuel-freire/ac2/blob/ac-lexers/src/main/antlr4/es/ucm/fdi/ac/lexers), and update the [AntlrTokenizerFactory](https://github.com/manuel-freire/ac2/blob/ac-lexers/src/main/java/es/ucm/fdi/ac/parser/AntlrTokenizerFactory.java#L41) so that files with your chosen extensions are parsed using the corresponding parsers and lexers.
 
 ## License and code-structure
 
@@ -80,9 +90,8 @@ The direct dependencies of each module have their own licences - check the outpu
 
 ## History
 
-AC was born in the [Escuela Politécnica Superior](http://www.uam.es/ss/Satellite/EscuelaPolitecnica/es/home.htm) of the
-[Universidad Autónoma de Madrid](http://www.uam.es/ss/Satellite/es/home/) to deter
-and detect source-code plagiarism in programming assignments.
+AC was born in the [Escuela Politécnica Superior](http://www.uam.es/ss/Satellite/EscuelaPolitecnica/es/home.htm) 
+of the [Universidad Autónoma de Madrid](http://www.uam.es/ss/Satellite/es/home/) to deter and detect source-code plagiarism in programming assignments.
 
 Notable versions:
   * 1.0: a collection of csh scripts, written by an unnamed teacher at EPS/UAM
