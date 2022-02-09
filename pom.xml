@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.ucm.fdi</groupId>
     <artifactId>ac</artifactId>
-    <version>2.1.5-SNAPSHOT</version>
+    <version>2.1.6-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>A source-code copy detector</description>
     
@@ -62,7 +62,7 @@
                         <id>check-headers</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>format</goal>
+                            <!-- <goal>format</goal> -->
                             <goal>check</goal>
                         </goals>
                     </execution>
