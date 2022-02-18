@@ -224,7 +224,6 @@ public class Hampel {
 	public static void main(String args[]) throws Exception {
 
 		System.err.println("init...");
-		Hampel o = new Hampel();
 		System.err.println("init OK");
 
 		double[] enes = { 1, 10, 20, 40, 80, 160, 320, 640, 1280, 5120, 10240 }; // 11 rows
@@ -236,7 +235,7 @@ public class Hampel {
 		for (int i = 0, k = 0; i < enes.length; i++) {
 			for (int j = 0; j < alfas.length; j++) {
 				long partialStart = System.currentTimeMillis();
-				values[k++] = o.montecarloK((int) enes[i], alfas[j]);
+				values[k++] = Hampel.montecarloK((int) enes[i], alfas[j]);
 				long partialTime = System.currentTimeMillis() - partialStart;
 				System.err.println("" + k + " down (" + (partialTime / 1000.0f)
 						+ " s), " + (values.length - k) + " to go...");

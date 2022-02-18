@@ -90,7 +90,7 @@ public class SourceSet implements XMLSerializable {
 			// Create node
 			Element rootElement = new Element("root");
 			rootElement.setAttribute("path", sourceRoot.toString());
-			rootElement.setAttribute("sha1", h.showBytes(h.hash(
+			rootElement.setAttribute("sha1", Hasher.showBytes(h.hash(
 					sourceRoot.getFile()).getSha1()));
 
 			// Add node
@@ -234,7 +234,7 @@ public class SourceSet implements XMLSerializable {
 
 				// Check mount point digest
 				String sha1 = e.getAttributeValue("sha1");
-				String digest = h.showBytes(h.hash(path).getSha1());
+				String digest = Hasher.showBytes(h.hash(path).getSha1());
 				if (!sha1.equals(digest)) {
 					System.err.println("sha is: " + digest);
 					throw new IOException("Wrong checksum for " + path

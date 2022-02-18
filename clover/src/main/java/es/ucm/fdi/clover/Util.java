@@ -164,8 +164,7 @@ public class Util {
 	 * Ripped off a web example.
 	 * Does not create any directories included in 'base'
 	 */
-	@SuppressWarnings("rawtypes")
-	public static void createZip(File ficheroZip, ArrayList archivos,
+	public static void createZip(File ficheroZip, ArrayList<File> archivos,
 			File baseDir) throws Exception {
 		FileOutputStream fos = new FileOutputStream(ficheroZip);
 		ZipOutputStream zipoutputstream = new ZipOutputStream(fos);

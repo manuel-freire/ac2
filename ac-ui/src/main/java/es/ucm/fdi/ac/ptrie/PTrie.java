@@ -36,7 +36,6 @@ public class PTrie {
 	private int minSubstringSize = 5;
 
 	private Node root;
-	private int size;
 
 	// optimization; allows storing start-end indexes ('substrings') in Nodes
 	private HashMap<Object, String> documents;

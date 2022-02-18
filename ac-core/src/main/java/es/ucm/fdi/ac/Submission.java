@@ -58,9 +58,9 @@ public class Submission implements XMLSerializable {
 	/**
 	 * source code, as a list of filename+filecontents
 	 */
-	private final ArrayList<Source> sources = new ArrayList<Source>();
+	private final ArrayList<Source> sources = new ArrayList<>();
 
-	private final ArrayList<Annotation> annotations = new ArrayList();
+	private final ArrayList<Annotation> annotations = new ArrayList<>();
 
 	private final static String annotationKey = "annotation";
 

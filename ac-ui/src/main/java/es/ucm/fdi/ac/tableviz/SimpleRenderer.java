@@ -34,7 +34,6 @@ import java.awt.geom.Rectangle2D;
  * @author mfreire
  */
 public class SimpleRenderer implements TableRenderer {
-	private float MAX_FONT = 12;
 
 	private static Color[] colorLUT = null;
 
@@ -58,11 +57,6 @@ public class SimpleRenderer implements TableRenderer {
 
 		int i = Math.min((int) (hue * (size / 2)), colorLUT.length / 2 - 1);
 		return sat ? colorLUT[2 * i] : colorLUT[2 * i + 1];
-	}
-
-	private void drawLine(Graphics2D g, double x0, double y0, double x1,
-			double y1) {
-		g.drawLine((int) x0, (int) y0, (int) x1, (int) y1);
 	}
 
 	public void paint(Graphics g, TableViz tv) {

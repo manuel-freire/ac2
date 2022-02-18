@@ -154,10 +154,12 @@ public class AntlrTokenizer implements Tokenizer {
 		throw new UnsupportedOperationException("Not yet supported");
 	}
 
+	@Override
 	public Element saveToXML() throws IOException {
 		throw new UnsupportedOperationException("Not yet supported");
 	}
 
+	@Override
 	public void loadFromXML(Element element) throws IOException {
 		throw new UnsupportedOperationException("Not yet supported");
 	}

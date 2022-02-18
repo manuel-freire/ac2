@@ -362,7 +362,7 @@ public class Analysis implements XMLSerializable {
 	/**
 	 * Inner class, representing a Result. Good for sorting
 	 */
-	public static class Result implements Comparable {
+	public static class Result implements Comparable<Result> {
 		private Submission a, b;
 		private float d;
 
@@ -372,9 +372,8 @@ public class Analysis implements XMLSerializable {
 			this.d = d;
 		}
 
-		public int compareTo(Object o) {
-			float f = d - ((Result) o).d;
-			return f > 0 ? 1 : (f < 0 ? -1 : 0);
+		public int compareTo(Result o) {
+			return Float.compare(d, o.d);
 		}
 
 		@Override
@@ -455,7 +454,7 @@ public class Analysis implements XMLSerializable {
 			String tcn = te.getAttributeValue("class");
 			try {
 				Test t = (Test) getClass().getClassLoader().loadClass(tcn)
-						.newInstance();
+						.getConstructor().newInstance();
 				t.loadFromXML(te);
 				pendingTests.add(t);
 			} catch (Exception ex) {
