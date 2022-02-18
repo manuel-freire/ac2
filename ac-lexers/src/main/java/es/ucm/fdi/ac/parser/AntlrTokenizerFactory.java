@@ -41,26 +41,25 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
 
 	static HashMap<String, AntlrTokenizer> tokenizers;
 
+	static private void addTokenizer(String antlrClass, String entryPoint,
+			String... extensions) {
+		String extensionRegex = "(" + String.join("|", extensions) + ")";
+		tokenizers.put(extensionRegex, new AntlrTokenizer(antlrClass,
+				entryPoint));
+	}
+
 	static void initTokenizers() {
         if (tokenizers != null) return;
 
         tokenizers = new HashMap<>();
-        AntlrTokenizer java = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Java", "compilationUnit");
-        tokenizers.put("java", java);
-        AntlrTokenizer cpp14 = new AntlrTokenizer("es.ucm.fdi.ac.lexers.CPP14", "translationunit");
-        tokenizers.put("(c|cpp|cxx|h)", cpp14);
-        AntlrTokenizer vhdl = new AntlrTokenizer("es.ucm.fdi.ac.lexers.vhdl", "design_file");
-        tokenizers.put("(vhdl|vhd)", vhdl);
-        AntlrTokenizer php = new AntlrTokenizer("es.ucm.fdi.ac.lexers.PHP", "htmlDocument");
-        tokenizers.put("(php)", vhdl);
-        AntlrTokenizer xml = new AntlrTokenizer("es.ucm.fdi.ac.lexers.XML", "document");
-        tokenizers.put("(xml|html)", xml);
-        AntlrTokenizer js = new AntlrTokenizer("es.ucm.fdi.ac.lexers.ECMAScript", "program");
-        tokenizers.put("(js)", js);
-        AntlrTokenizer python = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Python", "root");
-        tokenizers.put("(py)", python);
-        AntlrTokenizer pascal = new AntlrTokenizer("es.ucm.fdi.ac.lexers.Pascal", "program");
-        tokenizers.put("(pas|inc|pp)", pascal);        
+        addTokenizer("es.ucm.fdi.ac.lexers.Java", "compilationUnit", "java");
+        addTokenizer("es.ucm.fdi.ac.lexers.CPP14", "translationunit", "c", "cpp", "cxx", "h");
+        addTokenizer("es.ucm.fdi.ac.lexers.vhdl", "design_file", "vhdl", "vhd");
+        addTokenizer("es.ucm.fdi.ac.lexers.PHP", "htmlDocument", "php");
+        addTokenizer("es.ucm.fdi.ac.lexers.XML", "document", "xml", "html", "htm");
+        addTokenizer("es.ucm.fdi.ac.lexers.ECMAScript", "program", "js");
+        addTokenizer("es.ucm.fdi.ac.lexers.Python", "root", "py");
+        addTokenizer("es.ucm.fdi.ac.lexers.Pascal", "program", "pas", "inc", "pp");        
     }
 
 	@Override
