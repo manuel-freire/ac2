@@ -23,21 +23,15 @@
 package es.ucm.fdi.clover.model;
 
 import es.ucm.fdi.clover.test.TestGraph;
-import junit.framework.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
-import org.jgrapht.DirectedGraph;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jgrapht.Graphs;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class DepthFirstIteratorTest extends TestCase {
 
 	private TestGraph tg;
@@ -76,13 +70,12 @@ public class DepthFirstIteratorTest extends TestCase {
 	 *
 	 * tests that all elements are found, in correct order
 	 */
-	public void testHasNext() {
 
+	public void testHasNext() {
 		DepthFirstIterator instance = new DepthFirstIterator(tg, first);
 
 		int prev = 0, current;
 		for (Object v : tg.vertexSet()) {
-			boolean expResult = true;
 			assertTrue(instance.hasNext());
 			current = Integer.parseInt((String) instance.next());
 			assertTrue(current > prev);

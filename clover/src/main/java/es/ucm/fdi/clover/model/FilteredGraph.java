@@ -33,6 +33,7 @@ import java.util.HashSet;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class FilteredGraph extends BaseGraph {
 
 	/** the base this is built on */

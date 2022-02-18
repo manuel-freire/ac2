@@ -22,17 +22,12 @@
  */
 package es.ucm.fdi.clover.view;
 
-import es.ucm.fdi.clover.model.Edge;
-import es.ucm.fdi.clover.model.ViewGraph;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,6 +37,9 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
 
+import es.ucm.fdi.clover.model.Edge;
+import es.ucm.fdi.clover.model.ViewGraph;
+
 /**
  * Highlights the currently hovered-over cell and all its outgoing and incoming
  * edges. Demonstrates the use of listeners and plans and animators to achieve
@@ -49,6 +47,7 @@ import org.jgraph.graph.GraphConstants;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class HighlightMouseListener extends MouseMotionAdapter {
 
 	private Log log = LogFactory.getLog(HighlightMouseListener.class);

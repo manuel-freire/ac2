@@ -58,6 +58,7 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public class ClusterTree extends DTree implements GraphSelectionListener {
 
 	static private Log log = LogFactory.getLog(ClusterTree.class);
@@ -72,6 +73,7 @@ public class ClusterTree extends DTree implements GraphSelectionListener {
 	 * Empty constructor.
 	 * (does not bind to anything) 
 	 */
+	@SuppressWarnings("all")
 	public ClusterTree() {
 		addExpansionListener();
 		setModel(new ClusterTreeModel());

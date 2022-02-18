@@ -26,12 +26,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+
+import javax.swing.Timer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.swing.Timer;
 
 /**
  * Animation plans are in charge of calling, when appropiate, the animation
@@ -41,6 +40,7 @@ import javax.swing.Timer;
  *
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 public class AnimationPlan {
 
 	private Log log = LogFactory.getLog(AnimationPlan.class);

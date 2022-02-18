@@ -66,6 +66,7 @@ import org.jdom2.Element;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "rawtypes", "unchecked" })
 public class Animator implements StructureChangeListener {
 
 	private Log log = LogFactory.getLog(Animator.class);

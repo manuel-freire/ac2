@@ -41,6 +41,7 @@ import java.util.Observable;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public class LayoutManager extends Observable implements Runnable {
 
 	private Log log = LogFactory.getLog(LayoutManager.class);

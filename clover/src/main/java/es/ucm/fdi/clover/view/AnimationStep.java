@@ -38,6 +38,7 @@ import java.util.Map;
  * 
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 interface AnimationStep {
 
 	/**

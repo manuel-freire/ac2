@@ -85,6 +85,7 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public abstract class BaseInterface extends JFrame implements
 		ClusterViewFactory {
 

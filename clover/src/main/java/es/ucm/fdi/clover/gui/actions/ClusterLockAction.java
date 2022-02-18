@@ -22,11 +22,10 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
-import es.ucm.fdi.clover.view.ClusterView;
-import javax.swing.*;
-import java.util.Properties;
+import javax.swing.Action;
 
 import es.ucm.fdi.clover.gui.BaseInterface;
+import es.ucm.fdi.clover.view.ClusterView;
 
 /**
  *

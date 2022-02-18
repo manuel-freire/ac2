@@ -22,8 +22,6 @@
  */
 package es.ucm.fdi.clover.layout;
 
-import org.jgraph.graph.*;
-
 /**
  * Variation on standard FDL; collapses edges.
  *

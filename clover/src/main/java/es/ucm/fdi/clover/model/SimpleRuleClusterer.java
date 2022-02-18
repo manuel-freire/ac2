@@ -43,6 +43,7 @@ import org.jgrapht.Graphs;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class SimpleRuleClusterer implements ClusteringEngine {
 
 	private Log log = LogFactory.getLog(SimpleRuleClusterer.class);

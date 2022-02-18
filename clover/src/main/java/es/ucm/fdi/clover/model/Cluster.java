@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class Cluster extends DefaultMutableTreeNode {
 
 	private Log log = LogFactory.getLog(Cluster.class);

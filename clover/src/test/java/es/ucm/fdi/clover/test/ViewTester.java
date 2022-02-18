@@ -56,6 +56,7 @@ import java.util.*;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public class ViewTester extends javax.swing.JFrame {
 
 	private Log log = LogFactory.getLog(ViewTester.class);
@@ -235,7 +236,7 @@ public class ViewTester extends javax.swing.JFrame {
 	private javax.swing.Timer slowMotionLayoutTimer = null;
 
 	private void jbLayoutSlowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLayoutSlowActionPerformed
-		// TODO add your handling code here:        
+
 		if (jbLayoutSlow.isSelected()) {
 			if (slowMotionLayoutTimer == null) {
 				slowMotionLayoutTimer = new javax.swing.Timer(10,
@@ -259,7 +260,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jbLayoutSlowActionPerformed
 
 	private void jbQualityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbQualityActionPerformed
-		// TODO add your handling code here:
+
 		LayoutCritic c = new LayoutCritic(v.getAnimator().getLayoutManager()
 				.getNodes());
 		log.info("q = " + c.getQuality());
@@ -303,7 +304,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jbAddEActionPerformed
 
 	private void jbAddVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddVActionPerformed
-		// TODO add your handling code here:
+
 		int n = Integer.parseInt(jcbAddRemNum.getSelectedItem().toString());
 		StructureChangeEvent ev = new StructureChangeEvent(rg);
 		log.debug("n = " + n);
@@ -329,7 +330,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jbAddVActionPerformed
 
 	private void jbReInitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbReInitActionPerformed
-		// TODO add your handling code here:
+
 		LayoutManager layout = v.getAnimator().getLayoutManager();
 		v.getAnimator().getLayoutCache().clear();
 		layout.setNodes(v);
@@ -337,7 +338,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jbReInitActionPerformed
 
 	private void jbLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLoadActionPerformed
-		// TODO add your handling code here:
+
 		try {
 			File f = new File(jtfFilename.getText());
 			BufferedReader bfr = new BufferedReader(new FileReader(f));
@@ -362,7 +363,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jbLoadActionPerformed
 
 	private void jbSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSaveActionPerformed
-		// TODO add your handling code here:
+
 		try {
 			File f = new File(jtfFilename.getText());
 			FileWriter fw = new FileWriter(f);
@@ -381,7 +382,7 @@ public class ViewTester extends javax.swing.JFrame {
 	private LayoutAlgorithm oldAlgorithm = null;
 
 	private void jcbLayoutComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbLayoutComboActionPerformed
-		// TODO add your handling code here:
+
 		LayoutManager layout = v.getAnimator().getLayoutManager();
 		layout.setAlgorithm((LayoutAlgorithm) ll.get(jcbLayoutCombo
 				.getSelectedItem()));
@@ -394,7 +395,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jcbLayoutComboActionPerformed
 
 	private void jbRunLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRunLayoutActionPerformed
-		// TODO add your handling code here:
+
 		LayoutManager layout = v.getAnimator().getLayoutManager();
 		layout.run();
 		layout.applyChanges(v);
@@ -412,7 +413,7 @@ public class ViewTester extends javax.swing.JFrame {
 	}//GEN-LAST:event_jbLayoutOnceActionPerformed
 
 	private void jbRandomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRandomizeActionPerformed
-		// TODO add your handling code here:
+
 		String s = jtfRandomParams.getText();
 		int n = Integer.parseInt(s.substring(0, s.indexOf(',')));
 		int m = Integer.parseInt(s.substring(s.indexOf(',') + 1));

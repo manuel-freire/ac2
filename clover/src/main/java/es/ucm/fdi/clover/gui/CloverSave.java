@@ -89,6 +89,7 @@ import org.jdom2.output.XMLOutputter;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class CloverSave {
 
 	private static Log log = LogFactory.getLog(CloverSave.class);

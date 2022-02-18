@@ -46,6 +46,7 @@ import java.util.ArrayList;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class BaseGraph extends DefaultDirectedWeightedGraph implements
 		StructureChangeListener {
 

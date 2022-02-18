@@ -25,11 +25,10 @@ package es.ucm.fdi.clover.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -51,6 +50,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class Slice extends HashSet<Cluster> {
 
 	private Log log = LogFactory.getLog(Slice.class);

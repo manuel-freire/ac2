@@ -55,6 +55,7 @@ import org.jgrapht.traverse.BreadthFirstIterator;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class ClusteredGraph extends BaseGraph implements
 		HierarchyChangeListener, ClusteringChangeListener {
 

@@ -28,6 +28,7 @@ import org.jgrapht.EdgeFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 public class DefaultEdgeFactory implements EdgeFactory {
 
 	/** Creates a new instance of DefaultEdgeFactory */

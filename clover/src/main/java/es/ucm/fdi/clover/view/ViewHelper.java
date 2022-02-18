@@ -40,6 +40,7 @@ import org.jgraph.graph.Port;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class ViewHelper {
 
 	public static BaseView getView(MouseEvent e) {

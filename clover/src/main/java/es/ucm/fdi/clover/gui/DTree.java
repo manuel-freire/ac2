@@ -56,6 +56,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class DTree extends JTree {
 
 	private static Log log = LogFactory.getLog(DTree.class);
@@ -369,7 +370,6 @@ public class DTree extends JTree {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		// TODO code application logic here
 		JFrame jf = new JFrame();
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.getContentPane().add(

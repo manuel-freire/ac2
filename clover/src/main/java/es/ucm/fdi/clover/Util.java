@@ -22,13 +22,26 @@
  */
 package es.ucm.fdi.clover;
 
-import java.io.*;
-import java.util.*;
-import java.util.zip.*;
-import java.util.regex.*;
+import java.awt.Component;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  * Miscelaneous utilities that are used throughout the project.
@@ -151,6 +164,7 @@ public class Util {
 	 * Ripped off a web example.
 	 * Does not create any directories included in 'base'
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void createZip(File ficheroZip, ArrayList archivos,
 			File baseDir) throws Exception {
 		FileOutputStream fos = new FileOutputStream(ficheroZip);

@@ -22,10 +22,6 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
-import javax.swing.*;
-import java.util.Properties;
-import java.awt.*;
-
 import es.ucm.fdi.clover.gui.BaseInterface;
 
 /**

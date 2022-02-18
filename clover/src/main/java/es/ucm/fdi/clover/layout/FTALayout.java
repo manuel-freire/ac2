@@ -35,6 +35,7 @@ import java.util.TreeSet;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class FTALayout extends LayoutAlgorithm {
 
 	public static final int MIN_SEP = 5;

@@ -150,36 +150,5 @@ public class CGTest extends JFrame {
 
 	public static void main(String args[]) {
 		new CGTest();
-		if (false) {
-			TestGraph tg = new TestGraph(
-					"([1, 2, 3, 4, 5, 6], [{1,2}, {1,3}, {1,4}, {4,5}, {4,6}])");
-			ClusterHierarchy ch = new ClusterHierarchy(tg, "1",
-					new SimpleRuleClusterer());
-			log.info("Hierarchy OK");
-			log.debug(ch.getRoot().dump());
-			Cluster root = ch.getRoot();
-			Cluster c = root.clusterForVertex("5").getParentCluster();
-
-			ClusteredGraph cg = new ClusteredGraph(ch);
-			ClusteringChangeEvent cce;
-			cce = cg.createExpandEvent(root.getVertex());
-			//        cg.clusteringChangePerformed(cce);
-			//        log.info("Expanded root: \n\t"+cg);
-			//        log.info("Expanded root: \n\t"+cce.getDescription());
-			//        cce = cg.createExpandEvent(c.getVertex());
-			cce.addExpanded(c);
-			cg.clusteringChangePerformed(cce);
-			log.info("Expanded again: \n\t" + cg);
-			log.info("Expanded again: \n\t" + cce.getDescription());
-			cce = cg.createCollapseEvent(c.getVertex());
-			//        cg.clusteringChangePerformed(cce);
-			//        log.info("Collapsed again: \n\t"+cg);
-			//        log.info("Collapsed again: \n\t"+cce.getDescription());
-			//        cce = cg.createCollapseEvent(root.getVertex());
-			cce.addCollapsed(root);
-			cg.clusteringChangePerformed(cce);
-			log.info("Collapsed to start: \n\t" + cg);
-			log.info("Collapsed to start: \n\t" + cce.getDescription());
-		}
 	}
 }

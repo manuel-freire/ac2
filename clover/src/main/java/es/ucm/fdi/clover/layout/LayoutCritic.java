@@ -110,7 +110,7 @@ public class LayoutCritic {
 	}
 
 	public int getNodeOverlaps() {
-		Node a, b, c, d;
+		Node a, b;
 		Rectangle2D ra = new Rectangle2D.Float();
 		Rectangle2D rb = new Rectangle2D.Float();
 
@@ -133,7 +133,7 @@ public class LayoutCritic {
 	}
 
 	public int getEdgeNodeCrossings() {
-		Node a, b, c, d;
+		Node a, b, c;
 		Rectangle2D ra = new Rectangle2D.Float();
 		Line2D line = new Line2D.Float();
 

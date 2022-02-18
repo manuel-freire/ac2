@@ -37,6 +37,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class SliceGraph extends DefaultDirectedGraph {
 
 	private Log log = LogFactory.getLog(SliceGraph.class);

@@ -22,10 +22,12 @@
  */
 package es.ucm.fdi.clover.layout;
 
-import java.awt.geom.*;
-import java.awt.Rectangle;
 import java.awt.Point;
-import java.util.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 /**
  * A very simple greedy layout. Adds a 'box' (a connected component of the graph)
@@ -88,10 +90,8 @@ public class SimpleBoxLayout extends LayoutAlgorithm {
 		}
 
 		// initial point, and inline point comparator
-		points = new TreeSet<Point2D>(new Comparator() {
-			public int compare(Object o1, Object o2) {
-				Point2D a = (Point2D) o1;
-				Point2D b = (Point2D) o2;
+		points = new TreeSet<Point2D>(new Comparator<Point2D>() {
+			public int compare(Point2D a, Point2D b) {
 				return (int) ((a.getX() * a.getX() + a.getY() * a.getY()) - (b
 						.getX()
 						* b.getX() + b.getY() * b.getY()));
@@ -109,7 +109,6 @@ public class SimpleBoxLayout extends LayoutAlgorithm {
 		CompBox box = boxes.get(currentBox);
 
 		// find place for current component
-		Point2D p0 = null;
 		Rectangle2D b = box.bounds;
 		for (Point2D p : points) {
 			// System.err.println("considering "+p+"... ");

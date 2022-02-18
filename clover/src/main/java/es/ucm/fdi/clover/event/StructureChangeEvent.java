@@ -35,6 +35,7 @@ import java.util.ArrayList;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class StructureChangeEvent {
 
 	/** type of change that this event describes */

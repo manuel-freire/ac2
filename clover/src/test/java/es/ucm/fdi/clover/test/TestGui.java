@@ -47,6 +47,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class TestGui extends BaseInterface {
 
 	private static Log log = LogFactory.getLog(TestGui.class);

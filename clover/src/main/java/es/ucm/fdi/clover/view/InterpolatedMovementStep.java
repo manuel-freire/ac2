@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.VertexView;
 
 /**
  * This animation step will move a series of nodes from one position to another,
@@ -37,6 +36,7 @@ import org.jgraph.graph.VertexView;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class InterpolatedMovementStep implements AnimationStep {
 
 	protected long duration;

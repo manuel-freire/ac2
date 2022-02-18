@@ -35,6 +35,7 @@ import es.ucm.fdi.clover.model.Edge;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public class TestAddVertexAction extends BaseAction {
 
 	public TestAddVertexAction(BaseInterface app) {

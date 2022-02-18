@@ -22,10 +22,7 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
-import es.ucm.fdi.clover.view.ViewHelper;
-import javax.swing.*;
 import es.ucm.fdi.clover.gui.BaseInterface;
-import org.jgraph.graph.DefaultGraphCell;
 
 /**
  * Freezes a cell into its position. This action is a toggle (invoking twice

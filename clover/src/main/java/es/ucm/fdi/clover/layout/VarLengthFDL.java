@@ -149,7 +149,7 @@ public class VarLengthFDL extends LayoutAlgorithm {
 	 */
 	protected void calculateAttraction() {
 		Node n, m;
-		float length, attF, dx, dy, d;
+		float attF, dx, dy, d;
 		for (int i = 0; i < N.length; i++) {
 			n = N[i];
 

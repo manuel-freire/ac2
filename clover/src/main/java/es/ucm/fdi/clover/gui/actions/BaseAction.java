@@ -46,6 +46,7 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public abstract class BaseAction extends AbstractAction {
 
 	private Log log = LogFactory.getLog(BaseAction.class);

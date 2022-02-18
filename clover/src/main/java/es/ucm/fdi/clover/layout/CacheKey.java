@@ -42,6 +42,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class CacheKey {
 
 	private Log log = LogFactory.getLog(CacheKey.class);

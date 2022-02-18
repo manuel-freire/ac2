@@ -57,7 +57,7 @@ public class LayoutCache {
 	 * Internal class that represents a cached view; cached views always use
 	 * layout coordinates.
 	 */
-	private static class SavedLayout implements Comparable {
+	private static class SavedLayout implements Comparable<SavedLayout> {
 		protected int lastAccess;
 		protected CacheKey key;
 		protected HashMap<Object, Rectangle2D> data;
@@ -84,8 +84,8 @@ public class LayoutCache {
 			return data;
 		}
 
-		public int compareTo(Object o) {
-			return lastAccess - ((SavedLayout) o).lastAccess;
+		public int compareTo(SavedLayout o) {
+			return lastAccess - o.lastAccess;
 		}
 	}
 

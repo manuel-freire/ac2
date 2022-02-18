@@ -22,15 +22,13 @@
  */
 package es.ucm.fdi.clover.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Stack;
-import org.jgrapht.DirectedGraph;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jgrapht.DirectedGraph;
 
 /**
  * A DepthFirstIterator that is not cross-component, is start-vertex enabled,
@@ -39,6 +37,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class DepthFirstIterator implements Iterator {
 
 	private Log log = LogFactory.getLog(DepthFirstIterator.class);

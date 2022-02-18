@@ -45,12 +45,13 @@ import org.apache.commons.logging.LogFactory;
  * clusters. Also, the ClusterGraph only keeps "visible" the vertices/edges that should
  * be visible - the rest sleep safely out of view in the ClusterHierarchy.
  *
- * Note that ClusteringHierarchys listen to changes from the BaseGraph,
+ * Note that ClusteringHierarchies listen to changes from the BaseGraph,
  * and that is how the listening ClusteredGraphs get to know of these
  * changes.
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class ClusterHierarchy implements StructureChangeListener,
 		HierarchyChangeListener {
 
@@ -283,7 +284,6 @@ public class ClusterHierarchy implements StructureChangeListener,
 		HashSet<Cluster> s2 = new HashSet<Cluster>();
 
 		// initialize old base slice, and s1
-		Set<Cluster> oldLeaves = new HashSet<Cluster>();
 		for (Object v : root.getLeafVertices()) {
 			Cluster c = root.getLastClusterFor(v);
 			// add to slice, unless it was removed in the last 'sce''

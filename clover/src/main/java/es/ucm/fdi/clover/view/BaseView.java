@@ -22,13 +22,10 @@
  */
 package es.ucm.fdi.clover.view;
 
-import es.ucm.fdi.clover.gui.CloverSave;
-import es.ucm.fdi.clover.model.ViewGraph;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -36,28 +33,30 @@ import java.awt.geom.Point2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+
 import javax.swing.AbstractAction;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
-
 import javax.swing.ToolTipManager;
-import org.jgraph.JGraph;
 
-import es.ucm.fdi.clover.model.BaseGraph;
-import es.ucm.fdi.clover.model.Edge;
 import org.jdom2.Element;
+import org.jgraph.JGraph;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.GraphCell;
 import org.jgraph.graph.GraphConstants;
+
+import es.ucm.fdi.clover.gui.CloverSave;
+import es.ucm.fdi.clover.model.BaseGraph;
+import es.ucm.fdi.clover.model.Edge;
+import es.ucm.fdi.clover.model.ViewGraph;
 
 /**
  * This is what you get to see and interact with in Clover. All UI stuff is to
@@ -66,6 +65,7 @@ import org.jgraph.graph.GraphConstants;
  *
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 public class BaseView extends JGraph implements Printable {
 
 	public static final String scaleProperty = "scaleProperty";
@@ -391,11 +391,5 @@ public class BaseView extends JGraph implements Printable {
 			setLayoutZoom(f);
 		else
 			setScale(f);
-
-		String[] p = e.getAttributeValue("topCorner").split(",");
-
-		//      FIXME: cannot be called unless parent has been set...        
-		//        ((JViewport)getParent()).setViewPosition(
-		//                new Point((int)Float.parseFloat(p[0]), (int)Float.parseFloat(p[1])));        
 	}
 }

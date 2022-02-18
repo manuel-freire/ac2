@@ -34,6 +34,7 @@ import java.util.HashSet;
  *
  * @author  manu
  */
+@SuppressWarnings("all")
 public class BoundVarLengthFDL extends VarLengthFDL {
 
 	private Log log = LogFactory.getLog(BoundVarLengthFDL.class);

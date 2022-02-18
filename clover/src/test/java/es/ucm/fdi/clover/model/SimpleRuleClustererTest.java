@@ -33,6 +33,7 @@ import java.util.Collection;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class SimpleRuleClustererTest extends TestCase {
 
 	private TestGraph tg;

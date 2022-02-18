@@ -22,24 +22,19 @@
  */
 package es.ucm.fdi.clover.test;
 
-import es.ucm.fdi.clover.model.ViewGraph;
-import es.ucm.fdi.clover.model.BaseGraph;
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+
 import javax.swing.BorderFactory;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.alg.ConnectivityInspector;
-import org.jgrapht.ext.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.*;
 
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
+import org.jgrapht.ext.JGraphModelAdapter;
 
-import java.util.*;
+import es.ucm.fdi.clover.model.BaseGraph;
+import es.ucm.fdi.clover.model.ViewGraph;
 
 /**
  * A graph that is generated 'randomly' with a given number of vertices and edges.
@@ -47,6 +42,7 @@ import java.util.*;
  *
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 public class TestViewGraph extends ViewGraph {
 
 	/**

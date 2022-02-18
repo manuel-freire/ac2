@@ -31,7 +31,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +55,7 @@ import org.jgraph.graph.GraphConstants;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class Node {
 
 	public float x, y, x0, y0, w, h, dx, dy;
@@ -161,8 +161,7 @@ public class Node {
 	public static Node[] loadNodes(Node[] N, BaseView view, Node[] oldBounds) {
 		ConnectivityInspector ci = view.getViewGraph()
 				.getConnectivityInspector();
-		return loadNodes(N, view.getViewGraph(), view, view.getViewGraph()
-				.getConnectivityInspector(), oldBounds);
+		return loadNodes(N, view.getViewGraph(), view, ci, oldBounds);
 	}
 
 	/**
@@ -209,7 +208,7 @@ public class Node {
 				bounds = v.getBounds();
 				N[i] = new Node(v, bounds, 0, false, layoutZoom); //FIXME: fix broken freeze
 			}
-			objectToNum.put(o, new Integer(i));
+			objectToNum.put(o, Integer.valueOf(i));
 		}
 
 		// connectivity

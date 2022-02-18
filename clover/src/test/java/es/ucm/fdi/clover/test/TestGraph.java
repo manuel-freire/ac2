@@ -22,27 +22,16 @@
  */
 package es.ucm.fdi.clover.test;
 
+import java.awt.Rectangle;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import org.jgrapht.alg.CycleDetector;
+
+import es.ucm.fdi.clover.event.StructureChangeEvent;
 import es.ucm.fdi.clover.model.BaseGraph;
 import es.ucm.fdi.clover.model.Edge;
-import es.ucm.fdi.clover.event.StructureChangeEvent;
-import java.awt.Color;
-import java.awt.Rectangle;
-import javax.swing.BorderFactory;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.alg.ConnectivityInspector;
-import org.jgrapht.alg.CycleDetector;
-import org.jgrapht.alg.DijkstraShortestPath;
-
-import org.jgrapht.ext.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.*;
-
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.AttributeMap;
-
-import java.util.*;
 
 /**
  * A graph that is generated 'randomly' with a given number of vertices and edges.
@@ -50,6 +39,7 @@ import java.util.*;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class TestGraph extends BaseGraph {
 
 	private int nVertices;

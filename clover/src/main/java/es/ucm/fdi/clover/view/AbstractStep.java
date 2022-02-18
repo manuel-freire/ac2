@@ -22,17 +22,13 @@
  */
 package es.ucm.fdi.clover.view;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgraph.graph.VertexView;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jgraph.graph.GraphCell;
 
 /**
  * Animates a smooth change in a series of attributes for a series of cells. 
@@ -42,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 public abstract class AbstractStep implements AnimationStep {
 
 	protected Log log = LogFactory.getLog(AbstractStep.class);

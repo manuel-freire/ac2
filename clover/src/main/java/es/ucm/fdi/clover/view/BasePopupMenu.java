@@ -22,23 +22,20 @@
  */
 package es.ucm.fdi.clover.view;
 
-import es.ucm.fdi.clover.gui.BaseInterface;
-import es.ucm.fdi.clover.gui.actions.ContextAwareAction;
-import es.ucm.fdi.clover.model.BaseGraph;
-import es.ucm.fdi.clover.model.Cluster;
-import es.ucm.fdi.clover.model.ClusteredGraph;
-import es.ucm.fdi.clover.model.Edge;
 import java.awt.Component;
-
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.HashSet;
+
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.jgraph.graph.DefaultGraphCell;
+import es.ucm.fdi.clover.gui.BaseInterface;
+import es.ucm.fdi.clover.gui.actions.ContextAwareAction;
+import es.ucm.fdi.clover.model.Cluster;
+import es.ucm.fdi.clover.model.ClusteredGraph;
+import es.ucm.fdi.clover.model.Edge;
 
 /**
  * This is the base popup menu for clover applications. 
@@ -50,6 +47,7 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author mfreire
  */
+@SuppressWarnings("unchecked")
 public class BasePopupMenu extends JPopupMenu {
 
 	/** base app; needed to get actions */
@@ -115,8 +113,6 @@ public class BasePopupMenu extends JPopupMenu {
 	 * Triggers the default item for this object
 	 */
 	public void triggerDefaultAction() {
-		Object o = getObject();
-
 		if (isEmpty) {
 			triggerFirst(new String[] { "center" });
 		} else if (isCluster && canExpand) {
@@ -205,12 +201,10 @@ public class BasePopupMenu extends JPopupMenu {
 			ClusterView v = app.getView();
 			ClusteredGraph cg = (ClusteredGraph) v.getBase();
 
-			boolean canCollapse = true;
 			// can expand only if self or parent currently visible
 			Cluster c = ((Cluster.Vertex) o).getCluster();
 			if (cg.getSlice().containsClusterOrAncestor(c)) {
 				this.add(app.getAction("expand cluster"));
-				canCollapse = false;
 			}
 
 			// can collapse only if children visible, but *not* self

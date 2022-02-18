@@ -22,16 +22,10 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
+import es.ucm.fdi.clover.gui.BaseInterface;
 import es.ucm.fdi.clover.model.Cluster;
 import es.ucm.fdi.clover.model.ClusteredGraph;
 import es.ucm.fdi.clover.view.ClusterView;
-import javax.swing.*;
-import java.util.Properties;
-
-import es.ucm.fdi.clover.gui.BaseInterface;
-import org.jgraph.graph.DefaultGraphCell;
-
-import es.ucm.fdi.clover.gui.BaseInterface;
 
 /**
  * Expand the current cluster, which must be visible (or have a visible ancestor).

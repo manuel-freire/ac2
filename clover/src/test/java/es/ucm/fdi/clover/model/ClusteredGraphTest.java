@@ -22,19 +22,18 @@
  */
 package es.ucm.fdi.clover.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import es.ucm.fdi.clover.event.ClusteringChangeEvent;
 import es.ucm.fdi.clover.event.HierarchyChangeEvent;
 import es.ucm.fdi.clover.event.HierarchyChangeListener;
 import es.ucm.fdi.clover.event.StructureChangeEvent;
 import es.ucm.fdi.clover.event.StructureChangeListener;
 import es.ucm.fdi.clover.test.TestGraph;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -43,6 +42,7 @@ import junit.framework.TestSuite;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class ClusteredGraphTest extends TestCase {
 
 	private TestGraph tg;
@@ -417,119 +417,6 @@ public class ClusteredGraphTest extends TestCase {
 			this.sce = evt;
 		}
 	}
-
-	//    /**
-	//     * Test of clusteringChangePerformed method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testClusteringChangePerformed() {
-	//        System.out.println("clusteringChangePerformed");
-	//        
-	//        ClusteringChangeEvent evt = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        instance.clusteringChangePerformed(evt);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-
-	//    /**
-	//     * Test of setHierarchy method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testSetHierarchy() {
-	//        System.out.println("setHierarchy");
-	//        
-	//        ClusterHierarchy hierarchy = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        instance.setHierarchy(hierarchy);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-
-	//    /**
-	//     * Test of prepareCollapse method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testPrepareCollapse() {
-	//        System.out.println("prepareCollapse");
-	//        
-	//        Cluster c = null;
-	//        StructureChangeEvent sce = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        instance.prepareCollapse(c, sce);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-
-	//    /**
-	//     * Test of prepareExpand method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testPrepareExpand() {
-	//        System.out.println("prepareExpand");
-	//        
-	//        Cluster c = null;
-	//        StructureChangeEvent sce = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        instance.prepareExpand(c, sce);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-	//
-	//    /**
-	//     * Test of createCollapseEvent method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testCreateCollapseEvent() {
-	//        System.out.println("createCollapseEvent");
-	//        
-	//        Object v = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        ClusteringChangeEvent expResult = null;
-	//        ClusteringChangeEvent result = instance.createCollapseEvent(v);
-	//        assertEquals(expResult, result);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-
-	//    /**
-	//     * Test of createExpandEvent method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testCreateExpandEvent() {
-	//        System.out.println("createExpandEvent");
-	//        
-	//        Object v = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        ClusteringChangeEvent expResult = null;
-	//        ClusteringChangeEvent result = instance.createExpandEvent(v);
-	//        assertEquals(expResult, result);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-
-	//    /**
-	//     * Test of createMakeVisibleEvent method, of class eps.clover.model.ClusteredGraph.
-	//     */
-	//    public void testCreateMakeVisibleEvent() {
-	//        System.out.println("createMakeVisibleEvent");
-	//        
-	//        Object v = null;
-	//        ClusteredGraph instance = null;
-	//        
-	//        ClusteringChangeEvent expResult = null;
-	//        ClusteringChangeEvent result = instance.createMakeVisibleEvent(v);
-	//        assertEquals(expResult, result);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
 
 	/**
 	 * Test of createPoIChangeEvent method, of class eps.clover.model.ClusteredGraph.

@@ -22,14 +22,13 @@
  */
 package es.ucm.fdi.clover.test;
 
-import es.ucm.fdi.clover.model.DepthFirstIterator;
 import es.ucm.fdi.clover.model.SimpleRuleClusterer;
-import es.ucm.fdi.clover.test.TestGraph;
 
 /**
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class ClusteringTester {
 
 	private static boolean isRunning = true;

@@ -53,6 +53,7 @@ import org.jgraph.graph.GraphConstants;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class Highlighter {
 
 	private Log log = LogFactory.getLog(Highlighter.class);

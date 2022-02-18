@@ -22,13 +22,7 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
-import es.ucm.fdi.clover.model.ClusterViewGraph;
-import es.ucm.fdi.clover.model.ClusteredGraph;
-import es.ucm.fdi.clover.view.ClusterView;
-import javax.swing.*;
 import es.ucm.fdi.clover.gui.BaseInterface;
-
-import java.util.*;
 
 /**
  * Action that creates a new view with the same settings as this one.
@@ -43,7 +37,6 @@ public class CreateViewAction extends BaseAction {
 	}
 
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		ClusteredGraph cg = (ClusteredGraph) getView(e).getBase();
 		getApp(e).createNewGraphView();
 	}
 }

@@ -22,11 +22,7 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
-import javax.swing.*;
-import java.util.Properties;
-
 import es.ucm.fdi.clover.gui.BaseInterface;
-import org.jgraph.graph.DefaultGraphCell;
 
 /**
  * Increase cluster size (and therefore, decrease cluster number)

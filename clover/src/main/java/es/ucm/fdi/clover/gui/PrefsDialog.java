@@ -236,11 +236,9 @@ public class PrefsDialog extends javax.swing.JDialog {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jsFocusSizeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jsFocusSizeStateChanged
-		// TODO add your handling code here:
 	}//GEN-LAST:event_jsFocusSizeStateChanged
 
 	private void jsClusterNumStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jsClusterNumStateChanged
-		// TODO add your handling code here:
 	}//GEN-LAST:event_jsClusterNumStateChanged
 
 	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

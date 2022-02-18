@@ -30,6 +30,7 @@ import java.util.Map;
  *
  * @author mfreire
  */
+@SuppressWarnings("rawtypes")
 public abstract class TwoPhaseStep implements AnimationStep {
 
 	private static AnimationStep dummyStep = new Dummy();

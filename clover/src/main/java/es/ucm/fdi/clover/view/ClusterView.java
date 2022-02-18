@@ -57,6 +57,7 @@ import org.jgraph.graph.DefaultGraphModel;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class ClusterView extends BaseView implements ClusteringChangeListener {
 
 	private Log log = LogFactory.getLog(ClusterView.class);

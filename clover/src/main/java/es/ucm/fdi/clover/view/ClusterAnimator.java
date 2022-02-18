@@ -22,6 +22,24 @@
  */
 package es.ucm.fdi.clover.view;
 
+import java.awt.Color;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphCell;
+import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.VertexView;
+
 import es.ucm.fdi.clover.event.ClusteringChangeEvent;
 import es.ucm.fdi.clover.event.ClusteringChangeListener;
 import es.ucm.fdi.clover.event.StructureChangeEvent;
@@ -30,24 +48,6 @@ import es.ucm.fdi.clover.model.BaseGraph;
 import es.ucm.fdi.clover.model.ClusteredGraph;
 import es.ucm.fdi.clover.model.Edge;
 import es.ucm.fdi.clover.model.ViewGraph;
-import es.ucm.fdi.clover.view.InterpolatedMovementStep.AVertex;
-import java.awt.Color;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-
-import javax.swing.BorderFactory;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.GraphCell;
-import org.jgraph.graph.GraphConstants;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jgraph.graph.VertexView;
 
 /**
  * A ClusterAnimator understands and animates ClusteringEvents. These are emmited by 
@@ -55,6 +55,7 @@ import org.jgraph.graph.VertexView;
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class ClusterAnimator extends Animator implements
 		ClusteringChangeListener {
 
@@ -354,7 +355,6 @@ public class ClusterAnimator extends Animator implements
 		public void terminate(Map changeMap) {
 			DefaultGraphCell co = ViewHelper.getVertexCell(view, oldFocus);
 			DefaultGraphCell cn = ViewHelper.getVertexCell(view, nextFocus);
-			Map map = new HashMap();
 
 			// hide old
 			if (co != null) {

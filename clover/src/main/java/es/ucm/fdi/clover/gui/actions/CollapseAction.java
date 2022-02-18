@@ -22,14 +22,10 @@
  */
 package es.ucm.fdi.clover.gui.actions;
 
+import es.ucm.fdi.clover.gui.BaseInterface;
 import es.ucm.fdi.clover.model.Cluster;
 import es.ucm.fdi.clover.model.ClusteredGraph;
 import es.ucm.fdi.clover.view.ClusterView;
-import javax.swing.*;
-import java.util.Properties;
-
-import es.ucm.fdi.clover.gui.BaseInterface;
-import org.jgraph.graph.DefaultGraphCell;
 
 /**
  * Collapse a cluster, which must have visible children (and therefore not

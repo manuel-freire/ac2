@@ -22,10 +22,10 @@
  */
 package es.ucm.fdi.clover.layout;
 
-import java.awt.geom.*;
-import java.awt.Rectangle;
 import java.awt.Point;
-import java.util.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 /**
  * Layout that separates components vertically and is very fast. Ideal before

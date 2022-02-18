@@ -48,6 +48,7 @@ import org.jgrapht.graph.ListenableDirectedWeightedGraph;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class ViewGraph extends ListenableDirectedWeightedGraph implements
 		JGraphModelAdapter.CellFactory {
 

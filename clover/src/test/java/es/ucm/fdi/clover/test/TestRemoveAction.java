@@ -35,6 +35,7 @@ import es.ucm.fdi.clover.model.Edge;
  *
  * @author  mfreire
  */
+@SuppressWarnings("all")
 public class TestRemoveAction extends BaseAction {
 
 	public TestRemoveAction(BaseInterface app) {

@@ -50,8 +50,6 @@ public class ClusterTreeModel extends DefaultTreeModel implements
 
 	private Log log = LogFactory.getLog(ClusterTreeModel.class);
 
-	private ArrayList listeners = new ArrayList();
-
 	/**
 	 * Creates a new instance of ClusterTreeModel
 	 */

@@ -23,19 +23,20 @@
 package es.ucm.fdi.clover.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import junit.framework.*;
+import java.util.Collection;
+
 import es.ucm.fdi.clover.event.HierarchyChangeEvent;
 import es.ucm.fdi.clover.event.StructureChangeEvent;
 import es.ucm.fdi.clover.test.TestGraph;
-import java.util.Collection;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  *
  * @author mfreire
  */
+@SuppressWarnings("all")
 public class ClusterHierarchyTest extends TestCase {
 	private TestGraph tg;
 	private ClusterHierarchy ch;
@@ -175,67 +176,4 @@ public class ClusterHierarchyTest extends TestCase {
 		assertTrue(c7.localOutgoingNeighbors().contains(c10));
 		System.err.println(c7.dump());
 	}
-
-	//
-	//    /**
-	//     * Test of save method, of class eps.clover.model.ClusterHierarchy.
-	//     */
-	//    public void testSave() {
-	//        System.out.println("save");
-	//        
-	//        Element e = null;
-	//        ClusterHierarchy instance = null;
-	//        
-	//        instance.save(e);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-	//
-	//    /**
-	//     * Test of restore method, of class eps.clover.model.ClusterHierarchy.
-	//     */
-	//    public void testRestore() {
-	//        System.out.println("restore");
-	//        
-	//        Element e = null;
-	//        ClusterHierarchy instance = null;
-	//        
-	//        instance.restore(e);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-	//
-	//    /**
-	//     * Test of createChangeEventFor method, of class eps.clover.model.ClusterHierarchy.
-	//     */
-	//    public void testCreateChangeEventFor() {
-	//        System.out.println("createChangeEventFor");
-	//        
-	//        Cluster newClustering = null;
-	//        StructureChangeEvent structureChange = null;
-	//        HierarchyChangeEvent hierarchyChange = null;
-	//        ClusterHierarchy instance = null;
-	//        
-	//        instance.createChangeEventFor(newClustering, structureChange, hierarchyChange);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }
-	//
-	//    /**
-	//     * Test of hierarchyChangePerformed method, of class eps.clover.model.ClusterHierarchy.
-	//     */
-	//    public void testHierarchyChangePerformed() {
-	//        System.out.println("hierarchyChangePerformed");
-	//        
-	//        HierarchyChangeEvent evt = null;
-	//        ClusterHierarchy instance = null;
-	//        
-	//        instance.hierarchyChangePerformed(evt);
-	//        
-	//        // TODO review the generated test code and remove the default call to fail.
-	//        fail("The test case is a prototype.");
-	//    }     
 }
