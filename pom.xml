@@ -30,27 +30,30 @@
         <defaultGoal>install</defaultGoal>
         <plugins>
             <!-- 
-                Manage the licenses in the source files. 
-                Note: this is horrible at updating existing licenses, 
-                and also fails at respecting exclusions. Will not use again.
+                license headers in the source files. 
+                This is horrible at updating existing licenses, and also ignores exclusions. 
+                Use ONLY to detect old/missing headers
             -->
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <version>4.1</version>
                 <configuration>
+                    <dependencyEnforce>false</dependencyEnforce>
                     <licenseSets>
                         <licenseSet>
                             <header>${maven.multiModuleProjectDirectory}/etc/HEADER.txt</header>
                             <excludes>
-                                <exclude>jedit/**.*</exclude>
-                                <exclude>lexers/**.*</exclude>
-                                <exclude>resources/**.*</exclude>
+                                <exclude>Dockerfile</exclude>
+                                <exclude>**/tokenmarker/**.*</exclude>
+                                <exclude>**/jedit/**.*</exclude>
+                                <exclude>**/lexers/**.*</exclude>
+                                <exclude>**/resources/**.*</exclude>
                                 <exclude>*.*</exclude>
                                 <exclude>**/.*</exclude>
                                 <exclude>**/*.txt</exclude>
                                 <exclude>**/*.form</exclude>
-                                <exclude>**/*.g</exclude>
+                                <exclude>**/*.g4</exclude>
                                 <exclude>**/*.xml</exclude>
                                 <exclude>**/*.properties</exclude>
                             </excludes>
@@ -62,14 +65,14 @@
                         <id>check-headers</id>
                         <phase>verify</phase>
                         <goals>
-                            <!-- <goal>format</goal> -->
+                            <!-- <goal>format</goal> do NOT enable - results in duplicate headers -->
                             <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
    
-            <!-- Java formatter -->
+            <!-- formatter -->
             <plugin>
                 <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
                 <artifactId>maven-java-formatter-plugin</artifactId>
@@ -90,7 +93,7 @@
                 </executions>
             </plugin>
 
-            <!-- Compilation -->
+            <!-- compilation -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -160,5 +163,5 @@
                 <version>2.0.5</version>
             </dependency>               
         </dependencies>    
-    </dependencyManagement>
+    </dependencyManagement>   
 </project>
