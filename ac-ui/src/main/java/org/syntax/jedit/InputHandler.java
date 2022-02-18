@@ -20,6 +20,7 @@ import java.util.*;
  * 
  * 08/12/2002	Clipboard actions	(Oliver Henning)
  */
+@SuppressWarnings("all")
 public abstract class InputHandler extends KeyAdapter {
 	/**
 	 * If this client property is set to Boolean.TRUE on the text area,

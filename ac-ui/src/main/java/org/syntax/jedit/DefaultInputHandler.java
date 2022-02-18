@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
  * @author Slava Pestov
  * @version $Id: DefaultInputHandler.java,v 1.18 1999/12/13 03:40:30 sp Exp $
  */
+@SuppressWarnings("all")
 public class DefaultInputHandler extends InputHandler {
 	/**
 	 * Creates a new input handler with no key bindings defined.

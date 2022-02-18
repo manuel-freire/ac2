@@ -11,6 +11,7 @@ import java.awt.*;
  * @author Slava Pestov
  * @version $Id: SyntaxUtilities.java,v 1.9 1999/12/13 03:40:30 sp Exp $
  */
+@SuppressWarnings("all")
 public class SyntaxUtilities {
 	/**
 	 * Checks if a subregion of a <code>Segment</code> is equal to a

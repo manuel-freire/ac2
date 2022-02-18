@@ -8,6 +8,7 @@ import javax.swing.text.Segment;
  *
  * @author Artur Biesiadowski
  */
+@SuppressWarnings("all")
 public class EiffelTokenMarker extends TokenMarker {
 
 	public EiffelTokenMarker() {

@@ -1,7 +1,6 @@
 package org.syntax.jedit.tokenmarker;
 
 import org.syntax.jedit.*;
-import javax.swing.text.Segment;
 
 /**
  * Transact-SQL token marker.

@@ -41,6 +41,7 @@ import java.util.Vector;
  * @author Slava Pestov
  * @version $Id: JEditTextArea.java,v 1.36 1999/12/13 03:40:30 sp Exp $
  */
+@SuppressWarnings("all")
 public class JEditTextArea extends JComponent {
 	/**
 	 * Adding components with this name to the text area will place
