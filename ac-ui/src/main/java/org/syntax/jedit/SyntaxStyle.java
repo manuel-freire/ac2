@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 
 /**
  * A simple text style class. It can specify the color, italic flag,
@@ -79,8 +78,9 @@ public class SyntaxStyle {
 		lastFont = font;
 		lastStyledFont = new Font(font.getFamily(), (bold ? Font.BOLD : 0)
 				| (italic ? Font.ITALIC : 0), font.getSize());
-		fontMetrics = Toolkit.getDefaultToolkit()
-				.getFontMetrics(lastStyledFont);
+		fontMetrics = JEditTextArea
+				.getFontMetricsWithoutToolkit(lastStyledFont);
+
 		return fontMetrics;
 	}
 
