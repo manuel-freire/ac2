@@ -280,7 +280,7 @@ public class FileTreeNode implements MutableTreeNode, Comparable<FileTreeNode> {
 		return children.isEmpty();
 	}
 
-	public Enumeration children() {
+	public Enumeration<FileTreeNode> children() {
 		refresh();
 		return Collections.enumeration(children);
 	}

@@ -22,9 +22,10 @@
  */
 package es.ucm.fdi.clover.gui;
 
-import javax.swing.*;
-import javax.swing.event.*;
 import java.util.Properties;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *

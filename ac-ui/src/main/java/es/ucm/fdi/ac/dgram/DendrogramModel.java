@@ -278,8 +278,8 @@ public class DendrogramModel {
 	}
 
 	public static class SingleLinkage implements LinkageModel {
-		private ArrayList<DNode> leavesInA = new ArrayList(100);
-		private ArrayList<DNode> leavesInB = new ArrayList(100);
+		private ArrayList<DNode> leavesInA = new ArrayList<>(100);
+		private ArrayList<DNode> leavesInB = new ArrayList<>(100);
 
 		public float distance(DNode a, DNode b, float[][] dt,
 				Map<DNode, Integer> m) {
@@ -304,8 +304,8 @@ public class DendrogramModel {
 	}
 
 	public static class AverageLinkage implements LinkageModel {
-		private ArrayList<DNode> leavesInA = new ArrayList(100);
-		private ArrayList<DNode> leavesInB = new ArrayList(100);
+		private ArrayList<DNode> leavesInA = new ArrayList<>(100);
+		private ArrayList<DNode> leavesInB = new ArrayList<>(100);
 
 		public float distance(DNode a, DNode b, float[][] dt,
 				Map<DNode, Integer> m) {
@@ -332,8 +332,8 @@ public class DendrogramModel {
 	}
 
 	public static class CompleteLinkage implements LinkageModel {
-		private ArrayList<DNode> leavesInA = new ArrayList(100);
-		private ArrayList<DNode> leavesInB = new ArrayList(100);
+		private ArrayList<DNode> leavesInA = new ArrayList<>(100);
+		private ArrayList<DNode> leavesInB = new ArrayList<>(100);
 
 		public float distance(DNode a, DNode b, float[][] dt,
 				Map<DNode, Integer> m) {

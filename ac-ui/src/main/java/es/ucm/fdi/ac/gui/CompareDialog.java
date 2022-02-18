@@ -299,7 +299,7 @@ public class CompareDialog extends javax.swing.JDialog {
 		jLabel3.setText("Highlight");
 		jPanel4.add(jLabel3);
 
-		jcbNumSimilarities.setModel(new javax.swing.DefaultComboBoxModel(
+		jcbNumSimilarities.setModel(new javax.swing.DefaultComboBoxModel<>(
 				new String[] { "5", "10", "20", "30" }));
 		jcbNumSimilarities
 				.addActionListener(new java.awt.event.ActionListener() {

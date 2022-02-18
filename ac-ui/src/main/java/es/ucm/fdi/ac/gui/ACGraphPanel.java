@@ -394,7 +394,6 @@ public class ACGraphPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_jButton1ActionPerformed
 
 	private void jcbCenterItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbCenterItemStateChanged
-		// TODO add your handling code here:
 		Submission selected = null;
 		if (!jcbCenter.getSelectedItem().equals("(none)")) {
 			selected = (Submission) jcbCenter.getSelectedItem();
@@ -403,12 +402,10 @@ public class ACGraphPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_jcbCenterItemStateChanged
 
 	private void jsMaxDistanceStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jsMaxDistanceStateChanged
-		// TODO add your handling code here:
 		updateDistanceLabel(jsMaxDistance.getValueIsAdjusting());
 	}//GEN-LAST:event_jsMaxDistanceStateChanged
 
 	private void jbStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbStopActionPerformed
-		// TODO add your handling code here:        
 	}//GEN-LAST:event_jbStopActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
