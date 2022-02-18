@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import com.github.junrar.exception.RarException;
-import com.github.junrar.impl.FileVolumeManager;
 import com.github.junrar.rarfile.FileHeader;
 import com.github.junrar.Archive;
 import es.ucm.fdi.util.FileUtils;
@@ -60,13 +59,10 @@ public class RarFormat implements ArchiveFormat {
 
 	public void expand(File source, File destDir) throws IOException {
 		assertIsRar(source);
-		Archive a = null;
-		try {
-			a = new Archive(new FileVolumeManager(source));
+		try (Archive a = new Archive(source)) {
 			FileHeader fh = a.nextFileHeader();
 			while (fh != null) {
-				String name = FileUtils.toCanonicalPath(fh.getFileNameString()
-						.trim());
+				String name = FileUtils.toCanonicalPath(fh.getFileName().trim());
 				int lastSlash = name.lastIndexOf('/');
 				if (lastSlash > 0) {
 					// attempt to create dirs
@@ -85,9 +81,6 @@ public class RarFormat implements ArchiveFormat {
 			}
 		} catch (RarException re) {
 			throw new IOException("Cannot read rar file", re);
-		} finally {
-			if (a != null)
-				a.close();
 		}
 	}
 
@@ -95,21 +88,15 @@ public class RarFormat implements ArchiveFormat {
 		assertIsRar(source);
 
 		ArrayList<String> paths = new ArrayList<String>();
-		Archive a = null;
-		try {
-			a = new Archive(new FileVolumeManager(source));
+		try (Archive a = new Archive(source)) {
 			FileHeader fh = a.nextFileHeader();
 			while (fh != null) {
-				String name = FileUtils.toCanonicalPath(fh.getFileNameString()
-						.trim());
+				String name = FileUtils.toCanonicalPath(fh.getFileName().trim());
 				paths.add(name);
 				fh = a.nextFileHeader();
 			}
 		} catch (RarException re) {
 			throw new IOException("Cannot read rar file", re);
-		} finally {
-			if (a != null)
-				a.close();
 		}
 		return paths;
 	}
@@ -130,13 +117,10 @@ public class RarFormat implements ArchiveFormat {
 		assertIsRar(source);
 
 		boolean found = false;
-		Archive a = null;
-		try {
-			a = new Archive(new FileVolumeManager(source));
+		try (Archive a = new Archive(source)) {
 			FileHeader fh = a.nextFileHeader();
 			while (fh != null && !found) {
-				String name = FileUtils.toCanonicalPath(fh.getFileNameString()
-						.trim());
+				String name = FileUtils.toCanonicalPath(fh.getFileName().trim());
 				int lastSlash = name.lastIndexOf('/');
 				if (lastSlash > 0 && path.startsWith(name)) {
 					// attempt to create dirs
@@ -156,9 +140,6 @@ public class RarFormat implements ArchiveFormat {
 			}
 		} catch (RarException re) {
 			throw new IOException("Cannot read rar file", re);
-		} finally {
-			if (a != null)
-				a.close();
 		}
 		return found;
 	}
