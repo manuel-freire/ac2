@@ -65,10 +65,10 @@ public class ACViewGraph extends ViewGraph {
 		return (float) ((val - min) / (max - min));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void decorateVertexCell(DefaultGraphCell c) {
 		super.decorateVertexCell(c);
 		Submission s = (Submission) c.getUserObject();
-		ACModel acm = (ACModel) getBase();
 
 		c.getAttributes().put(ViewGraph.TOOLTIP, s.getId());
 
@@ -81,9 +81,10 @@ public class ACViewGraph extends ViewGraph {
 				"<html><b>" + s.getId() + "</b></html>");
 	}
 
+	@SuppressWarnings("unchecked")
 	public void decorateEdgeCell(DefaultEdge de) {
 		float sim = (Float) ((Edge) de.getUserObject()).getData();
-		de.getAttributes().put(ViewGraph.EDGE_LENGTH, new Float(1f - sim));
+		de.getAttributes().put(ViewGraph.EDGE_LENGTH, Float.valueOf(1f - sim));
 		de.getAttributes().put(ViewGraph.LABEL, "");
 		de.getAttributes().put(ViewGraph.TOOLTIP, "Distance: " + sim);
 

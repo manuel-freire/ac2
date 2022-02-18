@@ -66,9 +66,9 @@ public class ZipFormat implements ArchiveFormat {
 
 		ArrayList<String> paths = new ArrayList<String>();
         try (ZipFile zf = new ZipFile(source)) {
-            Enumeration entries = zf.getEntries();
+            Enumeration<ZipArchiveEntry> entries = zf.getEntries();
             while (entries.hasMoreElements()) {
-                ZipArchiveEntry e = (ZipArchiveEntry) entries.nextElement();
+                ZipArchiveEntry e = entries.nextElement();
 
                 String name = FileUtils.toCanonicalPath(e.getName());
                 if (e.isDirectory()) {
@@ -87,9 +87,9 @@ public class ZipFormat implements ArchiveFormat {
         try (ZipFile zf = new ZipFile(source)) {
             byte[] b = new byte[512];
 
-            Enumeration entries = zf.getEntries();
+            Enumeration<ZipArchiveEntry> entries = zf.getEntries();
             while (entries.hasMoreElements()) {
-                ZipArchiveEntry e = (ZipArchiveEntry)entries.nextElement();
+                ZipArchiveEntry e = entries.nextElement();
                 //log.debug("Extracting zip: "+ficheroZip.getName());
 
                 // baskslash-protection: zip format expects only 'fw' slashes
@@ -129,9 +129,9 @@ public class ZipFormat implements ArchiveFormat {
 			byte[] b = new byte[512];
 
 			//log.debug("Extracting zip: "+ficheroZip.getName());
-			Enumeration entries = zf.getEntries();
+			Enumeration<ZipArchiveEntry> entries = zf.getEntries();
 			while (entries.hasMoreElements()) {
-				ZipArchiveEntry e = (ZipArchiveEntry) entries.nextElement();
+				ZipArchiveEntry e = entries.nextElement();
 
 				// baskslash-protection: zip format expects only 'fw' slashes
 				String name = FileUtils.toCanonicalPath(e.getName());

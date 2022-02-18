@@ -71,8 +71,6 @@ public class HueRenderer extends JPanel implements HistogramRenderer {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, (int) (histogram.getCurrent() * w), h);
 
-		float base = 1.0f / histogram.getLevels();
-
 		// first & only pass
 		for (int i = 0; i < w; i++) {
 			// do not draw 'empty' bars

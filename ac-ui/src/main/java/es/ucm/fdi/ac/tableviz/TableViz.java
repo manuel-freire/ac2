@@ -41,9 +41,9 @@ public class TableViz extends JPanel {
 
 	private TableModel model;
 	private TableRenderer renderer;
-	private static HashMap<Class, TableRenderer> renderers = new HashMap<Class, TableRenderer>();
+	private static HashMap<Class<? extends TableRenderer>, TableRenderer> renderers = new HashMap<>();
 
-	public TableViz(TableModel model, Class renderClass) {
+	public TableViz(TableModel model, Class<? extends TableRenderer> renderClass) {
 		setModel(model);
 		setRenderer(renderClass);
 		if (renderer == null) {
@@ -94,10 +94,10 @@ public class TableViz extends JPanel {
 		return renderer;
 	}
 
-	public void setRenderer(Class c) {
+	public void setRenderer(Class<? extends TableRenderer> c) {
 		try {
 			if (!renderers.containsKey(c)) {
-				TableRenderer r = (TableRenderer) c.newInstance();
+				TableRenderer r = c.getConstructor().newInstance();
 				renderers.put(c, r);
 			}
 			renderer = renderers.get(c);

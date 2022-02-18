@@ -152,7 +152,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 				return o1.getId().compareToIgnoreCase(o2.getId());
 			}
 		});
-		DefaultComboBoxModel cbm = new DefaultComboBoxModel(ss);
+		DefaultComboBoxModel<Object> cbm = new DefaultComboBoxModel<>(ss);
 		cbm.addElement("(none)");
 		jcbCenter.setModel(cbm);
 		jcbCenter.setSelectedItem("(none)");
@@ -252,7 +252,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		jpHist = new javax.swing.JPanel();
 		jlNumSubmissions = new javax.swing.JLabel();
 		jlSub = new javax.swing.JLabel();
-		jcbCenter = new javax.swing.JComboBox();
+		jcbCenter = new javax.swing.JComboBox<>();
 		jlCenter = new javax.swing.JLabel();
 		jButton1 = new javax.swing.JButton();
 
@@ -337,7 +337,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(2, 3, 2, 3);
 		jpMaxDistance.add(jlSub, gridBagConstraints);
 
-		jcbCenter.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
+		jcbCenter.setModel(new javax.swing.DefaultComboBoxModel<Object>(new Object[] {
 				"(none)", "Item 2", "Item 3", "Item 4" }));
 		jcbCenter.addItemListener(new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -415,7 +415,7 @@ public class ACGraphPanel extends javax.swing.JPanel {
 	private javax.swing.JButton jButton1;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JButton jbStop;
-	private javax.swing.JComboBox jcbCenter;
+	private javax.swing.JComboBox<Object> jcbCenter;
 	private javax.swing.JLabel jlCenter;
 	private javax.swing.JLabel jlMaxDistance;
 	private javax.swing.JLabel jlNumSubmissions;

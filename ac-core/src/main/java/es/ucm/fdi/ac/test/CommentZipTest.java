@@ -70,7 +70,7 @@ public class CommentZipTest extends CommentAnalysisTest {
 			System.err.println("Exception: " + e);
 			e.printStackTrace();
 		}
-		s.putData(SUBJECT_COM_ZIPSIZE_KEY, new Integer(size));
+		s.putData(SUBJECT_COM_ZIPSIZE_KEY, Integer.valueOf(size));
 	}
 
 	/**

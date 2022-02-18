@@ -70,17 +70,17 @@ public class SevenZipFormat implements ArchiveFormat {
 	public ArrayList<String> list(File source) throws IOException {
 		assertIs7Zip(source);
 
-		SevenZFile zf = new SevenZFile(source);
-		ArrayList<String> paths = new ArrayList<String>();
+        ArrayList<String> paths = new ArrayList<String>();
+        try (SevenZFile zf = new SevenZFile(source)) {
+            for (SevenZArchiveEntry e : zf.getEntries()) {
+                String name = FileUtils.toCanonicalPath(e.getName());
+                if (e.isDirectory()) {
+                    continue;
+                }
 
-		for (SevenZArchiveEntry e : zf.getEntries()) {
-			String name = FileUtils.toCanonicalPath(e.getName());
-			if (e.isDirectory()) {
-				continue;
-			}
-
-			paths.add(name);
-		}
+                paths.add(name);
+            }
+        }
 		return paths;
 	}
 

@@ -58,17 +58,13 @@ public class CompositeFilter extends FileTreeFilter {
 		List<Element> children = filterElement.getChildren();
 		for (Element e : children) {
 			try {
-				Class filterClass = Class.forName(e.getAttributeValue("class"));
-				FileTreeFilter f = (FileTreeFilter) filterClass.newInstance();
+				Class<?> filterClass = Class.forName(e.getAttributeValue("class"));
+				FileTreeFilter f = (FileTreeFilter) filterClass.getConstructor().newInstance();
 				f.loadFromXML(e);
 				filters.add(f);
-			} catch (ClassNotFoundException ex) {
-				throw new IOException(ex);
-			} catch (InstantiationException ex) {
+			} catch (Exception ex) {
 				throw new IOException("Could not instantiate "
 						+ e.getAttributeValue("class"), ex);
-			} catch (IllegalAccessException ex) {
-				throw new IOException(ex);
 			}
 		}
 	}

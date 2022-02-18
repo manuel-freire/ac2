@@ -77,62 +77,42 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		PTrie p = new PTrie();
+		System.err.println("reading in...");
 
-		if (false) {
+		showMem();
 
-			/*p.add("consigue un magnifico juego", "A");
-			p.add("consigue un magnifico", "K");
-			p.add("magnifico juego", "Z");
-			p.add("aportacion o movilizacion desde otras entidades", "B");
-			p.add("y si no lo consigues te devolvemos tu aportacion", "C");
-			p.add("si logramos convencer a las otras entidades", "D");*/
-
-			p.add("quien lo desencapotara aaaaaaaaaaaaaaaaaaa", "juanito");
-			p.add("el cielo esta encapotado aaaaaaaa", "pepito");
-
-			p.updateStats();
-			p.dump();
-
-		} else {
-
-			System.err.println("reading in...");
-
-			showMem();
-
-			int i = 0;
-			File d = new File("/home/mfreire/dev/ac/test2/poo_p1_0506");
-			for (File dg : d.listFiles()) {
-				if (!dg.isDirectory() || (++i > 20))
-					continue;
-				String name = dg.getName();
-				for (File f : dg.listFiles()) {
-					System.err.println(f);
-					p.add(readFileToString(f).replaceAll("\\p{Space}+", " "),
-							name, 20);
-				}
-
-				showMem();
-				p.clearData();
-				//showMem();
-
-				//if (i++ == 2) break; //System.exit(-1);
+		int i = 0;
+		File d = new File("/home/mfreire/dev/ac/test2/poo_p1_0506");
+		for (File dg : d.listFiles()) {
+			if (!dg.isDirectory() || (++i > 20))
+				continue;
+			String name = dg.getName();
+			for (File f : dg.listFiles()) {
+				System.err.println(f);
+				p.add(readFileToString(f).replaceAll("\\p{Space}+", " "), name,
+						20);
 			}
 
-			System.err.println("updating...");
-
-			p.updateStats();
-
 			showMem();
+			p.clearData();
+			//showMem();
 
-			//p.dump();
-
-			//        Node m = p.find("o");
-			//        System.err.println("Found in "+m.getDistinctLocations().size()+" docs");
-			//        for (Location l : m.getLocations()) {
-			//            System.err.println("  "+l);
-			//        }
-
+			//if (i++ == 2) break; //System.exit(-1);
 		}
+
+		System.err.println("updating...");
+
+		p.updateStats();
+
+		showMem();
+
+		//p.dump();
+
+		//        Node m = p.find("o");
+		//        System.err.println("Found in "+m.getDistinctLocations().size()+" docs");
+		//        for (Location l : m.getLocations()) {
+		//            System.err.println("  "+l);
+		//        }
 
 		System.err.println("searching for scarce...");
 		for (Node n : p.findRare(2, 3)) {

@@ -135,7 +135,7 @@ public class RawNCDTest extends Test {
 			log.warn("Exception during preprocess", e);
 		}
 		//     System.out.println("compressed size for "+s.getId()+" is "+size);
-		s.putData(sizeKey, new Integer(size));
+		s.putData(sizeKey, Integer.valueOf(size));
 		s.putData(sourceKey, source);
 	}
 

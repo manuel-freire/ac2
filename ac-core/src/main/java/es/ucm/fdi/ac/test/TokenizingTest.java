@@ -73,7 +73,7 @@ public abstract class TokenizingTest extends Test {
 		try {
 			String tokenizerClassName = te.getAttributeValue("class");
 			tokenizer = (Tokenizer) getClass().getClassLoader().loadClass(
-					tokenizerClassName).newInstance();
+					tokenizerClassName).getConstructor().newInstance();
 			tokenizer.loadFromXML(e);
 		} catch (Exception ex) {
 			throw new IOException("Error loading tokenizer", ex);

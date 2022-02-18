@@ -85,6 +85,7 @@ public class VerticalFisheyeLayout implements LayoutManager,
 		return preferredLayoutSize(parent);
 	}
 
+	@SuppressWarnings("unused")
 	private int estimateSize(int focusPos) {
 		int y = 0;
 		int dy = 0;

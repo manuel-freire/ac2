@@ -46,7 +46,8 @@ public class AtomicExpressionPanel extends ExpressionPanel {
 
 		this.e = e;
 
-		ComboBoxModel model = new DefaultComboBoxModel(e.getHeaders().toArray());
+		ComboBoxModel<String> model = new DefaultComboBoxModel<>(
+			e.getHeaders().toArray(new String[0]));
 		jcbType.setModel(model);
 
 		jtfPattern.setText(e.getBody());
@@ -67,14 +68,14 @@ public class AtomicExpressionPanel extends ExpressionPanel {
 	private void initComponents() {
 		java.awt.GridBagConstraints gridBagConstraints;
 
-		jcbType = new javax.swing.JComboBox();
+		jcbType = new javax.swing.JComboBox<>();
 		jtfPattern = new javax.swing.JTextField();
 		jbDelete = new javax.swing.JButton();
 		jbTest = new javax.swing.JButton();
 
 		setLayout(new java.awt.GridBagLayout());
 
-		jcbType.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
+		jcbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
 				"Item 1", "Item 2", "Item 3", "Item 4" }));
 		jcbType.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,59 +148,50 @@ public class AtomicExpressionPanel extends ExpressionPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jbTestMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbTestMouseReleased
-		// TODO add your handling code here:
 		setSelected(false);
 		repaint();
 	}//GEN-LAST:event_jbTestMouseReleased
 
 	private void jbDeleteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbDeleteMouseReleased
-		// TODO add your handling code here:
 		setSelected(false);
 		repaint();
 	}//GEN-LAST:event_jbDeleteMouseReleased
 
 	private void jbDeleteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbDeleteMousePressed
-		// TODO add your handling code here:
 		setSelected(true);
 		repaint();
 	}//GEN-LAST:event_jbDeleteMousePressed
 
 	private void jbTestMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbTestMousePressed
-		// TODO add your handling code here:
 		setSelected(true);
 		repaint();
 	}//GEN-LAST:event_jbTestMousePressed
 
 	private void jbTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTestActionPerformed
-		// TODO add your handling code here:
 		test(true);
 	}//GEN-LAST:event_jbTestActionPerformed
 
 	private void jtfPatternFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfPatternFocusLost
-		// TODO add your handling code here:
 		e.setBody(jtfPattern.getText());
 	}//GEN-LAST:event_jtfPatternFocusLost
 
 	private void jcbTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTypeActionPerformed
-		// TODO add your handling code here:
 		e.setHeader((String) jcbType.getSelectedItem());
 		jtfPattern.setText(e.getBody());
 	}//GEN-LAST:event_jcbTypeActionPerformed
 
 	private void jbDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeleteActionPerformed
-		// TODO add your handling code here:
 		parentPanel.deleteSubexp(this);
 	}//GEN-LAST:event_jbDeleteActionPerformed
 
 	private void jtfPatternKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPatternKeyTyped
-		// TODO add your handling code here:
 		e.setBody(jtfPattern.getText());
 	}//GEN-LAST:event_jtfPatternKeyTyped
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton jbDelete;
 	private javax.swing.JButton jbTest;
-	private javax.swing.JComboBox jcbType;
+	private javax.swing.JComboBox<String> jcbType;
 	private javax.swing.JTextField jtfPattern;
 	// End of variables declaration//GEN-END:variables
 

@@ -43,7 +43,7 @@ public class HistogramModel {
 
 	private static class DataPoint {
 		int count;
-		ArrayList labels = new ArrayList();
+		ArrayList<Object> labels = new ArrayList<>();
 
 		public DataPoint() {
 		}
@@ -61,7 +61,7 @@ public class HistogramModel {
 			return count;
 		}
 
-		public ArrayList getLabels() {
+		public ArrayList<Object> getLabels() {
 			return labels;
 		}
 	}
@@ -151,7 +151,6 @@ public class HistogramModel {
 	 */
 	public int getMaxBar(int levels, float width) {
 		int max = 0;
-		float dx = 1.0f / levels;
 		float x0 = 0;
 		for (int i = 0; i < levels; i++) {
 			x0 = ((float) i) / levels;

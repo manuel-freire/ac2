@@ -89,7 +89,8 @@ public class RandomCache {
 				m += d[j];
 			}
 			System.err.println();
-			//System.err.println(String.format("%2d - %3.3f, %+6.6f", i, d[0], m));
+			System.err
+					.println(String.format("%2d - %3.3f, %+6.6f", i, d[0], m));
 		}
 	}
 }

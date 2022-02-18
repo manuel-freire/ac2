@@ -49,7 +49,6 @@ public class TraditionalBarRenderer implements HistogramRenderer {
 			if (histogram.getBars()[i] == 0)
 				continue;
 
-			float x = i * 1.0f / w;
 			int rh = (int) (histogram.getBars()[i] * (h - hatHeight));
 			g.drawLine(i, h - rh, i, h);
 		}

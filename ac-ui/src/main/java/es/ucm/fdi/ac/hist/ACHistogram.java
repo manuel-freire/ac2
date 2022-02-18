@@ -22,16 +22,8 @@
  */
 package es.ucm.fdi.ac.hist;
 
-import es.ucm.fdi.ac.gui.CompareDialog;
-import es.ucm.fdi.ac.Analysis;
-import es.ucm.fdi.ac.Submission;
+import static es.ucm.fdi.util.I18N.m;
 
-import es.ucm.fdi.ac.outlier.Hampel;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
-import java.util.Arrays;
-import java.util.Comparator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -44,7 +36,9 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
+import java.util.Comparator;
+
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -58,7 +52,14 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
-import static es.ucm.fdi.util.I18N.m;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import es.ucm.fdi.ac.Analysis;
+import es.ucm.fdi.ac.Submission;
+import es.ucm.fdi.ac.gui.CompareDialog;
+import es.ucm.fdi.ac.outlier.Hampel;
 
 /**
  * Methods to support histogram use in AC
@@ -158,8 +159,7 @@ public class ACHistogram {
 		return h;
 	}
 
-	private static class SimpleMouseListener extends MouseAdapter implements
-			MouseMotionListener {
+	private static class SimpleMouseListener extends MouseAdapter {
 		private Histogram oldHist = null;
 		private VerticalFisheyeLayout fisheye;
 
@@ -170,7 +170,7 @@ public class ACHistogram {
 		public void mouseClicked(MouseEvent e) {
 			Histogram h = (Histogram) e.getComponent();
 
-			if ((e.getButton() & e.BUTTON1) != 0) {
+			if ((e.getButton() & MouseEvent.BUTTON1) != 0) {
 				HistogramModel m = h.getModel();
 				float o = ((float) e.getX()) / h.getWidth();
 				float f = m.getNearestPoint(o);
@@ -248,7 +248,7 @@ public class ACHistogram {
 		}
 
 		public void itemStateChanged(ItemEvent e) {
-			if (e.getStateChange() == e.SELECTED) {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
 				sortBy((String) e.getItem());
 			}
 		}
@@ -291,7 +291,7 @@ public class ACHistogram {
 			return null;
 		}
 
-		public Class getColumnClass(int columnIndex) {
+		public Class<?> getColumnClass(int columnIndex) {
 			return Histogram.class;
 		}
 	}
@@ -402,7 +402,7 @@ public class ACHistogram {
 		bottom.setLayout(new FlowLayout());
 		String sortMethods[] = { m("AC.Hist.ByValue"), m("AC.Hist.ByGap"),
 				m("AC.Hist.ByName") };
-		JComboBox combo = new JComboBox(sortMethods);
+		JComboBox<String> combo = new JComboBox<>(sortMethods);
 		bottom.add(new JLabel("Sorting criteria: "));
 		bottom.add(combo);
 		combo.setSelectedIndex(0);

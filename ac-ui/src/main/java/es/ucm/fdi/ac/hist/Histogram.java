@@ -49,20 +49,15 @@ public class Histogram extends JPanel {
 	private int levels = 100;
 	private String text;
 
-	private int dragStart;
-	private int dragEnd;
-	private int mousePos;
-	private float nearest;
-
 	private float[] bars;
 	private float maxBar;
 	private int oldLen = -1;
 
 	private HistogramRenderer renderer;
 
-	private static HashMap<Class, HistogramRenderer> renderers = new HashMap<Class, HistogramRenderer>();
+	private static HashMap<Class<? extends HistogramRenderer>, HistogramRenderer> renderers = new HashMap<>();
 
-	public Histogram(HistogramModel model, Class renderClass) {
+	public Histogram(HistogramModel model, Class<? extends HistogramRenderer> renderClass) {
 		setModel(model);
 		setRenderer(renderClass);
 		if (renderer == null) {
@@ -182,10 +177,10 @@ public class Histogram extends JPanel {
 		return renderer;
 	}
 
-	public void setRenderer(Class c) {
+	public void setRenderer(Class<? extends HistogramRenderer> c) {
 		try {
 			if (!renderers.containsKey(c)) {
-				HistogramRenderer r = (HistogramRenderer) c.newInstance();
+				HistogramRenderer r = c.getConstructor().newInstance();
 				renderers.put(c, r);
 			}
 			renderer = renderers.get(c);

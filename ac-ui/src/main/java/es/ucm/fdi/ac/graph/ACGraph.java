@@ -47,7 +47,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -73,7 +72,7 @@ public class ACGraph extends BaseView {
 	private Analysis ac;
 	private String testKey;
 	private ACModel acm;
-	private ArrayList<ArrayList> components;
+	private ArrayList<ArrayList<Object>> components;
 
 	// histograms
 	private HashMap<Submission, JPanel> histograms;
@@ -123,16 +122,16 @@ public class ACGraph extends BaseView {
 		return second;
 	}
 
-	public ArrayList<ArrayList> findComponents() {
+	public ArrayList<ArrayList<Object>> findComponents() {
 
 		// update node cache
 		getAnimator().getLayoutManager().setNodes(this);
 
 		// get connected components in cache
-		ArrayList<ArrayList> connected = new ArrayList<ArrayList>();
+		ArrayList<ArrayList<Object>> connected = new ArrayList<>();
 		for (Node n : getAnimator().getLayoutManager().getNodes()) {
 			while (n.component >= connected.size()) {
-				connected.add(new ArrayList());
+				connected.add(new ArrayList<Object>());
 			}
 			connected.get(n.component).add(((CellView) n.peer).getCell());
 		}
@@ -165,7 +164,7 @@ public class ACGraph extends BaseView {
 			return;
 		g.setColor(new Color(200, 200, 230));
 
-		for (ArrayList component : components) {
+		for (ArrayList<Object> component : components) {
 			Rectangle2D bounds = null;
 			for (Object cell : component) {
 				bounds = (bounds == null) ? getCellBounds(cell) : bounds
@@ -183,6 +182,7 @@ public class ACGraph extends BaseView {
 			super(v);
 		}
 
+		@SuppressWarnings("unchecked")
 		public void structureChangePerformed(StructureChangeEvent sce) {
 
 			ViewGraph g = view.getViewGraph();

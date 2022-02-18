@@ -81,6 +81,7 @@ public class TokenCountTest extends TokenizingTest {
 	/**
 	 * @return a number between 0 (most similar) and 1 (least similar)
 	 */
+	@SuppressWarnings("unchecked")
 	public float similarity(Submission sa, Submission sb) {
 		TreeMap<Integer, Double> ta, tb;
 		ta = (TreeMap<Integer, Double>) sa.getData(SUBJECT_TOKVECTOR);

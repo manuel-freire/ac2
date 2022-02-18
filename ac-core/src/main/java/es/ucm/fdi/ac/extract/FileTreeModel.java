@@ -22,17 +22,17 @@
  */
 package es.ucm.fdi.ac.extract;
 
-import es.ucm.fdi.util.FileUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
+
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import es.ucm.fdi.util.FileUtils;
 
 /**
  * A tree-model that is built upon a filesystem, but not supported by it

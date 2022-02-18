@@ -259,11 +259,11 @@ public class CompareDialog extends javax.swing.JDialog {
 		jPanel1 = new javax.swing.JPanel();
 		jPanel3 = new javax.swing.JPanel();
 		jLabel1 = new javax.swing.JLabel();
-		jcbNumColumnsWrap = new javax.swing.JComboBox();
+		jcbNumColumnsWrap = new javax.swing.JComboBox<>();
 		jPanel2 = new javax.swing.JPanel();
 		jPanel4 = new javax.swing.JPanel();
 		jLabel3 = new javax.swing.JLabel();
-		jcbNumSimilarities = new javax.swing.JComboBox();
+		jcbNumSimilarities = new javax.swing.JComboBox<>();
 		jLabel4 = new javax.swing.JLabel();
 		jbHighlight = new javax.swing.JButton();
 		jButton1 = new javax.swing.JButton();
@@ -281,7 +281,7 @@ public class CompareDialog extends javax.swing.JDialog {
 		jLabel1.setText("Wrap at");
 		jPanel3.add(jLabel1);
 
-		jcbNumColumnsWrap.setModel(new javax.swing.DefaultComboBoxModel(
+		jcbNumColumnsWrap.setModel(new javax.swing.DefaultComboBoxModel<>(
 				new String[] { "--", "60", "80", "100", "120" }));
 		jcbNumColumnsWrap
 				.addActionListener(new java.awt.event.ActionListener() {
@@ -336,7 +336,6 @@ public class CompareDialog extends javax.swing.JDialog {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-		// TODO add your handling code here:
 		this.dispose();
 	}//GEN-LAST:event_jButton1ActionPerformed
 
@@ -373,7 +372,7 @@ public class CompareDialog extends javax.swing.JDialog {
 	private javax.swing.JTabbedPane jTabbedPaneA;
 	private javax.swing.JTabbedPane jTabbedPaneB;
 	private javax.swing.JButton jbHighlight;
-	private javax.swing.JComboBox jcbNumColumnsWrap;
-	private javax.swing.JComboBox jcbNumSimilarities;
+	private javax.swing.JComboBox<Object> jcbNumColumnsWrap;
+	private javax.swing.JComboBox<Object> jcbNumSimilarities;
 	// End of variables declaration//GEN-END:variables
 }

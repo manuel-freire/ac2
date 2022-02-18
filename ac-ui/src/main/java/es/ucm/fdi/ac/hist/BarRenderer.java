@@ -30,7 +30,6 @@ import java.awt.Graphics;
  * @author mfreire
  */
 public class BarRenderer implements HistogramRenderer {
-	private float MAX_FONT = 12;
 	private static Color[] colorLUT = null;
 
 	/**

@@ -44,9 +44,9 @@ public class Dendrogram extends JPanel {
 
 	private DendrogramModel model;
 	private DendrogramRenderer renderer;
-	private static HashMap<Class, DendrogramRenderer> renderers = new HashMap<Class, DendrogramRenderer>();
+	private static HashMap<Class<? extends DendrogramRenderer>, DendrogramRenderer> renderers = new HashMap<>();
 
-	public Dendrogram(DendrogramModel model, Class renderClass) {
+	public Dendrogram(DendrogramModel model, Class<? extends DendrogramRenderer> renderClass) {
 		setModel(model);
 		setRenderer(renderClass);
 		if (renderer == null) {
@@ -97,10 +97,10 @@ public class Dendrogram extends JPanel {
 		return renderer;
 	}
 
-	public void setRenderer(Class c) {
+	public void setRenderer(Class<? extends DendrogramRenderer> c) {
 		try {
 			if (!renderers.containsKey(c)) {
-				DendrogramRenderer r = (DendrogramRenderer) c.newInstance();
+				DendrogramRenderer r = c.getConstructor().newInstance();
 				renderers.put(c, r);
 			}
 			renderer = renderers.get(c);

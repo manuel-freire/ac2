@@ -64,8 +64,9 @@ public class ACTableViz extends javax.swing.JPanel {
 		tv = new TableViz(tm, SimpleRenderer.class);
 		add(new JScrollPane(tv), BorderLayout.CENTER);
 
-		DefaultComboBoxModel cbm = new DefaultComboBoxModel(new Object[] {
-				"(none)", new DendrogramModel.SingleLinkage(),
+		DefaultComboBoxModel<Object> cbm = new DefaultComboBoxModel<>(new Object[] {
+				"(none)", 
+				new DendrogramModel.SingleLinkage(),
 				new DendrogramModel.AverageLinkage(),
 				new DendrogramModel.CompleteLinkage() });
 		jcbLinkageType.setModel(cbm);
@@ -95,7 +96,7 @@ public class ACTableViz extends javax.swing.JPanel {
 
 		jPanel1 = new javax.swing.JPanel();
 		jlCenter = new javax.swing.JLabel();
-		jcbLinkageType = new javax.swing.JComboBox();
+		jcbLinkageType = new javax.swing.JComboBox<>();
 		jButton1 = new javax.swing.JButton();
 
 		setLayout(new java.awt.BorderLayout());
@@ -103,7 +104,7 @@ public class ACTableViz extends javax.swing.JPanel {
 		jlCenter.setText("Ordering");
 		jPanel1.add(jlCenter);
 
-		jcbLinkageType.setModel(new javax.swing.DefaultComboBoxModel(
+		jcbLinkageType.setModel(new javax.swing.DefaultComboBoxModel<>(
 				new String[] { "(none)", "Item 2", "Item 3", "Item 4" }));
 		jcbLinkageType.addItemListener(new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -124,7 +125,6 @@ public class ACTableViz extends javax.swing.JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jcbLinkageTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbLinkageTypeItemStateChanged
-		// TODO add your handling code here:
 		LinkageModel selected = null;
 		if (!jcbLinkageType.getSelectedItem().equals("(none)")) {
 			selected = (LinkageModel) jcbLinkageType.getSelectedItem();
@@ -135,7 +135,6 @@ public class ACTableViz extends javax.swing.JPanel {
 	}//GEN-LAST:event_jcbLinkageTypeItemStateChanged
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-		// TODO add your handling code here:
 		double w = tv.getWidth();
 		double h = tv.getHeight();
 		BufferedImage bi = new BufferedImage((int) w, (int) h,
@@ -163,7 +162,7 @@ public class ACTableViz extends javax.swing.JPanel {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton jButton1;
 	private javax.swing.JPanel jPanel1;
-	private javax.swing.JComboBox jcbLinkageType;
+	private javax.swing.JComboBox<Object> jcbLinkageType;
 	private javax.swing.JLabel jlCenter;
 	// End of variables declaration//GEN-END:variables
 

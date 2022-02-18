@@ -39,8 +39,6 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 
 	private CompositeExpression e;
 
-	private Expression selectedSubexpression;
-
 	/**
 	 * Creates new form CompositeExpressionPanel
 	 */
@@ -139,7 +137,7 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 		jpButtons = new javax.swing.JPanel();
 		jbDelete = new javax.swing.JButton();
 		jbTest = new javax.swing.JButton();
-		jcbExpType = new javax.swing.JComboBox();
+		jcbExpType = new javax.swing.JComboBox<>();
 		jbAddSimple = new javax.swing.JButton();
 		jbAddComposite = new javax.swing.JButton();
 		jpFillTop = new javax.swing.JPanel();
@@ -310,42 +308,34 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jbConfirmMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbConfirmMouseReleased
-		// TODO add your handling code here:
 		setSelected(false);
 	}//GEN-LAST:event_jbConfirmMouseReleased
 
 	private void jbConfirmMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbConfirmMousePressed
-		// TODO add your handling code here:
 		setSelected(true);
 	}//GEN-LAST:event_jbConfirmMousePressed
 
 	private void jbConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConfirmActionPerformed
-		// TODO add your handling code here:
 		test(false);
 	}//GEN-LAST:event_jbConfirmActionPerformed
 
 	private void jbTestMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbTestMousePressed
-		// TODO add your handling code here:
 		setSelected(true);
 	}//GEN-LAST:event_jbTestMousePressed
 
 	private void jbTestMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbTestMouseReleased
-		// TODO add your handling code here:
 		setSelected(false);
 	}//GEN-LAST:event_jbTestMouseReleased
 
 	private void jbDeleteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbDeleteMouseReleased
-		// TODO add your handling code here:
 		setSelected(false);
 	}//GEN-LAST:event_jbDeleteMouseReleased
 
 	private void jbDeleteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbDeleteMousePressed
-		// TODO add your handling code here:
 		setSelected(true);
 	}//GEN-LAST:event_jbDeleteMousePressed
 
 	private void jbAddCompositeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddCompositeActionPerformed
-		// TODO add your handling code here:
 		Expression c = e.addChild(true);
 		addChildSub(c);
 		refresh();
@@ -357,17 +347,17 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 	}//GEN-LAST:event_jbAddCompositeActionPerformed
 
 	private void jcbExpTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbExpTypeActionPerformed
-		// TODO add your handling code here:
+
 		e.setHeader((String) jcbExpType.getSelectedItem());
 	}//GEN-LAST:event_jcbExpTypeActionPerformed
 
 	private void jbTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTestActionPerformed
-		// TODO add your handling code here:
+
 		test(true);
 	}//GEN-LAST:event_jbTestActionPerformed
 
 	private void jbDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeleteActionPerformed
-		// TODO add your handling code here:
+
 		parentPanel.deleteSubexp(this);
 		refresh();
 		CompositeExpressionPanel p = parentPanel;
@@ -378,7 +368,7 @@ public class CompositeExpressionPanel extends ExpressionPanel {
 	}//GEN-LAST:event_jbDeleteActionPerformed
 
 	private void jbAddSimpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddSimpleActionPerformed
-		// TODO add your handling code here:
+
 		Expression c = e.addChild(false);
 		addChildSub(c);
 		refresh();

@@ -46,6 +46,9 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * A tree component that extends the default JTree, allowing drag&drop
  * in a way similar to that found in NetBeans
@@ -63,6 +66,8 @@ public class DTree extends JTree {
 
 	private static ModelHelper defaultHelper = null;
 	private ModelHelper modelHelper = null;
+
+	private static Logger log = LogManager.getLogger(DTree.class);
 
 	/** 
 	 * Creates a new DTree 
@@ -323,27 +328,27 @@ public class DTree extends JTree {
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		public void copy(TreeModel sourceModel,
 				ArrayList<TreeNode> sourceNodes, TreeModel destModel,
 				TreeNode destParent, int index) {
 
-			ArrayList<TreeNode> copiedSources = (ArrayList<TreeNode>) sourceNodes
-					.clone();
-
 			// copy stuff
 			for (int i = 0; i < sourceNodes.size(); i++) {
-				Class c = sourceNodes.get(i).getClass();
+				Class<TreeNode> c = (Class<TreeNode>) sourceNodes.get(i)
+						.getClass();
 				Constructor<TreeNode> constructor = null;
 				try {
 					constructor = c.getConstructor(c);
 					TreeNode n = sourceNodes.get(i);
-					sourceNodes.set(i, (TreeNode) constructor.newInstance(n));
+					sourceNodes.set(i, constructor.newInstance(n));
 				} catch (Exception e) {
-					System.err
-							.println("Need access to a copy constructor for class "
-									+ c.getName()
-									+ " in order to copy nodes around");
-					e.printStackTrace();
+					log
+							.warn(
+									"Need access to a copy constructor for class "
+											+ c.getName()
+											+ " in order to copy nodes around",
+									e);
 					return;
 				}
 			}
@@ -362,7 +367,6 @@ public class DTree extends JTree {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		// TODO code application logic here
 		JFrame jf = new JFrame();
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.getContentPane().add(

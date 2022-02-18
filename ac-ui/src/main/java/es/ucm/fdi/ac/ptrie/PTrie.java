@@ -77,7 +77,6 @@ public class PTrie {
 	public Node find(String s) {
 
 		Node start = root;
-		boolean found = false;
 
 		// the inner loop iterates the tree
 		int offset = 0;
@@ -93,10 +92,6 @@ public class PTrie {
 				return null;
 			} else {
 				// found next node that starts that way
-
-				String nextData = next.getData();
-				int nextLen = nextData.length();
-
 				for (int p = 0; p < next.getData().length(); p++) {
 					char a = s.charAt(offset + p);
 					char b = next.getData().charAt(p);

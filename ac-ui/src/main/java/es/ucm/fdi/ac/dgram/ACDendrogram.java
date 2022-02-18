@@ -72,7 +72,7 @@ public class ACDendrogram {
 			this.nextInternalId = subs.length;
 		}
 
-		private ArrayList<DNode> leavesInNode = new ArrayList(100);
+		private ArrayList<DNode> leavesInNode = new ArrayList<>(100);
 
 		private Submission prepare(DNode n, String id) {
 			Submission sub = null;

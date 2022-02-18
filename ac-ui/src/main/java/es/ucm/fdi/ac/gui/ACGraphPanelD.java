@@ -110,7 +110,7 @@ public class ACGraphPanelD extends JPanel {
 		dendrogram = ACDendrogram.createDendrogram(ac, testKey);
 		initComponents();
 
-		DefaultComboBoxModel cbm = new DefaultComboBoxModel(new Object[] {
+		DefaultComboBoxModel<Object> cbm = new DefaultComboBoxModel<>(new Object[] {
 				new DendrogramModel.SingleLinkage(),
 				new DendrogramModel.AverageLinkage(),
 				new DendrogramModel.CompleteLinkage() });
@@ -135,8 +135,6 @@ public class ACGraphPanelD extends JPanel {
 		}
 
 		updateDistanceLabel(true);
-
-		this.acg = acg;
 		startLayout();
 	}
 
@@ -192,7 +190,7 @@ public class ACGraphPanelD extends JPanel {
 		System.err.println("Next linkage will be " + nextLinkage);
 		LinkageModel oldLinkage = dendrogram.getModel().getLinkage();
 
-		if (oldLinkage.toString().equals(nextLinkage)) {
+		if (oldLinkage.toString().equals(nextLinkage.toString())) {
 			// same as previous - no sweat
 			return;
 		} else if (nextLinkage != null) {
@@ -224,7 +222,7 @@ public class ACGraphPanelD extends JPanel {
 		jpHist = new javax.swing.JPanel();
 		jlNumSubjects = new javax.swing.JLabel();
 		jlSub = new javax.swing.JLabel();
-		jcbLinkageType = new javax.swing.JComboBox();
+		jcbLinkageType = new javax.swing.JComboBox<>();
 		jlCenter = new javax.swing.JLabel();
 		jbTakeScreenshot = new javax.swing.JButton();
 		jspGraph = new javax.swing.JScrollPane();
@@ -310,7 +308,7 @@ public class ACGraphPanelD extends JPanel {
 		gridBagConstraints.insets = new java.awt.Insets(2, 3, 2, 3);
 		jpMaxDistance.add(jlSub, gridBagConstraints);
 
-		jcbLinkageType.setModel(new javax.swing.DefaultComboBoxModel(
+		jcbLinkageType.setModel(new javax.swing.DefaultComboBoxModel<Object>(
 				new String[] { "(none)", "Item 2", "Item 3", "Item 4" }));
 		jcbLinkageType.addItemListener(new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -351,7 +349,6 @@ public class ACGraphPanelD extends JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jcbLinkageTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbLinkageTypeItemStateChanged
-		// TODO add your handling code here:
 		LinkageModel selected = null;
 		if (!jcbLinkageType.getSelectedItem().equals("(none)")) {
 			selected = (LinkageModel) jcbLinkageType.getSelectedItem();
@@ -360,7 +357,6 @@ public class ACGraphPanelD extends JPanel {
 	}//GEN-LAST:event_jcbLinkageTypeItemStateChanged
 
 	private void jbTakeScreenshotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTakeScreenshotActionPerformed
-		// TODO add your handling code here:   
 		double w = acg.getSize().getWidth();
 		double h = acg.getSize().getHeight();
 		BufferedImage bi = new BufferedImage((int) w, (int) h,
@@ -386,12 +382,10 @@ public class ACGraphPanelD extends JPanel {
 	}//GEN-LAST:event_jbTakeScreenshotActionPerformed
 
 	private void jsMaxDistanceStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jsMaxDistanceStateChanged
-		// TODO add your handling code here:
 		updateDistanceLabel(jsMaxDistance.getValueIsAdjusting());
 	}//GEN-LAST:event_jsMaxDistanceStateChanged
 
 	private void jbStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbStopActionPerformed
-		// TODO add your handling code here:        
 	}//GEN-LAST:event_jbStopActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -399,7 +393,7 @@ public class ACGraphPanelD extends JPanel {
 	private javax.swing.JSplitPane jSplitPane1;
 	private javax.swing.JButton jbStop;
 	private javax.swing.JButton jbTakeScreenshot;
-	private javax.swing.JComboBox jcbLinkageType;
+	private javax.swing.JComboBox<Object> jcbLinkageType;
 	private javax.swing.JLabel jlCenter;
 	private javax.swing.JLabel jlMaxDistance;
 	private javax.swing.JLabel jlNumSubjects;

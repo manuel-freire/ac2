@@ -133,16 +133,17 @@ public class Hasher {
 				System.err.println("badly-formatted line " + l);
 				continue;
 			}
+			/*
 			File f = new File(parts[0]);
 			long bytes = Long.parseLong(parts[1]);
 			byte[] hash = readBytes(parts[2]);
-
 			FileTreeNode root;
 			File p = f;
 			while ((p = p.getParentFile()) != null) {
 				if ((root = rootFiles.get(p)) != null)
 					break;
 			}
+			 */
 
 			// FIXME: now, walk up the tree and overwrite the hash
 		}
@@ -280,11 +281,9 @@ public class Hasher {
 
 	private FileTreeNode hashFile(FileTreeNode fn) {
 
-		FileChannel fc = null;
-		try {
+		try (FileChannel fc=new RandomAccessFile(fn.getFile(), "r").getChannel()) {
 			MessageDigest sha1Sun = MessageDigest.getInstance("SHA-1");
 			ByteBuffer buffer = ByteBuffer.allocate(1024 * 1024);
-			fc = new RandomAccessFile(fn.getFile(), "r").getChannel();
 			while (fc.position() < fc.size()) {
 				fc.read(buffer);
 				buffer.flip();
@@ -297,19 +296,13 @@ public class Hasher {
 			byte[] sun = sha1Sun.digest();
 			sha1Sun.reset();
 			buffer.clear();
-			fc.close();
 			fn.setSha1(sun);
 			return fn;
 		} catch (Throwable e) {
 			System.err.println(e);
 			e.printStackTrace();
 			return fn;
-		} finally {
-			try {
-				fc.close();
-			} catch (Exception e) {
-			}
-		}
+		} 
 	}
 
 	private static byte[] hashBytes(byte[] b) {

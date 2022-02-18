@@ -215,7 +215,6 @@ public class Interpolator {
 		double[] rValues = new double[twodims];
 		int r[] = new int[dims];
 		for (int i = 0; i < twodims; i++) {
-			double dist = 0, aux;
 			for (int j = 0; j < dims; j++) {
 				r[dims - j - 1] = neighbor[dims - j - 1]
 						+ ((i & (1 << j)) != 0 ? 1 : 0);
@@ -243,18 +242,6 @@ public class Interpolator {
 		return rValues[0];
 	}
 
-	private static void print(double[] o) {
-		for (double i : o)
-			System.err.print(i + " ");
-		System.err.println();
-	}
-
-	private static void print(int[] o) {
-		for (int i : o)
-			System.err.print(i + " ");
-		System.err.println();
-	}
-
 	public static void main(String args[]) throws Exception {
 		ArrayList<double[]> al = new ArrayList<double[]>();
 
@@ -263,10 +250,6 @@ public class Interpolator {
 		 */
 		al.add(new double[] { 1, 1.2, 1.5, 2, 3, 4 });
 		al.add(new double[] { 1, 1.1, 2, 2.2, 2.5, 3, 4 });
-
-		for (int i = 0; i < al.size(); i++) {
-			double d[] = al.get(i);
-		}
 
 		// this part only good for 2d...
 		double[] rows = al.get(0);

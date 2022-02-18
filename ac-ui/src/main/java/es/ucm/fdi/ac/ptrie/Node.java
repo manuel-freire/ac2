@@ -247,7 +247,7 @@ public class Node {
 	 * in 'data' (with all prefixes) can be found.
 	 * WARNING: You should run 'updateStats' on the root prior to calling this
 	 */
-	public HashSet getDistinctLocations() {
+	public HashSet<Object> getDistinctLocations() {
 		return unique;
 	}
 

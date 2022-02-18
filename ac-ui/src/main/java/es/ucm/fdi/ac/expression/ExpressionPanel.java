@@ -44,6 +44,9 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import javax.swing.border.CompoundBorder;
@@ -57,6 +60,8 @@ import javax.swing.border.LineBorder;
  * @author mfreire
  */
 public abstract class ExpressionPanel extends JPanel {
+
+	private static Logger log = LogManager.getLogger(ExpressionPanel.class);
 
 	protected boolean selected;
 	protected CompositeExpressionPanel parentPanel;
@@ -98,7 +103,6 @@ public abstract class ExpressionPanel extends JPanel {
 
 	private class DTListener implements DropTargetListener {
 		public void dragEnter(DropTargetDragEvent e) {
-			System.err.println("Howdy!!");
 			if (!isDragOk(e)) {
 				e.rejectDrag();
 				return;
@@ -108,7 +112,6 @@ public abstract class ExpressionPanel extends JPanel {
 		}
 
 		public void dragOver(DropTargetDragEvent e) {
-			System.err.println("1 Howdy!!");
 			if (!isDragOk(e)) {
 				e.rejectDrag();
 				return;
@@ -117,7 +120,6 @@ public abstract class ExpressionPanel extends JPanel {
 		}
 
 		public void dropActionChanged(DropTargetDragEvent e) {
-			System.err.println("2 Howdy!!");
 			if (!isDragOk(e)) {
 				e.rejectDrag();
 				return;
@@ -126,16 +128,14 @@ public abstract class ExpressionPanel extends JPanel {
 		}
 
 		public void dragExit(DropTargetEvent e) {
-			System.err.println("3 Howdy!!");
 			ExpressionPanel.this.setBackground(Color.blue);
 		}
 
 		public void drop(DropTargetDropEvent dtde) {
-			System.err.println("DroppinG!");
 		}
 
 		public boolean isDragOk(DropTargetDragEvent e) {
-			System.err.println("Yes, its okay !!! Do it !!!");
+			log.debug("Drag marked ok");
 			return true;
 		}
 	}
@@ -146,42 +146,39 @@ public abstract class ExpressionPanel extends JPanel {
 
 	public static class DGListener implements DragGestureListener {
 		public void dragGestureRecognized(DragGestureEvent dge) {
-			System.err
-					.println("Starting drag gesture on " + dge.getComponent());
-			{
-				try {
-					Transferable transferable = new ExpressionTransferable(dge
-							.getComponent());
-					//initial cursor, transferable, dsource listener
-					dge.startDrag(DragSource.DefaultCopyNoDrop, transferable,
-							((ExpressionPanel) dge.getComponent())
-									.getDragSourceListener());
-				} catch (InvalidDnDOperationException idoe) {
-					System.err.println(idoe);
-				}
+			log.info("Starting drag gesture on " + dge.getComponent());
+			try {
+				Transferable transferable = new ExpressionTransferable(dge
+						.getComponent());
+				//initial cursor, transferable, dsource listener
+				dge.startDrag(DragSource.DefaultCopyNoDrop, transferable,
+						((ExpressionPanel) dge.getComponent())
+								.getDragSourceListener());
+			} catch (InvalidDnDOperationException idoe) {
+				log.warn(idoe);
 			}
 		}
 	}
 
 	public static class DSListener implements DragSourceListener {
 		public void dragEnter(DragSourceDragEvent dsde) {
-			System.err.println("Drag enter: " + dsde);
+			log.debug("Drag enter: " + dsde);
 		}
 
 		public void dragOver(DragSourceDragEvent dsde) {
-			System.err.println("Drag over: " + dsde);
+			log.debug("Drag over: " + dsde);
 		}
 
 		public void dropActionChanged(DragSourceDragEvent dsde) {
-			System.err.println("Drop act. changed: " + dsde);
+			log.debug("Drop act. changed: " + dsde);
 		}
 
 		public void dragExit(DragSourceEvent dse) {
-			System.err.println("Drop exit: " + dse);
+			log.debug("Drop exit: " + dse);
 		}
 
 		public void dragDropEnd(DragSourceDropEvent dsde) {
-			System.err.println("Drop end: " + dsde);
+			log.debug("Drop end: " + dsde);
 		}
 	}
 
@@ -195,19 +192,18 @@ public abstract class ExpressionPanel extends JPanel {
 		}
 
 		public DataFlavor[] getTransferDataFlavors() {
-			System.err.println("Called!");
+			log.debug("Called!");
 			return flavors;
 		}
 
 		public boolean isDataFlavorSupported(DataFlavor flavor) {
-			System.err.println("Queried flavor " + flavor.toString());
+			log.debug("Queried flavor " + flavor.toString());
 			return true;
 		}
 
 		public Object getTransferData(DataFlavor flavor)
 				throws UnsupportedFlavorException, IOException {
-			System.err.println("Queried flavor " + flavor.toString()
-					+ " for DATA!");
+			log.debug("Queried flavor " + flavor.toString() + " for DATA!");
 			return data;
 		}
 	}
@@ -239,7 +235,6 @@ public abstract class ExpressionPanel extends JPanel {
 	public void test(boolean wasTest) {
 		for (ExpressionListener l : getExpressionListeners()) {
 			l.expressionChanged(getExpression(), wasTest);
-			//            System.err.println("Notifying "+l);
 		}
 	}
 

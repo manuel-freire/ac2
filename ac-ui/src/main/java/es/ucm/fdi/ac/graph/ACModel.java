@@ -28,10 +28,10 @@ import es.ucm.fdi.clover.event.StructureChangeEvent;
 
 import es.ucm.fdi.clover.model.BaseGraph;
 import es.ucm.fdi.clover.model.Edge;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
@@ -48,6 +48,7 @@ import org.jgrapht.graph.UndirectedSubgraph;
  *
  * @author mfreire
  */
+@SuppressWarnings( { "unchecked", "rawtypes" })
 public class ACModel extends BaseGraph implements EdgeFactory {
 
 	private static final Logger log = LogManager.getLogger(ACModel.class);
@@ -187,30 +188,26 @@ public class ACModel extends BaseGraph implements EdgeFactory {
 
 	private void removeRedundant(SimpleGraph<Object, Edge> tmp) {
 
-		// remove redundant ones: not from/to center, not in MST, and not in N-Lowest
-		Set<Edge> hidden = removeRedundantEdges(tmp, centerSubmission);
-
-		// apply changes to the graph
-		Set toRemove, toAdd;
+		// prepare changes to the graph
 		StructureChangeEvent sce = new StructureChangeEvent(this);
 
 		// remove extra vertices (those that are not in 'tmp')
-		toRemove = new HashSet(vertexSet());
-		toRemove.removeAll(tmp.vertexSet());
-		sce.getRemovedVertices().addAll(toRemove);
+		Set<Object> toRemoveVs = new HashSet<>(vertexSet());
+		toRemoveVs.removeAll(tmp.vertexSet());
+		sce.getRemovedVertices().addAll(toRemoveVs);
 
 		// remove extra edges (those that did not make it into 'tmp')
-		toRemove = new HashSet(edgeSet());
+		Set<Edge> toRemove = new HashSet<>(edgeSet());
 		toRemove.removeAll(tmp.edgeSet());
 		sce.getRemovedEdges().addAll(toRemove);
 
 		// create and init new edges
-		toAdd = new HashSet(tmp.edgeSet());
+		Set<Edge> toAdd = new HashSet<>(tmp.edgeSet());
 		toAdd.removeAll(edgeSet());
 		sce.getAddedEdges().addAll(toAdd);
 
 		// find new vertices too        
-		for (Edge e : (Set<Edge>) toAdd) {
+		for (Edge e : toAdd) {
 			if (!containsVertex(e.getSource())) {
 				sce.getAddedVertices().add(e.getSource());
 			}
@@ -228,9 +225,8 @@ public class ACModel extends BaseGraph implements EdgeFactory {
 	 */
 	public static Set<Edge> removeRedundantEdges(SimpleGraph<Object, Edge> g,
 			Submission center) {
-		HashSet<Edge> toRetain = new HashSet<Edge>();
-		for (Set comp : (List<Set>) (new ConnectivityInspector(g))
-				.connectedSets()) {
+		HashSet<Edge> toRetain = new HashSet<>();
+		for (Set<Object> comp : new ConnectivityInspector<>(g).connectedSets()) {
 
 			// build subgraph with component
 			Set<Edge> compEdges = new HashSet<Edge>();
@@ -243,28 +239,22 @@ public class ACModel extends BaseGraph implements EdgeFactory {
 				continue;
 			}
 
-			UndirectedSubgraph ug = new UndirectedSubgraph(g, comp, compEdges);
+			UndirectedSubgraph<Object, Edge> ug = new UndirectedSubgraph<>(g, comp, compEdges);
 
 			// find minimum spanning tree of this component; use Prim's algo
 			// http://en.wikipedia.org/wiki/Prim%27s_algorithm
 			PriorityQueue<PrimInfo> queue = new PriorityQueue<PrimInfo>();
 			HashMap<Object, PrimInfo> V = new HashMap<Object, PrimInfo>();
-			//            System.err.println("New component...");
 			for (Object v : ug.vertexSet()) {
 				float d = (queue.isEmpty()) ? 0 : Float.MAX_VALUE;
 				PrimInfo pi = new PrimInfo(v, d);
 				V.put(v, pi);
 				queue.add(pi);
-				//                System.err.println("\t"+((Submission)v).getId());
 			}
 			while (!queue.isEmpty()) {
 				PrimInfo u = queue.poll();
 				V.remove(u.getVertex());
-				//                System.err.println("\tRemoved "+u.getVertex()+" parent is "
-				//                        +(u.getEdge() != null ? 
-				//                            u.getEdge().getSource() + "->" + u.getEdge().getTarget() : "null"));
 				if (u.getEdge() != null) {
-					//                    System.err.println("\t: added");
 					toRetain.add(u.getEdge());
 				}
 				for (Edge e : (Set<Edge>) ug.edgesOf(u.getVertex())) {
@@ -272,14 +262,10 @@ public class ACModel extends BaseGraph implements EdgeFactory {
 							.getTarget() : e.getSource();
 					PrimInfo v = V.get(vv);
 					if (v == null || v == u) {
-						//                        System.err.println("\tDiscarded outright updating with "+e.getSource()+"->"+e.getTarget());
 					} else if (v.update(e)) {
-						//                        System.err.println("\tUpdated distance to "+v.getVertex());
 						queue.remove(v);
 						queue.add(v);
-					} else {
-						//                        System.err.println("\tCould not update to "+v.getVertex());
-					}
+					} 
 				}
 			}
 

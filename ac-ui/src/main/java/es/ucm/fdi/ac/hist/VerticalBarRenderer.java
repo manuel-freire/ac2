@@ -49,7 +49,6 @@ public class VerticalBarRenderer implements HistogramRenderer {
 			if (histogram.getBars()[i] == 0)
 				continue;
 
-			float x = i * 1.0f / h;
 			int rw = (int) (histogram.getBars()[i] * (w - hatWidth));
 			g.drawLine(w - rw, i, w, i);
 		}

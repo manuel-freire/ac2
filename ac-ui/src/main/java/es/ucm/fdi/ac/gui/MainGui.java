@@ -46,7 +46,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -101,7 +100,7 @@ public class MainGui extends JPanel {
 		testNameLookup = new LinkedHashMap<>();
 
 		ac = new Analysis();
-		ac.setTokenizerFactory(new AntlrTokenizerFactory());
+		Analysis.setTokenizerFactory(new AntlrTokenizerFactory());
 		saveFile = null;
 
 		ArrayList<String> tks = new ArrayList<>();
@@ -154,7 +153,7 @@ public class MainGui extends JPanel {
 		jtfSources.setText(m("Test.None"));
 
 		ArrayList<String> names = new ArrayList<>(testNameLookup.keySet());
-		jcbTests.setModel(new DefaultComboBoxModel(names.toArray()));
+		jcbTests.setModel(new DefaultComboBoxModel<String>(names.toArray(new String[0])));
 
 		// default test is zip test
 		jcbTests.setSelectedIndex(0);
@@ -496,7 +495,7 @@ public class MainGui extends JPanel {
 		jbSaveResults = new javax.swing.JButton();
 		jpTest = new javax.swing.JPanel();
 		jLabel3 = new javax.swing.JLabel();
-		jcbTests = new javax.swing.JComboBox();
+		jcbTests = new javax.swing.JComboBox<>();
 		jbConfirmTest = new javax.swing.JButton();
 		jcbxSuggestThresholds = new javax.swing.JCheckBox();
 		tbHelp = new javax.swing.JToggleButton();
@@ -784,72 +783,72 @@ public class MainGui extends JPanel {
 	}
 
 	private void jtfResultsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfResultsFocusGained
-		// TODO add your handling code here:
+
 		if (jtfResults.getText().contains(m("Test.None")))
 			jtfResults.setText("");
 	}//GEN-LAST:event_jtfResultsFocusGained
 
 	private void jtfSourcesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfSourcesFocusGained
-		// TODO add your handling code here:
+
 		if (jtfSources.getText().contains(m("Test.None")))
 			jtfSources.setText("");
 	}//GEN-LAST:event_jtfSourcesFocusGained
 
 	private void jbConfirmTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConfirmTestActionPerformed
-		// TODO add your handling code here:
+
 		launchTest(currentTest, jcbxSuggestThresholds.isSelected());
 	}//GEN-LAST:event_jbConfirmTestActionPerformed
 
 	private void jcbTestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTestsActionPerformed
-		// TODO add your handling code here:
+
 		currentTest = testNameLookup.get((String) jcbTests.getSelectedItem());
 		updateHelpPanel();
 	}//GEN-LAST:event_jcbTestsActionPerformed
 
 	private void jbSaveResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSaveResultsActionPerformed
-		// TODO add your handling code here:
+
 		saveAnalysis(saveFile);
 	}//GEN-LAST:event_jbSaveResultsActionPerformed
 
 	private void jbLoadResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLoadResultsActionPerformed
-		// TODO add your handling code here:
+
 		loadAnalysis(saveFile);
 	}//GEN-LAST:event_jbLoadResultsActionPerformed
 
 	private void jbChResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbChResultsActionPerformed
-		// TODO add your handling code here:
+
 		saveFile = FileUtils.chooseFile(this,
 				m("Test.SourcesAndResults.ResultsFile"), false,
 				JFileChooser.FILES_ONLY);
 	}//GEN-LAST:event_jbChResultsActionPerformed
 
 	private void jbLoadSourcesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLoadSourcesActionPerformed
-		// TODO add your handling code here:
+
 		loadSources(sourcesDir);
 	}//GEN-LAST:event_jbLoadSourcesActionPerformed
 
 	private void jtfSourcesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSourcesActionPerformed
-		// TODO add your handling code here:
+
 		setSourcesDir(new File(jtfSources.getText()));
 	}//GEN-LAST:event_jtfSourcesActionPerformed
 
 	private void jtfResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfResultsActionPerformed
-		// TODO add your handling code here:
+
 		setSaveFile(new File(jtfResults.getText()));
 	}//GEN-LAST:event_jtfResultsActionPerformed
 
 	private void jtbChSourcesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbChSourcesActionPerformed
-		// TODO add your handling code here:
+
 		loadSources((File) null);
 	}//GEN-LAST:event_jtbChSourcesActionPerformed
 
 	private void jmiSaveAnalysisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveAnalysisActionPerformed
-		// TODO add your handling code here:
+
 		saveAnalysis(saveFile);
 	}//GEN-LAST:event_jmiSaveAnalysisActionPerformed
 
 	private void jmiHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiHelpActionPerformed
-		// TODO add your handling code here:        
+
 		if (helpBrowser == null) {
 			helpBrowser = new HelpBrowser(null, m("Test.Menu.Help"),
 					"index.html", true);
@@ -858,7 +857,7 @@ public class MainGui extends JPanel {
 	}//GEN-LAST:event_jmiHelpActionPerformed
 
 	private void jmiOpenAnalysisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiOpenAnalysisActionPerformed
-		// TODO add your handling code here:
+
 		loadAnalysis(null);
 	}//GEN-LAST:event_jmiOpenAnalysisActionPerformed
 
@@ -939,7 +938,7 @@ public class MainGui extends JPanel {
 	private javax.swing.JButton jbLoadResults;
 	private javax.swing.JButton jbLoadSources;
 	private javax.swing.JButton jbSaveResults;
-	private javax.swing.JComboBox jcbTests;
+	private javax.swing.JComboBox<String> jcbTests;
 	private javax.swing.JCheckBox jcbxSuggestThresholds;
 	private javax.swing.JMenu jmFile;
 	private javax.swing.JMenu jmHelp;

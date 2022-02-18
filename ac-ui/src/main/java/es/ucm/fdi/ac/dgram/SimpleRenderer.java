@@ -36,7 +36,6 @@ import java.awt.geom.Rectangle2D;
  * @author mfreire
  */
 public class SimpleRenderer implements DendrogramRenderer {
-	private float MAX_FONT = 12;
 
 	private static Color[] colorLUT = null;
 

@@ -112,7 +112,7 @@ public class NCDTest extends TokenizingTest {
 		} catch (IOException e) {
 			log.warn("Exception during preprocess", e);
 		}
-		s.putData(sizeKey, new Integer(size));
+		s.putData(sizeKey, Integer.valueOf(size));
 	}
 
 	/**

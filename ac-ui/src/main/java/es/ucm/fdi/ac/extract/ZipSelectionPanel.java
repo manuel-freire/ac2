@@ -252,13 +252,6 @@ public class ZipSelectionPanel extends JPanel {
 				FileTreeNode node = (FileTreeNode) path.getLastPathComponent();
 				if (node.getAllowsChildren() == false) {
 					String name = node.getFile().getName();
-					String title = name;
-					if (node.getParent() instanceof FileTreeNode) {
-						FileTreeNode parent = ((FileTreeNode) node.getParent());
-						if (parent.getFile() != null) {
-							title = parent.getFile().getName() + "::" + name;
-						}
-					}
 
 					JDialog jd = new JDialog((JFrame) null, name, true);
 					JEditTextArea textArea = CompareDialog.getSourcePanel(
