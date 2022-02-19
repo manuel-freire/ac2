@@ -23,11 +23,11 @@
 package es.ucm.fdi.ac.parser;
 
 import es.ucm.fdi.ac.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Maintains instances of tokenizers for supported languages, returns a good one on demand.
@@ -39,63 +39,79 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
 	private static final Logger log = LogManager
 			.getLogger(AntlrTokenizerFactory.class);
 
-	static HashMap<String, AntlrTokenizer> tokenizers;
+	public enum TokenizerEntry {
+		// java
+		JAVA("es.ucm.fdi.ac.lexers.Java", "compilationUnit", "java"),
+		// cpp
+		CPP("es.ucm.fdi.ac.lexers.CPP14", "translationUnit", "c", "cpp", "cxx",
+				"h"),
+		// vhdl
+		VHDL("es.ucm.fdi.ac.lexers.vhdl", "design_file", "vhdl", "vhd"),
+		// php
+		PHP("es.ucm.fdi.ac.lexers.PHP", "htmlDocument", "php"),
+		// xml
+		XML("es.ucm.fdi.ac.lexers.XML", "document", "xml", "html", "htm"),
+		// js
+		JS("es.ucm.fdi.ac.lexers.ECMAScript", "program", "js"),
+		// python
+		PYTHON("es.ucm.fdi.ac.lexers.Python", "root", "py"),
+		// pascal
+		PASCAL("es.ucm.fdi.ac.lexers.Pascal", "program", "pas", "inc", "pp");
 
-	static private void addTokenizer(String antlrClass, String entryPoint,
-			String... extensions) {
-		String extensionRegex = "(" + String.join("|", extensions) + ")";
-		tokenizers.put(extensionRegex, new AntlrTokenizer(antlrClass,
-				entryPoint));
+		public final String pattern;
+		public final String[] treeRules;
+		public final AntlrTokenizer tokenizer;
+
+		TokenizerEntry(String antlrClass, String entryPoint,
+				String... extensions) {
+			this(antlrClass, entryPoint, null, extensions);
+		}
+
+		TokenizerEntry(String antlrClass, String entryPoint,
+				String[] treeRules, String... extensions) {
+			this.pattern = "(" + String.join("|", extensions) + ")";
+			this.tokenizer = new AntlrTokenizer(antlrClass, entryPoint);
+			this.treeRules = treeRules;
+		}
+
+		public static TokenizerEntry forName(String name) {
+			String suffix = name.substring(name.lastIndexOf('.') + 1);
+			for (TokenizerEntry e : TokenizerEntry.values()) {
+				if (suffix.matches(e.pattern)) {
+					return e;
+				}
+			}
+			return null;
+		}
 	}
 
-	static void initTokenizers() {
-        if (tokenizers != null) return;
-
-        tokenizers = new HashMap<>();
-        addTokenizer("es.ucm.fdi.ac.lexers.Java", "compilationUnit", "java");
-        addTokenizer("es.ucm.fdi.ac.lexers.CPP14", "translationunit", "c", "cpp", "cxx", "h");
-        addTokenizer("es.ucm.fdi.ac.lexers.vhdl", "design_file", "vhdl", "vhd");
-        addTokenizer("es.ucm.fdi.ac.lexers.PHP", "htmlDocument", "php");
-        addTokenizer("es.ucm.fdi.ac.lexers.XML", "document", "xml", "html", "htm");
-        addTokenizer("es.ucm.fdi.ac.lexers.ECMAScript", "program", "js");
-        addTokenizer("es.ucm.fdi.ac.lexers.Python", "root", "py");
-        addTokenizer("es.ucm.fdi.ac.lexers.Pascal", "program", "pas", "inc", "pp");        
-    }
+	/**
+	 * Returns a tokenizer for a filename.
+	 * @param name of file. Only the extension is looket at.
+	 * @return 1st tokenizer that matches the suffix of a given filename, 
+	 * or null if none match
+	 */
+	public Tokenizer getTokenizerFor(String name) {
+		return TokenizerEntry.forName(name).tokenizer;
+	}
 
 	@Override
     public Tokenizer getTokenizerFor(Submission[] subs) {
-        initTokenizers();
-
         HashMap<Tokenizer, Integer> votes = new HashMap<>();
         Tokenizer empty = new NullTokenizer();
-        votes.put(empty, 0);
         Tokenizer best = empty;
         for (Submission sub : subs) {
             for (int i = sub.getSources().size()-1; i >= 0; i-- ) {
-                String name = sub.getSourceName(i);
-                String suffix = name.substring(name.lastIndexOf('.')+1);
-                boolean found = false;
-                for (Map.Entry<String, AntlrTokenizer> te : tokenizers.entrySet()) {
-                    Tokenizer current = te.getValue();
-                    if (suffix.matches(te.getKey())) {
-                        found = true;
-                        Integer v = votes.get(current);
-                        int t = (v == null) ? 1 : v+1;
-                        votes.put(current, t);
-                        if (t > votes.get(best)) {
-                            best = current;
-                            log.debug("best is " + best + " with " + t);
-                        }
-                    }
+                Tokenizer found = getTokenizerFor(sub.getSourceName(i));                
+                if (found == null) {
+                    found = empty;
                 }
-                if ( ! found) {
-                    int t = votes.get(empty) + 1;
-                    votes.put(empty, t);
-                    if (t > votes.get(best)) {
-                        best = empty;
-                        log.debug("best is " + best + " with " + t);
-                    }
-                }
+                int v = votes.getOrDefault(found, 0) + 1;
+                votes.put(found, v);
+                if (v > votes.get(best)) {
+                    best = found;
+                    log.debug("best is " + best + " with " + v);
+                }                
             }
         }
         log.info("chosen tokenizer: " + best + " with " + votes.get(best));

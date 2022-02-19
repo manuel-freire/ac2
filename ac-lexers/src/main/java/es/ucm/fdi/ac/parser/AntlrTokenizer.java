@@ -24,6 +24,8 @@ package es.ucm.fdi.ac.parser;
 
 import es.ucm.fdi.ac.Tokenizer;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.Utils;
+import org.antlr.v4.runtime.tree.Tree;
 import org.antlr.v4.runtime.tree.Trees;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -34,7 +36,11 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mfreire on 20/07/16.
@@ -44,11 +50,9 @@ public class AntlrTokenizer implements Tokenizer {
 	private static final Logger log = LogManager
 			.getLogger(AntlrTokenizer.class);
 
-	public static boolean parse = false;
-
 	private class LanguageSupport {
-		public final Constructor<?> lexerConstructor;
-		public final Constructor<?> parserConstructor;
+		public final Constructor<? extends Lexer> lexerConstructor;
+		public final Constructor<? extends Parser> parserConstructor;
 		public final Method parserMethod;
 
 		public LanguageSupport(String prefix, String entryPoint) {
@@ -85,11 +89,35 @@ public class AntlrTokenizer implements Tokenizer {
 		this.language = languages.get(lang);
 	}
 
+	public Parser prepareParser(String source) {
+		try {
+			Lexer lexer = language.lexerConstructor.newInstance(CharStreams
+					.fromString(source));
+			final CommonTokenStream tokens = new CommonTokenStream(lexer);
+			tokens.fill();
+			return language.parserConstructor.newInstance(tokens);
+		} catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Error building lexer/parser pair for source", e);
+		}
+	}
+
+	/**
+	 * Outputs a (single-space-delimited, base-32 by default) token stream with the 
+	 * result of tokenizing a source.
+	 * @param source to tokenize
+	 * @param sourceFile name, to include in logs/error reports, if any
+	 * @param out output
+	 */
+	@Override
 	public void tokenize(String source, String sourceFile, PrintWriter out) {
+		tokenize(source, sourceFile, out, false, null, null);
+	}
+
+	public void tokenize(String source, String sourceFile, PrintWriter out, boolean parse, PrintWriter treeOut, String[] rules) {
 		Writer debugWriter = null;
 		try {
-			Lexer lexer = (Lexer) language.lexerConstructor
-					.newInstance(new ANTLRInputStream(source));
+			Lexer lexer = language.lexerConstructor.newInstance(CharStreams.fromString(source));
 			final CommonTokenStream tokens = new CommonTokenStream(lexer);
 			tokens.fill();
 
@@ -114,19 +142,18 @@ public class AntlrTokenizer implements Tokenizer {
 				}
 			}
 
-			if (parse) {
+			if (parse && rules != null) {
 				Parser parser = (Parser) language.parserConstructor
 						.newInstance(tokens);
 				parser.setErrorHandler(new BailErrorStrategy());
 				ParserRuleContext parserRuleContext = (ParserRuleContext) language.parserMethod
 						.invoke(parser);
-
-				if (log.isDebugEnabled()) {
-					log.debug(Trees.toStringTree(parserRuleContext, parser));
-				}
+				List<String> ruleNames = Arrays.asList(parser.getRuleNames());
+				Set<String> goodRules = new HashSet<>();
+				treeOut.println(toStringTree(parserRuleContext, ruleNames, "", goodRules));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.warn("Error tokenizing {}", sourceFile, e);
 			throw new IllegalArgumentException(
 					"Bad token in source, or failed to parse", e);
 		} finally {
@@ -138,6 +165,37 @@ public class AntlrTokenizer implements Tokenizer {
 					log.warn("Could not close debugWriter", ioe);
 				}
 			}
+		}
+	}
+
+	public static String toStringTree(final Tree t, List<String> ruleNames,
+			String indent, Set<String> goodRules) {
+
+		String text = Trees.getNodeText(t, ruleNames);
+		String s = Utils.escapeWhitespace(text, false);
+		if (t.getChildCount() == 0 || goodRules.contains(text)) {
+			return s;
+		} else if (t.getChildCount() == 1) {
+			return "\n"
+					+ indent
+					+ "-"
+					+ s
+					+ ' '
+					+ toStringTree(t.getChild(0), ruleNames, indent + " ",
+							goodRules);
+		} else {
+			StringBuilder buf = new StringBuilder();
+			buf.append("\n" + indent + "(");
+			buf.append(s);
+			buf.append(' ');
+			for (int i = 0; i < t.getChildCount(); i++) {
+				if (i > 0)
+					buf.append(' ');
+				buf.append(toStringTree(t.getChild(i), ruleNames, indent + " ",
+						goodRules));
+			}
+			//buf.append(")\n");
+			return buf.toString();
 		}
 	}
 

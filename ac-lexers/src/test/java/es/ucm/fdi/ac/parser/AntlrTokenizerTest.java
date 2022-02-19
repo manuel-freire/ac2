@@ -59,26 +59,11 @@ import java.nio.file.Files;
  */
 public class AntlrTokenizerTest extends TestCase {
 
-	public AntlrTokenizer getTokenizer(String lang) {
-		switch (lang) {
-		case "java":
-			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.Java",
-					"compilationUnit");
-		case "c":
-			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.CPP14",
-					"translationunit");
+	static AntlrTokenizerFactory factory = new AntlrTokenizerFactory();
 
-		case "pas":
-			return new AntlrTokenizer("es.ucm.fdi.ac.lexers.Pascal", "program");
-		default:
-			throw new IllegalArgumentException("not a valid language: " + lang);
-		}
-	}
-
-	public String tokenize(File input) {
-		String name = input.getName();
-		String ext = name.substring(name.lastIndexOf('.') + 1);
-		AntlrTokenizer t = getTokenizer(ext);
+	public void tokenize(File input) {
+		AntlrTokenizer t = (AntlrTokenizer) factory.getTokenizerFor(input
+				.getName());
 		String code = null;
 		try {
 			code = new String(Files.readAllBytes(input.toPath()), Charset
@@ -88,8 +73,8 @@ public class AntlrTokenizerTest extends TestCase {
 					+ new File(".").getAbsolutePath());
 		}
 		StringWriter sw = new StringWriter();
-		t.tokenize(code, name, new PrintWriter(sw));
-		return sw.toString();
+		t.tokenize(code, input.getName(), new PrintWriter(sw));
+		System.out.println(sw.toString());
 	}
 
 	@Test
@@ -100,6 +85,11 @@ public class AntlrTokenizerTest extends TestCase {
 	@Test
 	public void testCpp() {
 		tokenize(new File("src/test/resources/sample.c"));
+	}
+
+	@Test
+	public void testCpp2() {
+		tokenize(new File("src/test/resources/huffman.c"));
 	}
 
 	@Test
