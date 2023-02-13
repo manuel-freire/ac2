@@ -21,7 +21,7 @@ There are other plagiarism detection tools, such as [JPlag](https://github.com/j
 
 ## Installing and running the program
 
-You will need a Java Runtime Environment installed (JRE 8 or above).
+You will need a Java Runtime Environment installed (JRE 9 or above for versions 2.2+, JRE 8 for prior versions).
 You can download the latest [Java JRE from Oracle's website](https://java.com/en/download/),
 although OpenJDK will work just as well.
 
