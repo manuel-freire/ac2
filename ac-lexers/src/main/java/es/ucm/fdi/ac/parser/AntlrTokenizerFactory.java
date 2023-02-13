@@ -41,10 +41,11 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
 
 	public enum TokenizerEntry {
 		// java
-		JAVA("es.ucm.fdi.ac.lexers.Java", "compilationUnit", "java"),
+		JAVA("es.ucm.fdi.ac.lexers.Java", "compilationUnit",
+				new String[] { "ClassBodyDeclarationContext" }, "java"),
 		// cpp
-		CPP("es.ucm.fdi.ac.lexers.CPP14", "translationUnit", "c", "cpp", "cxx",
-				"h"),
+		CPP("es.ucm.fdi.ac.lexers.CPP14", "translationUnit",
+				new String[] { "DeclarationContext" }, "c", "cpp", "cxx", "h"),
 		// vhdl
 		VHDL("es.ucm.fdi.ac.lexers.vhdl", "design_file", "vhdl", "vhd"),
 		// php
@@ -100,12 +101,14 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
         HashMap<Tokenizer, Integer> votes = new HashMap<>();
         Tokenizer empty = new NullTokenizer();
         Tokenizer best = empty;
+		votes.put(best, 0);
         for (Submission sub : subs) {
             for (int i = sub.getSources().size()-1; i >= 0; i-- ) {
                 Tokenizer found = getTokenizerFor(sub.getSourceName(i));                
                 if (found == null) {
                     found = empty;
                 }
+				log.debug("vote for " + found + " based on " + sub.getSourceName(i));
                 int v = votes.getOrDefault(found, 0) + 1;
                 votes.put(found, v);
                 if (v > votes.get(best)) {

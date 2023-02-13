@@ -22,25 +22,30 @@
  */
 package es.ucm.fdi.ac.parser;
 
-import es.ucm.fdi.ac.Tokenizer;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.Utils;
-import org.antlr.v4.runtime.tree.Tree;
-import org.antlr.v4.runtime.tree.Trees;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.ThreadContext;
-import org.jdom2.Element;
-
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.jdom2.Element;
+
+import es.ucm.fdi.ac.Tokenizer;
 
 /**
  * Created by mfreire on 20/07/16.
@@ -50,6 +55,7 @@ public class AntlrTokenizer implements Tokenizer {
 	private static final Logger log = LogManager
 			.getLogger(AntlrTokenizer.class);
 
+	@SuppressWarnings("unchecked")
 	private class LanguageSupport {
 		public final Constructor<? extends Lexer> lexerConstructor;
 		public final Constructor<? extends Parser> parserConstructor;
@@ -64,14 +70,17 @@ public class AntlrTokenizer implements Tokenizer {
 			try {
 				final Class<? extends Lexer> lexerClass = loader.loadClass(
 						lexerClassName).asSubclass(Lexer.class);
-				final Class<? extends Parser> parserClass = loader.loadClass(
-						parserClassName).asSubclass(Parser.class);
+				final Class<? extends Parser> parserClass = (Class<? extends Parser>) loader
+						.loadClass(parserClassName);
 				parserMethod = parserClass.getMethod(entryPoint);
 				lexerConstructor = lexerClass.getConstructor(CharStream.class);
 				parserConstructor = parserClass
 						.getConstructor(TokenStream.class);
 			} catch (Exception e) {
-				throw new IllegalArgumentException(
+
+				log.error("Could not initialize lexer/parser pair for "
+						+ prefix, e);
+				throw new RuntimeException(
 						"Could not initialize lexer/parser pair for " + prefix,
 						e);
 			}
@@ -89,16 +98,58 @@ public class AntlrTokenizer implements Tokenizer {
 		this.language = languages.get(lang);
 	}
 
-	public Parser prepareParser(String source) {
+	public static class TokensAndParseTree {
+		public final CommonTokenStream tokens;
+		public final ParserRuleContext context;
+
+		public TokensAndParseTree(CommonTokenStream tokens,
+				ParserRuleContext context) {
+			this.tokens = tokens;
+			this.context = context;
+		}
+	}
+
+	public TokensAndParseTree tokenizeAndParse(String source) {
 		try {
-			Lexer lexer = language.lexerConstructor.newInstance(CharStreams
-					.fromString(source));
-			final CommonTokenStream tokens = new CommonTokenStream(lexer);
+			CommonTokenStream tokens = new CommonTokenStream(lexerFor(source));
 			tokens.fill();
-			return language.parserConstructor.newInstance(tokens);
+			Parser parser = language.parserConstructor.newInstance(tokens);
+			ParserRuleContext context = callEntryPointOnParser(parser);
+			return new TokensAndParseTree(tokens, context);
 		} catch (Exception e) {
-			throw new IllegalArgumentException(
+			log.error("Error building lexer/parser pair for source", e);
+			throw new RuntimeException(
 					"Error building lexer/parser pair for source", e);
+		}
+	}
+
+	public ParserRuleContext callEntryPointOnParser(Parser p) {
+		try {
+			return (ParserRuleContext) language.parserMethod.invoke(p);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Error invoking entry point", e);
+		}
+	}
+
+	public Lexer lexerFor(String source) {
+		try {
+			return language.lexerConstructor.newInstance(CharStreams
+					.fromString(source));
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Error building lexer", e);
+		}
+	}
+
+	public CommonTokenStream tokenStreamFor(String source, String sourceFile) {
+		try {
+			Lexer lexer = lexerFor(source);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			tokens.fill();
+			return tokens;
+		} catch (Exception e) {
+			log.warn("Error tokenizing {}", sourceFile, e);
+			throw new IllegalArgumentException(
+					"Error tokenizing " + sourceFile, e);
 		}
 	}
 
@@ -114,13 +165,11 @@ public class AntlrTokenizer implements Tokenizer {
 		tokenize(source, sourceFile, out, false, null, null);
 	}
 
-	public void tokenize(String source, String sourceFile, PrintWriter out, boolean parse, PrintWriter treeOut, String[] rules) {
+	public void tokenize(String source, String sourceFile, PrintWriter out,
+			boolean parse, PrintWriter treeOut, String[] rules) {
 		Writer debugWriter = null;
 		try {
-			Lexer lexer = language.lexerConstructor.newInstance(CharStreams.fromString(source));
-			final CommonTokenStream tokens = new CommonTokenStream(lexer);
-			tokens.fill();
-
+			CommonTokenStream tokens = tokenStreamFor(source, sourceFile);
 			if (log.isDebugEnabled()) {
 				try {
 					debugWriter = new BufferedWriter(new FileWriter(Files
@@ -141,21 +190,9 @@ public class AntlrTokenizer implements Tokenizer {
 					}
 				}
 			}
-
-			if (parse && rules != null) {
-				Parser parser = (Parser) language.parserConstructor
-						.newInstance(tokens);
-				parser.setErrorHandler(new BailErrorStrategy());
-				ParserRuleContext parserRuleContext = (ParserRuleContext) language.parserMethod
-						.invoke(parser);
-				List<String> ruleNames = Arrays.asList(parser.getRuleNames());
-				Set<String> goodRules = new HashSet<>();
-				treeOut.println(toStringTree(parserRuleContext, ruleNames, "", goodRules));
-			}
-		} catch (Exception e) {
-			log.warn("Error tokenizing {}", sourceFile, e);
-			throw new IllegalArgumentException(
-					"Bad token in source, or failed to parse", e);
+		} catch (IOException ioe) {
+			throw new RuntimeException(
+					"Error writing tokens for " + sourceFile, ioe);
 		} finally {
 			out.flush();
 			if (log.isDebugEnabled() && debugWriter != null) {
@@ -165,37 +202,6 @@ public class AntlrTokenizer implements Tokenizer {
 					log.warn("Could not close debugWriter", ioe);
 				}
 			}
-		}
-	}
-
-	public static String toStringTree(final Tree t, List<String> ruleNames,
-			String indent, Set<String> goodRules) {
-
-		String text = Trees.getNodeText(t, ruleNames);
-		String s = Utils.escapeWhitespace(text, false);
-		if (t.getChildCount() == 0 || goodRules.contains(text)) {
-			return s;
-		} else if (t.getChildCount() == 1) {
-			return "\n"
-					+ indent
-					+ "-"
-					+ s
-					+ ' '
-					+ toStringTree(t.getChild(0), ruleNames, indent + " ",
-							goodRules);
-		} else {
-			StringBuilder buf = new StringBuilder();
-			buf.append("\n" + indent + "(");
-			buf.append(s);
-			buf.append(' ');
-			for (int i = 0; i < t.getChildCount(); i++) {
-				if (i > 0)
-					buf.append(' ');
-				buf.append(toStringTree(t.getChild(i), ruleNames, indent + " ",
-						goodRules));
-			}
-			//buf.append(")\n");
-			return buf.toString();
 		}
 	}
 
