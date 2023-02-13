@@ -26,6 +26,8 @@ import es.ucm.fdi.util.XMLSerializable;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import org.jdom2.Element;
@@ -59,7 +61,7 @@ public class Annotation implements XMLSerializable {
 		Other,
 	};
 
-	private Date date;
+	private LocalDateTime date;
 	private String author;
 
 	/** another submission's ID. Can be null for general comments */
@@ -87,7 +89,7 @@ public class Annotation implements XMLSerializable {
 
 	public Annotation(String author, Label label) {
 		this.author = author;
-		this.date = new Date();
+		this.date = LocalDateTime.now();
 		labels.add(label);
 	}
 
@@ -107,14 +109,14 @@ public class Annotation implements XMLSerializable {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -217,7 +219,8 @@ public class Annotation implements XMLSerializable {
 			element.setAttribute("author", author.trim());
 		}
 		if (date != null) {
-			element.setAttribute("date", dateFormat.format(date));
+			element.setAttribute("date", date
+					.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 		}
 		if (target != null) {
 			element.setAttribute("target", target);
@@ -255,11 +258,7 @@ public class Annotation implements XMLSerializable {
 			}
 		}
 		if (element.getAttributeValue("date") != null) {
-			try {
-				date = dateFormat.parse(element.getAttributeValue("date"));
-			} catch (ParseException ex) {
-				throw new IOException("Error parsing annotation date", ex);
-			}
+			date = LocalDateTime.parse(element.getAttributeValue("date"));
 		}
 
 		if (element.getText() != null) {
