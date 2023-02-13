@@ -1,4 +1,14 @@
+# compilation outputs
 /**/target/
+
+# local files
 /local/
+
+# project files
 /.idea/
 **/*.iml
+**/.classpath
+**/.project
+**/.factorypath
+**/.vscode
+**/.settings
