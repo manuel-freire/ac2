@@ -135,6 +135,16 @@ public class Analysis implements XMLSerializable {
 						s.getHash() + "\n" +
 						" - " + p.getId() + " (" + p.getOriginalPath() + ")\n" +
 						" - " + s.getId() + " (" + s.getOriginalPath() + ")\n");
+				Annotation a = new Annotation(
+						getClass().getSimpleName(),
+						Annotation.Label.Duplicate);
+				a.setTarget(s.getId());
+				a.setCommentary("Detected EXACT duplicate (same SHA1): " +
+						s.getHash() + "\n" +
+						" - " + p.getId() + " (" + p.getOriginalPath() + ")\n" +
+						" - " + s.getId() + " (" + s.getOriginalPath() + ")\n");
+				// s will be discarded; only p will remain
+				p.addAnnotation(a);
 			}
 		}
 		if (detectedDuplicates) {
