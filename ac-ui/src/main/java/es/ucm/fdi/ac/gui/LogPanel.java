@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with AC.  If not, see <http://www.gnu.org/licenses/>.
  */
-package es.ucm.fdi.ac;
+package es.ucm.fdi.ac.gui;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -165,7 +165,7 @@ public class LogPanel extends JPanel {
 					retained.append(line).append("\n");
 				}
 			}
-            String level = title.substring(0, 5).toLowerCase().strip();
+            String level = title.substring(0, 5).toLowerCase().trim();
             SimpleMessage m = new SimpleMessage(levels.indexOf(level), 
                 title, retained.toString());
             messages.add(m);
