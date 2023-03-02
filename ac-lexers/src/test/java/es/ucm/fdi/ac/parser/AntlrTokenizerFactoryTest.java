@@ -28,8 +28,8 @@ public class AntlrTokenizerFactoryTest extends TestCase {
 				mockSub("foo.c", "bar.h", "quux.whatever"),
 				mockSub("VeryVerbose.java", "OverlyLong.java",
 						"AnotherClass.java", "OrAnInterface.java"),
-				mockSub("LotsOfCamelCase.java", "garbage.gar",
-						"rubbish.rub", "tripe.tri") };
+				mockSub("LotsOfCamelCase.java", "garbage.gar", "rubbish.rub",
+						"tripe.tri") };
 
 		Tokenizer t = factory.getTokenizerFor(subs);
 		Tokenizer jt = AntlrTokenizerFactory.TokenizerEntry.forName("foo.java").tokenizer;
