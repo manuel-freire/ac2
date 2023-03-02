@@ -75,6 +75,13 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
 			this.treeRules = treeRules;
 		}
 
+		/**
+		 * Given a file-name, returns a tokenizer that can handle the file-names'
+		 * extension; or null if there is no such tokenizer.
+		 * @param name of a file, with an extension indicative of its language.
+		 *             Expects "foo.c" or "MyClass.Java", but not "c" or "java" alone
+		 * @return a TokenizerEntry, or null if none can handle the file's extension
+		 */
 		public static TokenizerEntry forName(String name) {
 			String suffix = name.substring(name.lastIndexOf('.') + 1);
 			for (TokenizerEntry e : TokenizerEntry.values()) {
@@ -87,15 +94,26 @@ public class AntlrTokenizerFactory implements Analysis.TokenizerFactory {
 	}
 
 	/**
-	 * Returns a tokenizer for a filename.
-	 * @param name of file. Only the extension is looket at.
+	 * Returns a tokenizer for a filename with an extension.
+	 * @param name of file. Only the extension is looked at.
 	 * @return 1st tokenizer that matches the suffix of a given filename, 
 	 * or null if none match
 	 */
 	public Tokenizer getTokenizerFor(String name) {
-		return TokenizerEntry.forName(name).tokenizer;
+		TokenizerEntry e = TokenizerEntry.forName(name);
+		return e == null ? null : e.tokenizer;
 	}
 
+	/**
+	 * Returns a tokenizer for a series of submissions. This is done by looking
+	 * at the most prevalent extensions - you can force a different tokenizer by
+	 * calling getTokenizerFor() instead.
+	 * @param subs to look at. Each file in a submission votes once.
+	 * @return the most popular tokenizer, based on extensions. If there are 10
+	 * files that end in .java, and 12 that end in .c, and 11 are not recognized,
+	 * then a C tokenizer will be chosen. Note that files without tokenizers
+	 * vote too - and if there are a lot of them, a NullTokenizer will be chosen.
+	 */
 	@Override
     public Tokenizer getTokenizerFor(Submission[] subs) {
         HashMap<Tokenizer, Integer> votes = new HashMap<>();
